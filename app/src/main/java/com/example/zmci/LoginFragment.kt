@@ -126,7 +126,8 @@ class LoginFragment : AppCompatActivity(), View.OnClickListener {
             val accountsIntent = Intent(activity, UsersListFragment::class.java)
             accountsIntent.putExtra("EMAIL", textInputEditTextEmail!!.text.toString().trim { it <= ' ' })
             emptyInputEditText()
-            startActivity(accountsIntent)
+            val accountsIntent2 = Intent(activity, MainActivity::class.java)
+            startActivity(accountsIntent2)
 
 
         } else {

@@ -30,8 +30,10 @@
 <!--        additional activity-->
         <activity
             android:name=".RegisterFragment" />
+<!--        <activity-->
+<!--            android:name=".UsersListFragment" />-->
         <activity
-            android:name=".UsersListFragment"/>
+            android:name=".MainActivity"/>
     </application>
 
 </manifest>

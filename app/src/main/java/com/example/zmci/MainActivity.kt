@@ -1,57 +1,57 @@
 package com.example.zmci
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
-import androidx.drawerlayout.widget.DrawerLayout
+import android.view.Menu
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.appcompat.app.AppCompatActivity
 import com.example.zmci.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this,
-        R.layout.activity_main)
 
-        drawerLayout = binding.drawerLayout
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val navController = this.findNavController(R.id.myNavHostFragment)
-        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+//        setSupportActionBar(binding.appBarMain.toolbar)
 
-        NavigationUI.setupWithNavController(binding.navView, navController)
+        binding.appBarMain.fab.setOnClickListener { view ->
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
+        val drawerLayout: DrawerLayout = binding.drawerLayout
+        val navView: NavigationView = binding.navView
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+            ), drawerLayout
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
+    }
 
-        // get reference to all views
-//        var etUserName = findViewById(R.id.etUserName) as EditText
-//        var etPassword = findViewById(R.id.etPassword) as EditText
-//        var btnReset = findViewById(R.id.btnReset) as Button
-//        var btnLogin = findViewById(R.id.btnLogin) as Button
-//
-//        btnReset.setOnClickListener {
-//            // clearing user_name and password edit text views on reset button click
-//            etUserName.setText("")
-//            etPassword.setText("")
-//        }
-//        btnLogin.setOnClickListener {
-//            if (etUserName.text.toString() == "admin" && etPassword.text.toString() == "pass123") {
-//                //correct password
-//                Toast.makeText(applicationContext,"Login Success!",Toast.LENGTH_SHORT).show()
-//                val toast = Toast.makeText(applicationContext, "Hello ADMIN!", Toast.LENGTH_SHORT)
-//                toast.show()
-//            } else {
-//                //wrong password
-//                Toast.makeText(applicationContext, "Wrong credentials.", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-
-
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.main, menu)
+        return true
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = this.findNavController(R.id.myNavHostFragment)
-        return NavigationUI.navigateUp(navController, drawerLayout)
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }
