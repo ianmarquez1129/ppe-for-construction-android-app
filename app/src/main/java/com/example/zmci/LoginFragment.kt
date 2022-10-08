@@ -123,8 +123,8 @@ class LoginFragment : AppCompatActivity(), View.OnClickListener {
         if (databaseHelper!!.checkUser(textInputEditTextEmail!!.text.toString().trim { it <= ' ' }, textInputEditTextPassword!!.text.toString().trim { it <= ' ' })) {
 
 
-            val accountsIntent = Intent(activity, UsersListFragment::class.java)
-            accountsIntent.putExtra("EMAIL", textInputEditTextEmail!!.text.toString().trim { it <= ' ' })
+//            val accountsIntent = Intent(activity, UsersListFragment::class.java)
+//            accountsIntent.putExtra("EMAIL", textInputEditTextEmail!!.text.toString().trim { it <= ' ' })
             emptyInputEditText()
             val accountsIntent2 = Intent(activity, MainActivity::class.java)
             startActivity(accountsIntent2)
