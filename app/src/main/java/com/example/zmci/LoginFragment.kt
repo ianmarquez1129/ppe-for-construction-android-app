@@ -75,8 +75,8 @@ class LoginFragment : AppCompatActivity(), View.OnClickListener {
      */
     private fun initListeners() {
 
-        appCompatButtonLogin!!.setOnClickListener(this)
-        textViewLinkRegister!!.setOnClickListener(this)
+        appCompatButtonLogin.setOnClickListener(this)
+        textViewLinkRegister.setOnClickListener(this)
     }
 
     /**
@@ -110,30 +110,33 @@ class LoginFragment : AppCompatActivity(), View.OnClickListener {
      */
     private fun verifyFromSQLite() {
 
-        if (!inputValidation!!.isInputEditTextFilled(textInputEditTextEmail!!, textInputLayoutEmail!!, getString(R.string.error_message_email))) {
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
             return
         }
-        if (!inputValidation!!.isInputEditTextEmail(textInputEditTextEmail!!, textInputLayoutEmail!!, getString(R.string.error_message_email))) {
+        if (!inputValidation.isInputEditTextEmail(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
             return
         }
-        if (!inputValidation!!.isInputEditTextFilled(textInputEditTextPassword!!, textInputLayoutPassword!!, getString(R.string.error_message_password))) {
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_password))) {
             return
         }
 
-        if (databaseHelper!!.checkUser(textInputEditTextEmail!!.text.toString().trim { it <= ' ' }, textInputEditTextPassword!!.text.toString().trim { it <= ' ' })) {
+        if (databaseHelper.checkUser(textInputEditTextEmail.text.toString().trim { it <= ' ' }, textInputEditTextPassword.text.toString().trim { it <= ' ' })) {
 
 
-//            val accountsIntent = Intent(activity, UsersListFragment::class.java)
-//            accountsIntent.putExtra("EMAIL", textInputEditTextEmail!!.text.toString().trim { it <= ' ' })
+            val userName = textInputEditTextEmail.text.toString().trim { it <= ' ' }
+            val userPassword = textInputEditTextPassword.text.toString().trim { it <= ' ' }
+            val intent = Intent(applicationContext, MainActivity::class.java)
+            intent.putExtra("EMAIL", userName)
+            intent.putExtra("PW", userPassword)
+
+            startActivity(intent)
             emptyInputEditText()
-            val accountsIntent2 = Intent(activity, MainActivity::class.java)
-            startActivity(accountsIntent2)
 
 
         } else {
 
             // Snack Bar to show success message that record is wrong
-            Snackbar.make(nestedScrollView!!, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show()
+            Snackbar.make(nestedScrollView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show()
         }
     }
 
@@ -141,7 +144,7 @@ class LoginFragment : AppCompatActivity(), View.OnClickListener {
      * This method is to empty all input edit text
      */
     private fun emptyInputEditText() {
-        textInputEditTextEmail!!.text = null
-        textInputEditTextPassword!!.text = null
+        textInputEditTextEmail.text = null
+        textInputEditTextPassword.text = null
     }
 }

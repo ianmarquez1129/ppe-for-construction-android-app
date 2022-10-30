@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Detection">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="helmet"
+            android:title="Helmet" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="glasses"
+            android:title="Glasses" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="vest"
+            android:title="Vest" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="gloves"
+            android:title="Gloves" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="boots"
+            android:title="Boots" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Notification">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="notification"
+            android:title="Receive notifications" />
+    </PreferenceCategory>
+</PreferenceScreen>
