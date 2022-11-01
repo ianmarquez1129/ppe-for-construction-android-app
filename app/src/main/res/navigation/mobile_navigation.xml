@@ -22,9 +22,45 @@
         android:name="com.example.zmci.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.example.zmci.about.AboutFragment"
         android:label="fragment_about"
         tools:layout="@layout/fragment_about" />
+
+    <fragment
+        android:id="@+id/ConnectFragment"
+        android:name="com.example.zmci.mqtt.ConnectFragment"
+        android:label="@string/connect_fragment_label"
+        tools:layout="@layout/fragment_connect">
+
+        <action
+            android:id="@+id/action_ConnectFragment_to_ClientFragment"
+            app:destination="@id/ClientFragment"/>
+        <action
+            android:id="@+id/action_ConnectFragment_to_CameraFragment"
+            app:destination="@id/CameraFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ClientFragment"
+        android:name="com.example.zmci.mqtt.ClientFragment"
+        android:label="@string/client_fragment_label"
+        tools:layout="@layout/fragment_client">
+
+        <action
+            android:id="@+id/action_ClientFragment_to_ConnectFragment"
+            app:destination="@id/ConnectFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/CameraFragment"
+        android:name="com.example.zmci.camera.CameraFragment"
+        android:label="Camera Fragment"
+        tools:layout="@layout/fragment_camera">
+
+        <action
+            android:id="@+id/action_CameraFragment_to_ClientFragment"
+            app:destination="@id/ClientFragment"/>
+    </fragment>
 </navigation>

@@ -20,5 +20,13 @@
             android:id="@+id/aboutFragment"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/about" />
+        <item
+            android:id="@+id/ConnectFragment"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/mqtt"/>
+        <item
+            android:id="@+id/CameraFragment"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Camera"/>
     </group>
 </menu>
