@@ -1,6 +1,8 @@
 package com.example.zmci.mqtt
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +14,15 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.zmci.R
+import kotlinx.android.synthetic.main.fragment_client.*
 import org.eclipse.paho.client.mqttv3.*
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
 
 class ClientFragment : Fragment() {
-    private lateinit var mqttClient : MQTTClient
+    private lateinit var mqttClient: MQTTClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,13 +34,20 @@ class ClientFragment : Fragment() {
                         override fun onSuccess(asyncActionToken: IMqttToken?) {
                             Log.d(this.javaClass.name, "Disconnected")
 
-                            Toast.makeText(context, "MQTT Disconnection success", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "MQTT Disconnection success",
+                                Toast.LENGTH_SHORT
+                            ).show()
 
                             // Disconnection success, come back to Connect Fragment
                             findNavController().navigate(R.id.action_ClientFragment_to_ConnectFragment)
                         }
 
-                        override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
+                        override fun onFailure(
+                            asyncActionToken: IMqttToken?,
+                            exception: Throwable?
+                        ) {
                             Log.d(this.javaClass.name, "Failed to disconnect")
                         }
                     })
@@ -59,33 +70,39 @@ class ClientFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Get arguments passed by ConnectFragment
-        val serverURI   = arguments?.getString(MQTT_SERVER_URI_KEY)
-        val clientId    = arguments?.getString(MQTT_CLIENT_ID_KEY)
-        val username    = arguments?.getString(MQTT_USERNAME_KEY)
-        val pwd         = arguments?.getString(MQTT_PWD_KEY)
+        val serverURI = arguments?.getString(MQTT_SERVER_URI_KEY)
+        val clientId = arguments?.getString(MQTT_CLIENT_ID_KEY)
+        val username = arguments?.getString(MQTT_USERNAME_KEY)
+        val pwd = arguments?.getString(MQTT_PWD_KEY)
 
         // Check if passed arguments are valid
-        if (    serverURI   != null    &&
-            clientId    != null    &&
-            username    != null    &&
-            pwd         != null        ) {
+        if (serverURI != null &&
+            clientId != null &&
+            username != null &&
+            pwd != null
+        ) {
             // Open MQTT Broker communication
             mqttClient = MQTTClient(context, serverURI, clientId)
 
             // Connect and login to MQTT Broker
-            mqttClient.connect( username,
+            mqttClient.connect(username,
                 pwd,
                 object : IMqttActionListener {
                     override fun onSuccess(asyncActionToken: IMqttToken?) {
                         Log.d(this.javaClass.name, "Connection success")
 
-                        Toast.makeText(context, "MQTT Connection success", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "MQTT Connection success", Toast.LENGTH_SHORT)
+                            .show()
                     }
 
                     override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
                         Log.d(this.javaClass.name, "Connection failure: ${exception.toString()}")
 
-                        Toast.makeText(context, "MQTT Connection fails: ${exception.toString()}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "MQTT Connection fails: ${exception.toString()}",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
                         // Come back to Connect Fragment
                         findNavController().navigate(R.id.action_ClientFragment_to_ConnectFragment)
@@ -96,18 +113,23 @@ class ClientFragment : Fragment() {
                         val msg = "Receive message: ${message.toString()} from topic: $topic"
                         Log.d(this.javaClass.name, msg)
 
-//                        var json: JSONObject? = null
-//                        try {
-//                            json = JSONObject(msg)
-//                            val key = json.getString("key")
-//                        } catch (e: JSONException) {
-//                            e.printStackTrace()
-//                        }
-//
-//                        val imageBytes = Base64.decode(base64String, Base64.DEFAULT)
-//                        val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length)
-//                        imageView.setImageBitmap(decodedImage)
-                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+
+                        try {
+                            val jsonData = "[ ${message.toString()} ]"
+                            val obj = JSONArray(jsonData)
+                            val imageObj: JSONObject = obj.getJSONObject(0)
+                            val imageData = imageObj.getString("image")
+                            //                        textDetect.text = imageData
+                            val decodedByte = Base64.decode(imageData, Base64.DEFAULT)
+                            val bitmap =
+                                BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
+                            imgDetect.setImageBitmap(bitmap)
+                        } catch (e : JSONException) {
+                            e.printStackTrace()
+                        }
+
+//                        textDetect.text = msg
                     }
 
                     override fun connectionLost(cause: Throwable?) {
@@ -144,7 +166,8 @@ class ClientFragment : Fragment() {
                     override fun onSuccess(asyncActionToken: IMqttToken?) {
                         Log.d(this.javaClass.name, "Disconnected")
 
-                        Toast.makeText(context, "MQTT Disconnection success", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "MQTT Disconnection success", Toast.LENGTH_SHORT)
+                            .show()
 
                         // Disconnection success, come back to Connect Fragment
                         findNavController().navigate(R.id.action_ClientFragment_to_ConnectFragment)
@@ -160,7 +183,7 @@ class ClientFragment : Fragment() {
         }
 
         view.findViewById<Button>(R.id.button_publish).setOnClickListener {
-            val topic   = view.findViewById<EditText>(R.id.edittext_pubtopic).text.toString()
+            val topic = view.findViewById<EditText>(R.id.edittext_pubtopic).text.toString()
             val message = view.findViewById<EditText>(R.id.edittext_pubmsg).text.toString()
 
             if (mqttClient.isConnected()) {
@@ -170,13 +193,16 @@ class ClientFragment : Fragment() {
                     false,
                     object : IMqttActionListener {
                         override fun onSuccess(asyncActionToken: IMqttToken?) {
-                            val msg ="Publish message: $message to topic: $topic"
+                            val msg = "Publish message: $message to topic: $topic"
                             Log.d(this.javaClass.name, msg)
 
                             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                         }
 
-                        override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
+                        override fun onFailure(
+                            asyncActionToken: IMqttToken?,
+                            exception: Throwable?
+                        ) {
                             Log.d(this.javaClass.name, "Failed to publish message to topic")
                         }
                     })
@@ -186,7 +212,7 @@ class ClientFragment : Fragment() {
         }
 
         view.findViewById<Button>(R.id.button_subscribe).setOnClickListener {
-            val topic   = view.findViewById<EditText>(R.id.edittext_subtopic).text.toString()
+            val topic = view.findViewById<EditText>(R.id.edittext_subtopic).text.toString()
 
             if (mqttClient.isConnected()) {
                 mqttClient.subscribe(topic,
@@ -199,7 +225,10 @@ class ClientFragment : Fragment() {
                             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                         }
 
-                        override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
+                        override fun onFailure(
+                            asyncActionToken: IMqttToken?,
+                            exception: Throwable?
+                        ) {
                             Log.d(this.javaClass.name, "Failed to subscribe: $topic")
                         }
                     })
@@ -209,10 +238,10 @@ class ClientFragment : Fragment() {
         }
 
         view.findViewById<Button>(R.id.button_unsubscribe).setOnClickListener {
-            val topic   = view.findViewById<EditText>(R.id.edittext_subtopic).text.toString()
+            val topic = view.findViewById<EditText>(R.id.edittext_subtopic).text.toString()
 
             if (mqttClient.isConnected()) {
-                mqttClient.unsubscribe( topic,
+                mqttClient.unsubscribe(topic,
                     object : IMqttActionListener {
                         override fun onSuccess(asyncActionToken: IMqttToken?) {
                             val msg = "Unsubscribed to: $topic"
@@ -221,7 +250,10 @@ class ClientFragment : Fragment() {
                             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                         }
 
-                        override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
+                        override fun onFailure(
+                            asyncActionToken: IMqttToken?,
+                            exception: Throwable?
+                        ) {
                             Log.d(this.javaClass.name, "Failed to unsubscribe: $topic")
                         }
                     })

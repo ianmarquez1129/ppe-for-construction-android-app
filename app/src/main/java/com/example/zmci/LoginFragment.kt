@@ -1,8 +1,12 @@
 package com.example.zmci
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds.Email
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.CheckBox
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
@@ -12,6 +16,7 @@ import com.example.zmci.helpers.InputValidation
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.synthetic.main.fragment_login.*
 
 
 class LoginFragment : AppCompatActivity(), View.OnClickListener {
@@ -33,6 +38,14 @@ class LoginFragment : AppCompatActivity(), View.OnClickListener {
     private lateinit var inputValidation: InputValidation
     private lateinit var databaseHelper: DatabaseHelper
 
+    private lateinit var saveLoginCheckBox: CheckBox
+
+    private lateinit var loginPreferences: SharedPreferences
+    private lateinit var loginPrefsEditor: SharedPreferences.Editor
+    private var saveLogin: Boolean = false
+    private lateinit var userEmail: String
+    private lateinit var userPassword: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -49,6 +62,10 @@ class LoginFragment : AppCompatActivity(), View.OnClickListener {
 
         // initializing the objects
         initObjects()
+
+        // initializing the preferences
+        initPreferences()
+
     }
 
     /**
@@ -67,7 +84,23 @@ class LoginFragment : AppCompatActivity(), View.OnClickListener {
         appCompatButtonLogin = findViewById<View>(R.id.appCompatButtonLogin) as AppCompatButton
 
         textViewLinkRegister = findViewById<View>(R.id.textViewLinkRegister) as AppCompatTextView
+        saveLoginCheckBox = findViewById(R.id.saveLoginCheckBox)
 
+    }
+
+    /**
+     * This method is to initialize preferences
+     */
+    private fun initPreferences() {
+        loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE)
+        loginPrefsEditor = loginPreferences.edit()
+
+        saveLogin = loginPreferences.getBoolean("saveLogin", false)
+        if (saveLogin == true) {
+            textInputEditTextEmail.setText(loginPreferences.getString("email", ""))
+            textInputEditTextPassword.setText(loginPreferences.getString("password", ""))
+            saveLoginCheckBox.isChecked = true
+        }
     }
 
     /**
@@ -96,7 +129,27 @@ class LoginFragment : AppCompatActivity(), View.OnClickListener {
      */
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.appCompatButtonLogin -> verifyFromSQLite()
+            R.id.appCompatButtonLogin -> {
+
+                val imm: InputMethodManager =
+                    getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(textInputEditTextEmail.windowToken, 0)
+
+                userEmail = textInputEditTextEmail.text.toString()
+                userPassword = textInputEditTextPassword.text.toString()
+
+                if (saveLoginCheckBox.isChecked) {
+                    loginPrefsEditor.putBoolean("saveLogin", true)
+                    loginPrefsEditor.putString("email", userEmail)
+                    loginPrefsEditor.putString("password", userPassword)
+                    loginPrefsEditor.commit()
+                } else {
+                    loginPrefsEditor.clear()
+                    loginPrefsEditor.commit()
+                }
+
+                verifyFromSQLite()
+            }
             R.id.textViewLinkRegister -> {
                 // Navigate to RegisterActivity
                 val intentRegister = Intent(applicationContext, RegisterFragment::class.java)

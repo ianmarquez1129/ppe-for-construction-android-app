@@ -60,6 +60,12 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/saveLoginCheckBox"
+            android:text="Save login?"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/appCompatButtonLogin"
             android:layout_width="match_parent"

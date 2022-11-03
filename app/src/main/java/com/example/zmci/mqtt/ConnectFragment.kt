@@ -24,13 +24,13 @@ class ConnectFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        view.findViewById<Button>(R.id.button_prefill).setOnClickListener {
-//            // Set default values in edit texts
-//            view.findViewById<EditText>(R.id.edittext_server_uri).setText(MQTT_SERVER_URI)
-//            view.findViewById<EditText>(R.id.edittext_client_id).setText(MQTT_CLIENT_ID)
-//            view.findViewById<EditText>(R.id.edittext_username).setText(MQTT_USERNAME)
-//            view.findViewById<EditText>(R.id.edittext_password).setText(MQTT_PWD)
-//        }
+        view.findViewById<Button>(R.id.button_prefill).setOnClickListener {
+            // Set default values in edit texts
+            view.findViewById<EditText>(R.id.edittext_server_uri).setText(MQTT_SERVER_URI)
+            view.findViewById<EditText>(R.id.edittext_client_id).setText(MQTT_CLIENT_ID)
+            view.findViewById<EditText>(R.id.edittext_username).setText(MQTT_USERNAME)
+            view.findViewById<EditText>(R.id.edittext_password).setText(MQTT_PWD)
+        }
 
         view.findViewById<Button>(R.id.button_clean).setOnClickListener {
             // Clean values in edit texts

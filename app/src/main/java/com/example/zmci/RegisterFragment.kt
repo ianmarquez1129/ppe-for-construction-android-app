@@ -1,5 +1,6 @@
 package com.example.zmci
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -143,6 +144,9 @@ class RegisterFragment : AppCompatActivity(), View.OnClickListener {
             // Snack Bar to show success message that record saved successfully
             Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG).show()
             emptyInputEditText()
+            val intentLogin = Intent(this, LoginFragment::class.java)
+            startActivity(intentLogin)
+            finish()
 
 
         } else {
