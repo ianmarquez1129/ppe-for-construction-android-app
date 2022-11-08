@@ -4,13 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebChromeClient
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.zmci.databinding.FragmentGalleryBinding
+import kotlinx.android.synthetic.main.fragment_gallery.*
+
 
 class GalleryFragment : Fragment() {
 
+    private var etStreamString = ""
     private var _binding: FragmentGalleryBinding? = null
 
     // This property is only valid between onCreateView and
@@ -30,7 +39,7 @@ class GalleryFragment : Fragment() {
 
         val textView: TextView = binding.textGallery
         galleryViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+            textView.text = "STREAMING"
         }
         return root
     }
@@ -38,5 +47,40 @@ class GalleryFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //Viewing of any video url
+
+//        val videoView: VideoView = streamVideo
+//        val mediaController = MediaController(activity)
+//        mediaController.setAnchorView(videoView)
+//        videoView.setMediaController(mediaController)
+//        //sample http audio only = https://stream-14.zeno.fm/mdrkm4npms8uv?zs=HnPdhsx2TWObn3mAZrskBQ
+//        videoView.setVideoURI(Uri.parse("https://stream-14.zeno.fm/mdrkm4npms8uv?zs=HnPdhsx2TWObn3mAZrskBQ"))
+//        videoView.start()
+
+        val btnStream = btnStream as Button
+        val webview = webStreamVideo as WebView
+        webview.webViewClient = WebViewClient()
+        webview.settings.javaScriptEnabled = true
+        webview.settings.javaScriptCanOpenWindowsAutomatically = true
+        webview.settings.pluginState = WebSettings.PluginState.ON
+        webview.settings.mediaPlaybackRequiresUserGesture = false
+        webview.settings.loadWithOverviewMode = true
+        webview.settings.useWideViewPort = true
+        webview.webChromeClient = WebChromeClient()
+        btnStream.setOnClickListener {
+            webview.loadUrl(""+etStream.text.toString())
+            etStreamString = ""+etStream.text.toString()
+            text_gallery.text = "Streaming "+etStream.text.toString()
+            etStream.setText("")
+        }
+        btnRefresh.setOnClickListener {
+            webview.loadUrl(""+etStreamString)
+        }
+
     }
 }

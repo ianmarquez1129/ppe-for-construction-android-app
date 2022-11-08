@@ -120,11 +120,36 @@ class ClientFragment : Fragment() {
                             val obj = JSONArray(jsonData)
                             val imageObj: JSONObject = obj.getJSONObject(0)
                             val imageData = imageObj.getString("image")
-                            //                        textDetect.text = imageData
+
+                            // get violations
+                            val jsonDetected = imageObj.getString("detected")
+                            val detectedObj = JSONArray(jsonDetected)
+                            textDetect.text = ""
+
+                            val jsonFaces = imageObj.getString("faces")
+                            val facesObj = JSONArray(jsonFaces)
+
+                            // get identity of violator
+                            for (i in 0.until(facesObj.length())) {
+                                val faceIndex: JSONArray = facesObj.getJSONArray(i)
+                                val test =  faceIndex.getString(0)
+                                textDetect.append("Alert! $test \n")
+                            }
+
+                            textDetect.append("\n")
+
+                            // get violated PPE
+                            for (i in 0.until(detectedObj.length())) {
+                                val detectedIndex: JSONObject = detectedObj.getJSONObject(i)
+                                val className = detectedIndex.getString("class_name")
+                                textDetect.append("$className \n")
+                            }
+
+                            //decode base64 to image
                             val decodedByte = Base64.decode(imageData, Base64.DEFAULT)
-                            val bitmap =
-                                BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
+                            val bitmap = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
                             imgDetect.setImageBitmap(bitmap)
+
                         } catch (e : JSONException) {
                             e.printStackTrace()
                         }

@@ -1,7 +1,12 @@
 package com.example.zmci
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -22,17 +27,24 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.zmci.camera.CameraAdapter
 import com.example.zmci.databinding.ActivityMainBinding
 import com.example.zmci.database.DatabaseHelper
+import com.example.zmci.mqtt.ClientFragment
 import kotlinx.android.synthetic.main.fragment_add_camera.*
+import kotlinx.android.synthetic.main.fragment_client.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var databaseHelper: DatabaseHelper
+    val CHANNEL_ID = "channelID"
+    val CHANNEL_NAME = "channelName"
+    val NOTIFICATION_ID = 0
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +66,12 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.aboutFragment, R.id.ConnectFragment, R.id.CameraFragment
+                R.id.nav_home,
+                R.id.nav_gallery,
+                R.id.nav_slideshow,
+                R.id.aboutFragment,
+                R.id.ConnectFragment,
+                R.id.CameraFragment
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -85,11 +102,57 @@ class MainActivity : AppCompatActivity() {
         if (!isConnected()) {
             Log.d(this.javaClass.name, "Internet connection NOT available")
 
-            Toast.makeText(applicationContext, "Internet connection NOT available", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                applicationContext,
+                "Internet connection NOT available",
+                Toast.LENGTH_LONG
+            ).show()
         }
         //MQTT ends
 
+        //notification starts
+//        createNotificationChannel()
+//
+//        val intentNotify = Intent(this,ClientFragment::class.java)
+//        val pendingIntent = TaskStackBuilder.create(this).run {
+//            addNextIntentWithParentStack(intentNotify)
+//            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+//        }
+//        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+//            .setContentTitle("PPE notification")
+//            .setContentText("Violation alert")
+//            .setSmallIcon(R.drawable.ic_warning)
+//            .setPriority(NotificationCompat.PRIORITY_HIGH)
+//            .setContentIntent(pendingIntent)
+//            .build()
+//
+//        val notificationManager = NotificationManagerCompat.from(this)
 
+//        button_subscribe.setOnClickListener {
+//        notificationManager.notify(NOTIFICATION_ID, notification)
+//        }
+
+        //notification ends
+
+    }
+
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        createNotificationChannel()
+        val intentNotify = Intent(this,MainActivity::class.java)
+        val pendingIntent = TaskStackBuilder.create(this).run {
+            addNextIntentWithParentStack(intentNotify)
+            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle("PPE notification")
+            .setContentText("Violation alert")
+            .setSmallIcon(R.drawable.ic_warning)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent)
+            .build()
+        val notificationManager = NotificationManagerCompat.from(this)
+        notificationManager.notify(NOTIFICATION_ID, notification)
     }
 
     //MQTT starts
@@ -121,6 +184,22 @@ class MainActivity : AppCompatActivity() {
         return result
     }
     //MQTT ends
+
+    //notification start
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                CHANNEL_ID, CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                lightColor = Color.GREEN
+                enableLights(true)
+            }
+            val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(channel)
+        }
+    }
+    //notification ends
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
