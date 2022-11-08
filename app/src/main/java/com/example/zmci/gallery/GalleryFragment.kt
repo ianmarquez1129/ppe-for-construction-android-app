@@ -82,5 +82,7 @@ class GalleryFragment : Fragment() {
             webview.loadUrl(""+etStreamString)
         }
 
+        //Checkpoint commit
+
     }
 }
