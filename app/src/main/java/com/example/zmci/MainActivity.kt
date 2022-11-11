@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity() {
         }
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("PPE notification")
-            .setContentText("Violation alert")
+            .setContentText("Careful, you might miss some violators...")
             .setSmallIcon(R.drawable.ic_warning)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)

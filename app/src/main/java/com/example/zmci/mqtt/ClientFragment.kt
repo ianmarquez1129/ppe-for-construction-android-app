@@ -1,6 +1,14 @@
 package com.example.zmci.mqtt
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
+import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
@@ -10,9 +18,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.zmci.MainActivity
 import com.example.zmci.R
 import kotlinx.android.synthetic.main.fragment_client.*
 import org.eclipse.paho.client.mqttv3.*
@@ -26,36 +37,71 @@ class ClientFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (mqttClient.isConnected()) {
-                    // Disconnect from MQTT Broker
-                    mqttClient.disconnect(object : IMqttActionListener {
-                        override fun onSuccess(asyncActionToken: IMqttToken?) {
-                            Log.d(this.javaClass.name, "Disconnected")
+//        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                if (mqttClient.isConnected()) {
+//                    // Disconnect from MQTT Broker
+//                    mqttClient.disconnect(object : IMqttActionListener {
+//                        override fun onSuccess(asyncActionToken: IMqttToken?) {
+//                            Log.d(this.javaClass.name, "Disconnected")
+//
+//                            Toast.makeText(
+//                                context,
+//                                "MQTT Disconnection success",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//
+//                            // Disconnection success, come back to Connect Fragment
+//                            findNavController().navigate(R.id.action_ClientFragment_to_ConnectFragment)
+//                        }
+//
+//                        override fun onFailure(
+//                            asyncActionToken: IMqttToken?,
+//                            exception: Throwable?
+//                        ) {
+//                            Log.d(this.javaClass.name, "Failed to disconnect")
+//                        }
+//                    })
+//                } else {
+//                    Log.d(this.javaClass.name, "Impossible to disconnect, no server connected")
+//                }
+//            }
+//        })
+    }
 
-                            Toast.makeText(
-                                context,
-                                "MQTT Disconnection success",
-                                Toast.LENGTH_SHORT
-                            ).show()
-
-                            // Disconnection success, come back to Connect Fragment
-                            findNavController().navigate(R.id.action_ClientFragment_to_ConnectFragment)
-                        }
-
-                        override fun onFailure(
-                            asyncActionToken: IMqttToken?,
-                            exception: Throwable?
-                        ) {
-                            Log.d(this.javaClass.name, "Failed to disconnect")
-                        }
-                    })
-                } else {
-                    Log.d(this.javaClass.name, "Impossible to disconnect, no server connected")
-                }
+    val CHANNEL_ID = "channelID"
+    val CHANNEL_NAME = "channelName"
+    val NOTIFICATION_ID = 1
+    override fun onDestroy() {
+        super.onDestroy()
+        createNotificationChannel()
+        val intentNotify = Intent(context, MainActivity::class.java)
+        val pendingIntent = TaskStackBuilder.create(context).run {
+            addNextIntentWithParentStack(intentNotify)
+            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+        val notification = NotificationCompat.Builder(requireContext(),CHANNEL_ID)
+            .setContentTitle("PPE notification")
+            .setContentText("The application has been closed. Tap here to reopen.")
+            .setSmallIcon(R.drawable.ic_menu_camera)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent)
+            .build()
+        val notificationManager = NotificationManagerCompat.from(requireContext())
+        notificationManager.notify(NOTIFICATION_ID, notification)
+    }
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                CHANNEL_ID, CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                lightColor = Color.GREEN
+                enableLights(true)
             }
-        })
+            val manager = requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(channel)
+        }
     }
 
     override fun onCreateView(
@@ -119,31 +165,23 @@ class ClientFragment : Fragment() {
                             val jsonData = "[ ${message.toString()} ]"
                             val obj = JSONArray(jsonData)
                             val imageObj: JSONObject = obj.getJSONObject(0)
-                            val imageData = imageObj.getString("image")
+                            val imageData = imageObj.getString("image") // get image
+                            val violatorsData = imageObj.getString("violators")
+//                            val violatorsArray = JSONArray(violatorsData)
 
-                            // get violations
-                            val jsonDetected = imageObj.getString("detected")
-                            val detectedObj = JSONArray(jsonDetected)
+                            //clear text after every loop
                             textDetect.text = ""
+                            tvTimestamp.text = ""
 
-                            val jsonFaces = imageObj.getString("faces")
-                            val facesObj = JSONArray(jsonFaces)
-
-                            // get identity of violator
-                            for (i in 0.until(facesObj.length())) {
-                                val faceIndex: JSONArray = facesObj.getJSONArray(i)
-                                val test =  faceIndex.getString(0)
-                                textDetect.append("Alert! $test \n")
-                            }
-
+                            textDetect.append(violatorsData)
                             textDetect.append("\n")
 
-                            // get violated PPE
-                            for (i in 0.until(detectedObj.length())) {
-                                val detectedIndex: JSONObject = detectedObj.getJSONObject(i)
-                                val className = detectedIndex.getString("class_name")
-                                textDetect.append("$className \n")
-                            }
+                            val cameraData = imageObj.getString("camera")
+//                            val cameraArray = JSONArray(cameraData)
+                            textDetect.append(cameraData)
+
+                            val timestampData = imageObj.getString("timestamp")
+                            tvTimestamp.text = timestampData
 
                             //decode base64 to image
                             val decodedByte = Base64.decode(imageData, Base64.DEFAULT)
@@ -248,6 +286,8 @@ class ClientFragment : Fragment() {
                             Log.d(this.javaClass.name, msg)
 
                             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+//                            val intent = Intent(context,ReceivedData::class.java)
+//                            startActivity(intent)
                         }
 
                         override fun onFailure(

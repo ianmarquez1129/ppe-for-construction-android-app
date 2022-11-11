@@ -68,5 +68,7 @@ dependencies {
     //MQTT
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.0.2'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.0.2'
+    //GSON
+    implementation 'com.google.code.gson:gson:2.10'
 
 }
