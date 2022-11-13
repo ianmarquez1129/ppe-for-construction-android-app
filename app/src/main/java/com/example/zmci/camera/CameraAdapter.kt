@@ -2,20 +2,23 @@ package com.example.zmci.camera
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.widget.SwitchCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zmci.R
+import com.example.zmci.database.DatabaseHelper
+import kotlinx.android.synthetic.main.fragment_add_camera.view.*
+import kotlinx.android.synthetic.main.fragment_update_camera.view.*
 
-class CameraAdapter(val c:Context, val cameraList:ArrayList<CameraData>):RecyclerView.Adapter<CameraAdapter.CameraViewHolder>() {
+class CameraAdapter(val c:Context, val cameraList:MutableList<CameraData>):RecyclerView.Adapter<CameraAdapter.CameraViewHolder>() {
 
     inner class CameraViewHolder(val v:View,listener: onItemClickListener):RecyclerView.ViewHolder(v){
         var name:TextView = v.findViewById(R.id.mTitle)
-        var status:TextView = v.findViewById(R.id.mSubtitle)
         var mMenus:ImageView = v.findViewById(R.id.mMenus)
+        private lateinit var databaseHelper: DatabaseHelper
 
         init {
             mMenus.setOnClickListener{ popupMenus(it) }
@@ -31,30 +34,27 @@ class CameraAdapter(val c:Context, val cameraList:ArrayList<CameraData>):Recycle
             popupMenus.setOnMenuItemClickListener {
                 when(it.itemId){
                     R.id.editText->{
-                        val v = LayoutInflater.from(c).inflate(R.layout.fragment_add_camera,null)
-                        val name = v.findViewById<EditText>(R.id.cameraName)
-                        val notification = v.findViewById<SwitchCompat>(R.id.swNotification)
-                        val identifiers = v.findViewById<SwitchCompat>(R.id.swIdentifiers)
-                        val helmet = v.findViewById<SwitchCompat>(R.id.swHelmet)
-                        val glasses = v.findViewById<SwitchCompat>(R.id.swGlasses)
-                        val vest = v.findViewById<SwitchCompat>(R.id.swVest)
-                        val gloves = v.findViewById<SwitchCompat>(R.id.swGloves)
-                        val boots = v.findViewById<SwitchCompat>(R.id.swBoots)
+                        val v = LayoutInflater.from(c).inflate(R.layout.fragment_update_camera,null)
+                        val updateCameraName = v.findViewById<EditText>(R.id.cameraNameUpdate)
+
+                        val newList = cameraList[adapterPosition]
+                        position.cameraName = newList.cameraName
+
 
                         AlertDialog.Builder(c)
                             .setView(v)
-                            .setPositiveButton("Ok"){
+                            .setPositiveButton("Update"){
                                 dialog,_->
-                                position.cameraName = name.text.toString()
-                                position.notification = notification.isChecked
-                                position.identifiers = identifiers.isChecked
-                                position.helmet = helmet.isChecked
-                                position.glasses = glasses.isChecked
-                                position.vest = vest.isChecked
-                                position.gloves = gloves.isChecked
-                                position.boots = boots.isChecked
-                                notifyDataSetChanged()
-                                Toast.makeText(c,"Camera is Edited",Toast.LENGTH_SHORT).show()
+                                val isUpdate = CameraFragment.databaseHelper.updateCamera(
+                                    newList.id.toString(),
+                                    v.cameraNameUpdate.text.toString())
+                                if (isUpdate) {
+                                    cameraList[adapterPosition].cameraName = v.cameraNameUpdate.text.toString()
+                                    notifyDataSetChanged()
+                                    Toast.makeText(c,"Updated Successfully", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(c, "Error Updating", Toast.LENGTH_SHORT).show()
+                                }
                                 dialog.dismiss()
                             }
                             .setNegativeButton("Cancel"){
@@ -66,22 +66,25 @@ class CameraAdapter(val c:Context, val cameraList:ArrayList<CameraData>):Recycle
                         true
                     }
                     R.id.delete->{
+                        val newList = cameraList[adapterPosition]
+                        position.cameraName = newList.cameraName
+                        val cameraName = newList.cameraName
+
                         AlertDialog.Builder(c)
-                            .setTitle("Delete")
+                            .setTitle("Warning")
+                            .setMessage("Are you sure you want to delete : $cameraName ?")
+                            .setPositiveButton("Yes", DialogInterface.OnClickListener{ dialog, which ->
+                                if (CameraFragment.databaseHelper.deleteCamera(newList.id)) {
+                                    cameraList.removeAt(adapterPosition)
+                                    notifyItemRemoved(adapterPosition)
+                                    notifyItemRangeChanged(adapterPosition,cameraList.size)
+                                    Toast.makeText(c, "Camera $cameraName Deleted", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(c, "Error Deleting", Toast.LENGTH_SHORT).show()
+                                }
+                            })
+                            .setNegativeButton("No", DialogInterface.OnClickListener { dialog, which ->  })
                             .setIcon(R.drawable.ic_warning)
-                            .setMessage("Are you sure you want to delete?")
-                            .setPositiveButton("Yes"){
-                                dialog,_->
-                                cameraList.removeAt(adapterPosition)
-                                notifyDataSetChanged()
-                                Toast.makeText(c,"Camera is Deleted",Toast.LENGTH_SHORT).show()
-                                dialog.dismiss()
-                            }
-                            .setNegativeButton("No"){
-                                dialog,_->
-                                dialog.dismiss()
-                            }
-                            .create()
                             .show()
                         true
                     }
@@ -106,7 +109,6 @@ class CameraAdapter(val c:Context, val cameraList:ArrayList<CameraData>):Recycle
     override fun onBindViewHolder(holder: CameraViewHolder, position: Int) {
         val newList = cameraList[position]
         holder.name.text = newList.cameraName
-        holder.status.text = newList.cameraStatus
     }
 
     override fun getItemCount(): Int {

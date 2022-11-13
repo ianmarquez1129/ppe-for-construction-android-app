@@ -1,4 +1,4 @@
-package com.example.zmci.mqtt.dto
+package com.example.zmci.mqtt.model
 
 data class Detection (
     var image : String?,
