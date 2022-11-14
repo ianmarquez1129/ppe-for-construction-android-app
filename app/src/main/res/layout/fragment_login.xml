@@ -15,11 +15,23 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:ems="10"
+            android:gravity="center"
+            android:text="@string/nav_header_title"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            app:fontFamily="casual" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayoutEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp">
+            android:layout_marginTop="30dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInputEditTextEmail"
@@ -29,7 +41,7 @@
                 android:inputType="textEmailAddress"
                 android:hint="@string/hint_email"
                 android:maxLines="1"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

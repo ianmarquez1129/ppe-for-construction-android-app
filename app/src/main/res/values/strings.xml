@@ -24,7 +24,7 @@
     <!--    Navigation-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_title">Safety Monitoring App</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="menu_home">Home</string>
@@ -33,8 +33,8 @@
     <string name="about">About</string>
 
     <!--    MQTT-->
-    <string name="connect_fragment_label">Connect Fragment</string>
-    <string name="client_fragment_label">Client Fragment</string>
+    <string name="connect_fragment_label">Connect</string>
+    <string name="client_fragment_label">Client</string>
 
     <string name="button_connect_text">Connect</string>
     <string name="button_prefill_text">Prefill</string>
@@ -52,4 +52,5 @@
     <string name="topic_text">Topic</string>
     <string name="message_text">Message</string>
     <string name="mqtt">MQTT</string>
+    <string name="camera">Camera</string>
 </resources>

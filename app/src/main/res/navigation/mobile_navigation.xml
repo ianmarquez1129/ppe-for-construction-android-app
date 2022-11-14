@@ -60,7 +60,7 @@
         tools:layout="@layout/fragment_camera">
 
         <action
-            android:id="@+id/action_CameraFragment_to_ClientFragment"
-            app:destination="@id/ClientFragment"/>
+            android:id="@+id/action_CameraFragment_to_ConnectFragment"
+            app:destination="@id/ConnectFragment"/>
     </fragment>
 </navigation>

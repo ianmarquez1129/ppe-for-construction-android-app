@@ -16,6 +16,7 @@ class ConnectFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_connect, container, false)
@@ -40,21 +41,6 @@ class ConnectFragment : Fragment() {
             view.findViewById<EditText>(R.id.edittext_password).setText("")
         }
 
-//        view.findViewById<Button>(R.id.button_connect).setOnClickListener {
-//            val serverURIFromEditText   = view.findViewById<EditText>(R.id.edittext_server_uri).text.toString()
-//            val clientIDFromEditText    = view.findViewById<EditText>(R.id.edittext_client_id).text.toString()
-//            val usernameFromEditText    = view.findViewById<EditText>(R.id.edittext_username).text.toString()
-//            val pwdFromEditText         = view.findViewById<EditText>(R.id.edittext_password).text.toString()
-//
-//            val mqttCredentialsBundle = bundleOf(MQTT_SERVER_URI_KEY    to serverURIFromEditText,
-//                MQTT_CLIENT_ID_KEY     to clientIDFromEditText,
-//                MQTT_USERNAME_KEY      to usernameFromEditText,
-//                MQTT_PWD_KEY           to pwdFromEditText)
-//
-//
-//            findNavController().navigate(R.id.action_ConnectFragment_to_ClientFragment, mqttCredentialsBundle)
-//        }
-
         view.findViewById<Button>(R.id.button_connect).setOnClickListener {
             val serverURIFromEditText   = view.findViewById<EditText>(R.id.edittext_server_uri).text.toString()
             val clientIDFromEditText    = view.findViewById<EditText>(R.id.edittext_client_id).text.toString()
@@ -66,13 +52,8 @@ class ConnectFragment : Fragment() {
                 MQTT_USERNAME_KEY      to usernameFromEditText,
                 MQTT_PWD_KEY           to pwdFromEditText)
 
-//            val bundle = Bundle()
-//            bundle.put(mqttCredentialsBundle)
-//            val fragment = ClientFragment()
-//            fragment.arguments = mqttCredentialsBundle
-
-//            findNavController().navigate(R.id.action_ConnectFragment_to_ClientFragment, mqttCredentialsBundle)
-            findNavController().navigate(R.id.action_ConnectFragment_to_CameraFragment, mqttCredentialsBundle)
+            findNavController().navigate(R.id.action_ConnectFragment_to_ClientFragment, mqttCredentialsBundle)
+//            findNavController().navigate(R.id.action_ConnectFragment_to_CameraFragment, mqttCredentialsBundle)
         }
     }
 }

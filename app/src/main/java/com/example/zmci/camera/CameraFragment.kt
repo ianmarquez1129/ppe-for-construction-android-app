@@ -67,22 +67,17 @@ class CameraFragment : Fragment() {
 
 
         //MQTT
-        val serverURI = arguments?.getString(MQTT_SERVER_URI_KEY)
-        val clientId = arguments?.getString(MQTT_CLIENT_ID_KEY)
-        val username = arguments?.getString(MQTT_USERNAME_KEY)
-        val pwd = arguments?.getString(MQTT_PWD_KEY)
+//        val serverURI = arguments?.getString(MQTT_SERVER_URI_KEY)
+//        val clientId = arguments?.getString(MQTT_CLIENT_ID_KEY)
+//        val username = arguments?.getString(MQTT_USERNAME_KEY)
+//        val pwd = arguments?.getString(MQTT_PWD_KEY)
 
-//        val serverURIFromEditText   = view.findViewById<EditText>(R.id.edittext_server_uri).text.toString()
-//        val clientIDFromEditText    = view.findViewById<EditText>(R.id.edittext_client_id).text.toString()
-//        val usernameFromEditText    = view.findViewById<EditText>(R.id.edittext_username).text.toString()
-//        val pwdFromEditText         = view.findViewById<EditText>(R.id.edittext_password).text.toString()
-
-        val mqttCredentialsBundle = bundleOf(
-            MQTT_SERVER_URI_KEY to serverURI,
-            MQTT_CLIENT_ID_KEY to clientId,
-            MQTT_USERNAME_KEY to username,
-            MQTT_PWD_KEY to pwd
-        )
+//        val mqttCredentialsBundle = bundleOf(
+//            MQTT_SERVER_URI_KEY to serverURI,
+//            MQTT_CLIENT_ID_KEY to clientId,
+//            MQTT_USERNAME_KEY to username,
+//            MQTT_PWD_KEY to pwd
+//        )
         //MQTT end
 
         var adapter = cameraAdapter
@@ -90,9 +85,7 @@ class CameraFragment : Fragment() {
         adapter.setOnItemClickListener(object : CameraAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
                 findNavController().navigate(
-                    R.id.action_CameraFragment_to_ClientFragment,
-                    mqttCredentialsBundle
-                )
+                    R.id.action_CameraFragment_to_ConnectFragment)
             }
         })
         //set dialog

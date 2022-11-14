@@ -15,6 +15,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:ems="10"
+            android:gravity="center"
+            android:text="@string/text_register"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            app:fontFamily="casual" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayoutName"
             android:layout_width="match_parent"

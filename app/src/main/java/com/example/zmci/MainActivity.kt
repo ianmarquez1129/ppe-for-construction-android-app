@@ -70,7 +70,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_gallery,
                 R.id.nav_slideshow,
                 R.id.aboutFragment,
-                R.id.ConnectFragment,
                 R.id.CameraFragment
             ), drawerLayout
         )
