@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.zmci.R
 import com.example.zmci.databinding.FragmentHomeBinding
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
 
@@ -28,11 +31,24 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        browser.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_home_to_nav_gallery)
+        }
+        cameraStream.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_home_to_nav_slideshow)
+        }
+        detection.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_home_to_CameraFragment)
+        }
+        about.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_home_to_aboutFragment)
+        }
     }
 
     override fun onDestroyView() {

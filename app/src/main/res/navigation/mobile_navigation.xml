@@ -9,25 +9,34 @@
         android:id="@+id/nav_home"
         android:name="com.example.zmci.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+
+        <action
+            android:id="@+id/action_nav_home_to_nav_gallery"
+            app:destination="@id/nav_gallery"/>
+        <action
+            android:id="@+id/action_nav_home_to_CameraFragment"
+            app:destination="@id/CameraFragment"/>
+        <action
+            android:id="@+id/action_nav_home_to_aboutFragment"
+            app:destination="@id/aboutFragment"/>
+        <action
+            android:id="@+id/action_nav_home_to_nav_slideshow"
+            app:destination="@id/nav_slideshow"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_gallery"
         android:name="com.example.zmci.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
+        android:label="@string/browser"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
         android:id="@+id/nav_slideshow"
         android:name="com.example.zmci.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
+        android:label="@string/camera_stream"
         tools:layout="@layout/fragment_slideshow" />
-
-    <fragment
-        android:id="@+id/aboutFragment"
-        android:name="com.example.zmci.about.AboutFragment"
-        android:label="fragment_about"
-        tools:layout="@layout/fragment_about" />
 
     <fragment
         android:id="@+id/ConnectFragment"
@@ -56,11 +65,17 @@
     <fragment
         android:id="@+id/CameraFragment"
         android:name="com.example.zmci.camera.CameraFragment"
-        android:label="Camera Fragment"
+        android:label="@string/detection"
         tools:layout="@layout/fragment_camera">
 
         <action
             android:id="@+id/action_CameraFragment_to_ConnectFragment"
             app:destination="@id/ConnectFragment"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.example.zmci.about.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
 </navigation>

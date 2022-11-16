@@ -11,11 +11,11 @@
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:title="@string/browser" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:title="@string/camera_stream" />
         <item
             android:id="@+id/aboutFragment"
             android:icon="@drawable/ic_menu_slideshow"
@@ -23,6 +23,6 @@
         <item
             android:id="@+id/CameraFragment"
             android:icon="@drawable/ic_menu_camera"
-            android:title="@string/camera"/>
+            android:title="@string/detection"/>
     </group>
 </menu>
