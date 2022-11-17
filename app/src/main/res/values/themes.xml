@@ -47,19 +47,19 @@
         <item name="colorAccent">@color/lime</item>
     </style>
 
-    <style name="ThemeHistory" parent="Theme.AppCompat.Light">
+    <style name="ThemePreferences" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/green</item>
         <item name="colorPrimaryDark">@color/green_dark</item>
         <item name="colorAccent">@color/green</item>
     </style>
 
-    <style name="ThemeAbout" parent="Theme.AppCompat.Light">
+    <style name="ThemeReports" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/blue</item>
         <item name="colorPrimaryDark">@color/blue_dark</item>
         <item name="colorAccent">@color/blue</item>
     </style>
 
-    <style name="ThemeMap" parent="Theme.AppCompat.Light">
+    <style name="ThemeAbout" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/darkblue</item>
         <item name="colorPrimaryDark">@color/darkblue_dark</item>
         <item name="colorAccent">@color/darkblue</item>

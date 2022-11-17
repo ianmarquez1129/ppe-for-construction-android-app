@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_slideshow"
             app:destination="@id/nav_slideshow"/>
+        <action
+            android:id="@+id/action_nav_home_to_SettingsFragment"
+            app:destination="@id/SettingsFragment"/>
 
     </fragment>
 
@@ -72,10 +75,16 @@
             android:id="@+id/action_CameraFragment_to_ConnectFragment"
             app:destination="@id/ConnectFragment"/>
     </fragment>
+    <fragment
+        android:id="@+id/SettingsFragment"
+        android:name="com.example.zmci.SettingsFragment"
+        android:label="@string/preferences"
+        tools:layout="@layout/fragment_settings">
+    </fragment>
 
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.example.zmci.about.AboutFragment"
-        android:label="fragment_about"
+        android:label="@string/about"
         tools:layout="@layout/fragment_about" />
 </navigation>

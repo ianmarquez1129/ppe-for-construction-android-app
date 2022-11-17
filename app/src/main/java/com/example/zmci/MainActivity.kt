@@ -29,7 +29,10 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.navigation.NavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.zmci.about.AboutFragment
 import com.example.zmci.camera.CameraAdapter
 import com.example.zmci.databinding.ActivityMainBinding
 import com.example.zmci.database.DatabaseHelper
@@ -42,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var databaseHelper: DatabaseHelper
+    lateinit var navController : NavController
     val CHANNEL_ID = "channelID"
     val CHANNEL_NAME = "channelName"
     val NOTIFICATION_ID = 0
@@ -70,6 +74,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_gallery,
                 R.id.nav_slideshow,
                 R.id.CameraFragment,
+                R.id.SettingsFragment,
                 R.id.aboutFragment,
 
             ), drawerLayout
@@ -80,7 +85,6 @@ class MainActivity : AppCompatActivity() {
         // Set the navigation header title to the user's name/email
         val intent = intent
         val str = intent.getStringExtra("EMAIL")
-        val userPass = intent.getStringExtra("PW")
 
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         val headerView: View = navigationView.getHeaderView(0)
@@ -220,7 +224,6 @@ class MainActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
-
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)

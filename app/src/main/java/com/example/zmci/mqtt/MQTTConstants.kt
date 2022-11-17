@@ -10,5 +10,5 @@ const val MQTT_CLIENT_ID        = "clientID"
 const val MQTT_USERNAME         = "username"
 const val MQTT_PWD              = "pass123"
 
-const val MQTT_TEST_TOPIC       = "test/topic"
+const val MQTT_TEST_TOPIC       = "rpi/notif"
 const val MQTT_TEST_MSG         = "Hello!"

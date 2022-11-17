@@ -53,4 +53,5 @@
     <string name="message_text">Message</string>
     <string name="mqtt">MQTT</string>
     <string name="detection">Detection</string>
+    <string name="preferences">Preferences</string>
 </resources>

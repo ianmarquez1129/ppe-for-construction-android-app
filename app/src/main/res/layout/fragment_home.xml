@@ -43,12 +43,11 @@
 
                         <ImageView
                             android:id="@+id/imgView1"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
                             android:layout_centerHorizontal="true"
                             android:adjustViewBounds="true"
-                            android:padding="8dp"
-                            android:scaleType="centerInside"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/ic_web"
                             app:tint="@color/white" />
 
@@ -57,9 +56,9 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/imgView1"
                             android:layout_centerHorizontal="true"
-                            android:text="Browser"
                             android:layout_marginTop="5dp"
-                            android:textSize="14sp" />
+                            android:text="@string/browser"
+                            android:textSize="20sp" />
 
                     </RelativeLayout>
 
@@ -81,12 +80,11 @@
 
                         <ImageView
                             android:id="@+id/imgView2"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
                             android:layout_centerHorizontal="true"
                             android:adjustViewBounds="true"
-                            android:padding="8dp"
-                            android:scaleType="centerInside"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/ic_stream"
                             app:tint="@color/white" />
 
@@ -95,9 +93,9 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/imgView2"
                             android:layout_centerHorizontal="true"
-                            android:text="Camera Stream"
+                            android:text="@string/camera_stream"
                             android:layout_marginTop="5dp"
-                            android:textSize="14sp" />
+                            android:textSize="20sp" />
 
                     </RelativeLayout>
 
@@ -115,7 +113,7 @@
                     android:id="@+id/detection"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.55"
+                    android:layout_weight="0.60"
                     android:background="@color/lime"
                     android:clickable="true"
                     android:foreground="?attr/selectableItemBackground">
@@ -127,12 +125,11 @@
 
                         <ImageView
                             android:id="@+id/imgView3"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
                             android:layout_centerHorizontal="true"
                             android:adjustViewBounds="true"
-                            android:padding="8dp"
-                            android:scaleType="centerInside"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/ic_detect"
                             app:tint="@color/white" />
 
@@ -141,9 +138,45 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/imgView3"
                             android:layout_centerHorizontal="true"
-                            android:text="Detection"
+                            android:text="@string/detection"
                             android:layout_marginTop="5dp"
-                            android:textSize="14sp" />
+                            android:textSize="20sp" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/preferences"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.60"
+                    android:background="@color/green"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true">
+
+                        <ImageView
+                            android:id="@+id/imgView4"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_centerHorizontal="true"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_settings"
+                            app:tint="@color/white" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/imgView4"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/preferences"
+                            android:layout_marginTop="5dp"
+                            android:textSize="20sp" />
 
                     </RelativeLayout>
 
@@ -173,12 +206,11 @@
 
                         <ImageView
                             android:id="@+id/imgView5"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
                             android:layout_centerHorizontal="true"
                             android:adjustViewBounds="true"
-                            android:padding="8dp"
-                            android:scaleType="centerInside"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/ic_history"
                             app:tint="@color/white" />
 
@@ -187,9 +219,9 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/imgView5"
                             android:layout_centerHorizontal="true"
-                            android:text="History"
+                            android:text="Reports"
                             android:layout_marginTop="5dp"
-                            android:textSize="14sp" />
+                            android:textSize="20sp" />
 
                     </RelativeLayout>
 
@@ -215,8 +247,7 @@
                             android:layout_height="60dp"
                             android:layout_centerHorizontal="true"
                             android:adjustViewBounds="true"
-                            android:padding="8dp"
-                            android:scaleType="centerInside"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/ic_info"
                             app:tint="@color/white" />
 
@@ -225,9 +256,9 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/imgView6"
                             android:layout_centerHorizontal="true"
-                            android:text="About"
+                            android:text="@string/about"
                             android:layout_marginTop="5dp"
-                            android:textSize="14sp" />
+                            android:textSize="20sp" />
 
                     </RelativeLayout>
 

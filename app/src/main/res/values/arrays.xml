@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    Helmet Preference-->
+    <string-array name="helmet_entries">
+        <item>With helmet</item>
+        <item>Without helmet</item>
+        <item>Both helmet</item>
+        <item>Disabled</item>
+    </string-array>
+
+    <string-array name="helmet_values">
+        <item>with_helmet</item>
+        <item>without_helmet</item>
+        <item>both_helmet</item>
+        <item>no_helmet</item>
+    </string-array>
+
+    <!--    Glasses Preference-->
+    <string-array name="glasses_entries">
+        <item>With glasses</item>
+        <item>Without glasses</item>
+        <item>Both glasses</item>
+        <item>Disabled</item>
+    </string-array>
+
+    <string-array name="glasses_values">
+        <item>with_glasses</item>
+        <item>without_glasses</item>
+        <item>both_glasses</item>
+        <item>no_glasses</item>
+    </string-array>
+
+    <!--    Vest Preference-->
+    <string-array name="vest_entries">
+        <item>With vest</item>
+        <item>Without vest</item>
+        <item>Both vest</item>
+        <item>Disabled</item>
+    </string-array>
+
+    <string-array name="vest_values">
+        <item>with_vest</item>
+        <item>without_vest</item>
+        <item>both_vest</item>
+        <item>no_vest</item>
+    </string-array>
+
+    <!--    Gloves Preference-->
+    <string-array name="gloves_entries">
+        <item>With gloves</item>
+        <item>Without gloves</item>
+        <item>Both gloves</item>
+        <item>Disabled</item>
+    </string-array>
+
+    <string-array name="gloves_values">
+        <item>with_gloves</item>
+        <item>without_gloves</item>
+        <item>both_gloves</item>
+        <item>no_gloves</item>
+    </string-array>
+
+    <!--    Boots Preference-->
+    <string-array name="boots_entries">
+        <item>With boots</item>
+        <item>Without boots</item>
+        <item>Both boots</item>
+        <item>Disabled</item>
+    </string-array>
+
+    <string-array name="boots_values">
+        <item>with_boots</item>
+        <item>without_boots</item>
+        <item>both_boots</item>
+        <item>no_boots</item>
+    </string-array>
+</resources>
