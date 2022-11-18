@@ -22,18 +22,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:baselineAligned="false">
 
                 <RelativeLayout
                     android:id="@+id/browser"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
                     android:layout_weight="0.60"
                     android:background="@color/red"
                     android:clickable="true"
+                    android:focusable="true"
                     android:foreground="?attr/selectableItemBackground">
 
                     <RelativeLayout
@@ -71,6 +70,7 @@
                     android:layout_weight="0.60"
                     android:background="@color/yellow"
                     android:clickable="true"
+                    android:focusable="true"
                     android:foreground="?attr/selectableItemBackground">
 
                     <RelativeLayout
@@ -107,7 +107,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="15dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:baselineAligned="false">
 
                 <RelativeLayout
                     android:id="@+id/detection"
@@ -116,6 +117,7 @@
                     android:layout_weight="0.60"
                     android:background="@color/lime"
                     android:clickable="true"
+                    android:focusable="true"
                     android:foreground="?attr/selectableItemBackground">
 
                     <RelativeLayout
@@ -152,6 +154,7 @@
                     android:layout_weight="0.60"
                     android:background="@color/green"
                     android:clickable="true"
+                    android:focusable="true"
                     android:foreground="?attr/selectableItemBackground">
 
                     <RelativeLayout
@@ -188,7 +191,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="15dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:baselineAligned="false">
 
                 <RelativeLayout
                     android:id="@+id/reports"
@@ -197,6 +201,7 @@
                     android:layout_weight="0.60"
                     android:background="@color/blue"
                     android:clickable="true"
+                    android:focusable="true"
                     android:foreground="?attr/selectableItemBackground">
 
                     <RelativeLayout
@@ -234,6 +239,7 @@
                     android:layout_weight="0.60"
                     android:background="@color/darkblue"
                     android:clickable="true"
+                    android:focusable="true"
                     android:foreground="?attr/selectableItemBackground">
 
                     <RelativeLayout

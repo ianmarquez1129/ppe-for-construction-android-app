@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_slideshow.*
 
 class SlideshowFragment : Fragment() {
 
-    private var url: String = "rtsp://192.168.55.108:8554/"
+    private var url: String = "rtsp://192.168.1.2:8554/"
 //"http://192.168.55.103:4747/video"
 
     private lateinit var libVlc: LibVLC
@@ -43,12 +43,29 @@ class SlideshowFragment : Fragment() {
 
     }
 
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//        val videoLayout1 : VLCVideoLayout = videoLayout
+//
+//        btnStreamIP.setOnClickListener {
+//            mediaPlayer.attachViews(videoLayout1, null, false, false)
+//            val url = ""+streamIP.text.toString()
+//            val media = Media(libVlc, Uri.parse(url))
+//            media.setHWDecoderEnabled(true, false)
+//            media.addOption(":network-caching=600")
+//
+//            mediaPlayer.media = media
+//            media.release()
+//            mediaPlayer.play()
+//        }
+//    }
+
     override fun onStart() {
         super.onStart()
-
         val videoLayout1 : VLCVideoLayout = videoLayout
-        mediaPlayer.attachViews(videoLayout1, null, false, false)
 
+        mediaPlayer.attachViews(videoLayout1, null, false, false)
+        val url = "" + streamIP.text.toString()
         val media = Media(libVlc, Uri.parse(url))
         media.setHWDecoderEnabled(true, false)
         media.addOption(":network-caching=600")
@@ -57,6 +74,7 @@ class SlideshowFragment : Fragment() {
         media.release()
         mediaPlayer.play()
     }
+
 
     override fun onStop() {
         super.onStop()

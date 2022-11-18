@@ -24,23 +24,23 @@
             android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textview_client_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:hint="@string/client_id_text"
-        android:importantForAutofill="no"
-        tools:ignore="TextFields" >
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/textview_client_id"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="32dp"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:layout_marginEnd="32dp"-->
+<!--        android:hint="@string/client_id_text"-->
+<!--        android:importantForAutofill="no"-->
+<!--        tools:ignore="TextFields" >-->
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edittext_client_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:id="@+id/edittext_client_id"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"/>-->
 
-    </com.google.android.material.textfield.TextInputLayout>
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textview_username"

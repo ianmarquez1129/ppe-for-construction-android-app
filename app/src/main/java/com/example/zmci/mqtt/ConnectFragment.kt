@@ -28,7 +28,7 @@ class ConnectFragment : Fragment() {
         view.findViewById<Button>(R.id.button_prefill).setOnClickListener {
             // Set default values in edit texts
             view.findViewById<EditText>(R.id.edittext_server_uri).setText(MQTT_SERVER_URI)
-            view.findViewById<EditText>(R.id.edittext_client_id).setText(MQTT_CLIENT_ID)
+//            view.findViewById<EditText>(R.id.edittext_client_id).setText(MQTT_CLIENT_ID)
             view.findViewById<EditText>(R.id.edittext_username).setText(MQTT_USERNAME)
             view.findViewById<EditText>(R.id.edittext_password).setText(MQTT_PWD)
         }
@@ -36,14 +36,14 @@ class ConnectFragment : Fragment() {
         view.findViewById<Button>(R.id.button_clean).setOnClickListener {
             // Clean values in edit texts
             view.findViewById<EditText>(R.id.edittext_server_uri).setText("")
-            view.findViewById<EditText>(R.id.edittext_client_id).setText("")
+//            view.findViewById<EditText>(R.id.edittext_client_id).setText("")
             view.findViewById<EditText>(R.id.edittext_username).setText("")
             view.findViewById<EditText>(R.id.edittext_password).setText("")
         }
 
         view.findViewById<Button>(R.id.button_connect).setOnClickListener {
             val serverURIFromEditText   = view.findViewById<EditText>(R.id.edittext_server_uri).text.toString()
-            val clientIDFromEditText    = view.findViewById<EditText>(R.id.edittext_client_id).text.toString()
+            val clientIDFromEditText    = java.util.UUID.randomUUID().toString()
             val usernameFromEditText    = view.findViewById<EditText>(R.id.edittext_username).text.toString()
             val pwdFromEditText         = view.findViewById<EditText>(R.id.edittext_password).text.toString()
 

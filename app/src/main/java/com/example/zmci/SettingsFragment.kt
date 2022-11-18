@@ -64,8 +64,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val gloves = sp.getString("gloves", "both_gloves").toString()
         val boots = sp.getString("boots", "both_boots").toString()
 
-//        val server_uri = sp.getString("server_uri", "tcp://192.168.1.2:1883").toString()
-
         when (helmet) {
             "with_helmet" -> {
                 ppePreferences["helmet"] = true
@@ -158,13 +156,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         val gson = Gson()
-        val newPreferences = JSONObject(gson.toJson(ppePreferences)).toString()
+        val newPreferences = "{\"ppe_preferences\":" + JSONObject(gson.toJson(ppePreferences)).toString() + "}"
 
         val serverUri = sp.getString("publish", "tcp://192.168.1.2:1883").toString()
-        val topic = MQTT_TEST_TOPIC
+        val topic = "rpi/set"
 
         Thread {
-            val clientID = MQTT_CLIENT_ID
+            val clientID = java.util.UUID.randomUUID().toString()
             val brokerUsername = MQTT_USERNAME
             val brokerPassword = MQTT_PWD
 
