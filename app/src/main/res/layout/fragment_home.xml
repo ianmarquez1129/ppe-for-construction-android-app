@@ -42,8 +42,8 @@
 
                         <ImageView
                             android:id="@+id/imgView1"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:layout_centerHorizontal="true"
                             android:adjustViewBounds="true"
                             android:scaleType="fitCenter"
@@ -57,7 +57,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="5dp"
                             android:text="@string/browser"
-                            android:textSize="20sp" />
+                            android:textSize="16sp" />
 
                     </RelativeLayout>
 
@@ -80,8 +80,8 @@
 
                         <ImageView
                             android:id="@+id/imgView2"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:layout_centerHorizontal="true"
                             android:adjustViewBounds="true"
                             android:scaleType="fitCenter"
@@ -95,7 +95,7 @@
                             android:layout_centerHorizontal="true"
                             android:text="@string/camera_stream"
                             android:layout_marginTop="5dp"
-                            android:textSize="20sp" />
+                            android:textSize="16sp" />
 
                     </RelativeLayout>
 
@@ -127,8 +127,8 @@
 
                         <ImageView
                             android:id="@+id/imgView3"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:layout_centerHorizontal="true"
                             android:adjustViewBounds="true"
                             android:scaleType="fitCenter"
@@ -142,7 +142,7 @@
                             android:layout_centerHorizontal="true"
                             android:text="@string/detection"
                             android:layout_marginTop="5dp"
-                            android:textSize="20sp" />
+                            android:textSize="16sp" />
 
                     </RelativeLayout>
 
@@ -164,8 +164,8 @@
 
                         <ImageView
                             android:id="@+id/imgView4"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:layout_centerHorizontal="true"
                             android:adjustViewBounds="true"
                             android:scaleType="fitCenter"
@@ -179,7 +179,7 @@
                             android:layout_centerHorizontal="true"
                             android:text="@string/preferences"
                             android:layout_marginTop="5dp"
-                            android:textSize="20sp" />
+                            android:textSize="16sp" />
 
                     </RelativeLayout>
 
@@ -211,8 +211,8 @@
 
                         <ImageView
                             android:id="@+id/imgView5"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:layout_centerHorizontal="true"
                             android:adjustViewBounds="true"
                             android:scaleType="fitCenter"
@@ -226,7 +226,7 @@
                             android:layout_centerHorizontal="true"
                             android:text="Reports"
                             android:layout_marginTop="5dp"
-                            android:textSize="20sp" />
+                            android:textSize="16sp" />
 
                     </RelativeLayout>
 
@@ -264,7 +264,7 @@
                             android:layout_centerHorizontal="true"
                             android:text="@string/about"
                             android:layout_marginTop="5dp"
-                            android:textSize="20sp" />
+                            android:textSize="16sp" />
 
                     </RelativeLayout>
 
