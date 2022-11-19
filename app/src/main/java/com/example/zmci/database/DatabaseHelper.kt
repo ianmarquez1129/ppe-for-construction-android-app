@@ -18,7 +18,13 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_NAME + " TEXT,"
             + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT" + ")")
     private val CREATE_CAMERA_TABLE = ("CREATE TABLE " + TABLE_CAMERA + "("
-            + COLUMN_CAMERA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_CAMERA_NAME + " TEXT)")
+            + COLUMN_CAMERA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_CAMERA_NAME + " TEXT,"
+            + COLUMN_SERVER_URI + " TEXT,"
+            + COLUMN_SERVER_USERNAME + " TEXT,"
+            + COLUMN_SERVER_PASSWORD + " TEXT,"
+            + COLUMN_SERVER_TOPIC + " TEXT,"
+            + COLUMN_CLIENT_ID + " TEXT"+ ")")
 
     // drop table sql query
     private val DROP_USER_TABLE = "DROP TABLE IF EXISTS $TABLE_USER"
@@ -230,16 +236,21 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val cameraList = ArrayList<CameraData>()
 
         if (cursor.count == 0)
-            Toast.makeText(context, "No Records Found", Toast.LENGTH_SHORT).show() else {
+            Toast.makeText(context, "No Camera Found", Toast.LENGTH_SHORT).show() else {
                 cursor.moveToFirst()
             while (!cursor.isAfterLast) {
                 val camera = CameraData()
                 camera.id = cursor.getInt(cursor.getColumnIndex(COLUMN_CAMERA_ID))
                 camera.cameraName = cursor.getString(cursor.getColumnIndex(COLUMN_CAMERA_NAME))
+                camera.MQTT_SERVER_URI = cursor.getString(cursor.getColumnIndex(COLUMN_SERVER_URI))
+                camera.MQTT_USERNAME = cursor.getString(cursor.getColumnIndex(COLUMN_SERVER_USERNAME))
+                camera.MQTT_PWD = cursor.getString(cursor.getColumnIndex(COLUMN_SERVER_PASSWORD))
+                camera.MQTT_TOPIC = cursor.getString(cursor.getColumnIndex(COLUMN_SERVER_TOPIC))
+                camera.MQTT_CLIENT_ID = cursor.getString(cursor.getColumnIndex(COLUMN_CLIENT_ID))
                 cameraList.add(camera)
                 cursor.moveToNext()
             }
-            Toast.makeText(context,"${cursor.count.toString()} Records Found", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,"${cursor.count.toString()} Devices Found", Toast.LENGTH_SHORT).show()
         }
         cursor.close()
         db.close()
@@ -256,6 +267,11 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
         val values = ContentValues()
         values.put(/* key = */ COLUMN_CAMERA_NAME, /* value = */ camera.cameraName)
+        values.put(/* key = */ COLUMN_SERVER_URI, /* value = */ camera.MQTT_SERVER_URI)
+        values.put(/* key = */ COLUMN_SERVER_USERNAME, /* value = */ camera.MQTT_USERNAME)
+        values.put(/* key = */ COLUMN_SERVER_PASSWORD, /* value = */ camera.MQTT_PWD)
+        values.put(/* key = */ COLUMN_SERVER_TOPIC, /* value = */ camera.MQTT_TOPIC)
+        values.put(/* key = */ COLUMN_CLIENT_ID, /* value = */ camera.MQTT_CLIENT_ID)
 
         try {
             db.insert(TABLE_CAMERA, null, values)
@@ -271,11 +287,15 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
      *
      * @param camera
      */
-    fun updateCamera(id : String, cameraName: String) : Boolean {
+    fun updateCamera(id : String, cameraName: String, serverUri: String, serverUsername: String, serverPassword: String, serverTopic:String) : Boolean {
         val db = this.writableDatabase
         val values = ContentValues()
         var result : Boolean = false
         values.put(COLUMN_CAMERA_NAME, cameraName)
+        values.put(COLUMN_SERVER_URI, serverUri)
+        values.put(COLUMN_SERVER_USERNAME, serverUsername)
+        values.put(COLUMN_SERVER_PASSWORD, serverPassword)
+        values.put(COLUMN_SERVER_PASSWORD, serverTopic)
         try {
             db.update(TABLE_CAMERA, values, "$COLUMN_CAMERA_ID = ?", arrayOf(id))
             result = true
@@ -306,54 +326,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return result
     }
 
-    /**
-     * This method to check camera exist or not
-     *
-     * @param camera
-     * @return true/false
-     */
-    fun checkCamera(camera: String): Boolean {
-
-        // array of columns to fetch
-        val columns = arrayOf(COLUMN_CAMERA_ID)
-        val db = this.readableDatabase
-
-        // selection criteria
-        val selection = "$COLUMN_CAMERA_NAME = ?"
-
-        // selection argument
-        val selectionArgs = arrayOf(camera)
-
-        // query camera table with condition
-        /**
-         * Here query function is used to fetch records from camera table this function works like we use sql query.
-         * SQL query equivalent to this query function is
-         * SELECT camera_id FROM camera WHERE camera_name = 'camera1';
-         */
-        val cursor = db.query(TABLE_CAMERA, //Table to query
-            columns,        //columns to return
-            selection,      //columns for the WHERE clause
-            selectionArgs,  //The values for the WHERE clause
-            null,  //group the rows
-            null,   //filter by row groups
-            null)  //The sort order
-
-
-        val cursorCount = cursor.count
-        cursor.close()
-        db.close()
-
-        if (cursorCount > 0) {
-            return true
-        }
-
-        return false
-    }
-
     companion object {
 
         // Database Version
-        private val DATABASE_VERSION = 2
+        private val DATABASE_VERSION = 4
 
         // Database Name
         private val DATABASE_NAME = "UserManager.db"
@@ -373,5 +349,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         // Camera Table Columns names
         private val COLUMN_CAMERA_ID = "camera_id"
         private val COLUMN_CAMERA_NAME = "camera_name"
+        private val COLUMN_SERVER_URI = "server_uri"
+        private val COLUMN_SERVER_USERNAME = "server_username"
+        private val COLUMN_SERVER_PASSWORD = "server_password"
+        private val COLUMN_SERVER_TOPIC = "server_topic"
+        private val COLUMN_CLIENT_ID = "client_id"
     }
 }

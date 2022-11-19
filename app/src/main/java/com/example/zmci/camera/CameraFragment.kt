@@ -1,41 +1,30 @@
 package com.example.zmci.camera
 
-import android.os.AsyncTask
 import android.os.Bundle
-import android.provider.ContactsContract.Data
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.appcompat.widget.SwitchCompat
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zmci.R
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DefaultItemAnimator
-import com.example.zmci.adapters.UsersRecyclerAdapter
+import com.example.zmci.database.DatabaseHelper
 import com.example.zmci.mqtt.MQTT_CLIENT_ID_KEY
 import com.example.zmci.mqtt.MQTT_PWD_KEY
 import com.example.zmci.mqtt.MQTT_SERVER_URI_KEY
 import com.example.zmci.mqtt.MQTT_USERNAME_KEY
 import kotlinx.android.synthetic.main.fragment_camera.*
-import com.example.zmci.database.DatabaseHelper
-import kotlinx.android.synthetic.main.fragment_add_camera.*
 
 class CameraFragment : Fragment() {
 
     companion object {
         lateinit var databaseHelper: DatabaseHelper
     }
-    private lateinit var recv: RecyclerView
     private lateinit var cameraAdapter: CameraAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,35 +46,28 @@ class CameraFragment : Fragment() {
         //set List
         val cameraList = databaseHelper.getAllCamera(requireContext())
         // set adapter
-        val cameraAdapter = CameraAdapter(requireContext(), cameraList)
+        cameraAdapter = CameraAdapter(requireContext(), cameraList)
         //set find Id
         val recv: RecyclerView = mRecycler
         //set recycler view adapter
         recv.layoutManager = LinearLayoutManager(this.context)
         recv.adapter = cameraAdapter
-//        viewCamera()
-
-
-        //MQTT
-//        val serverURI = arguments?.getString(MQTT_SERVER_URI_KEY)
-//        val clientId = arguments?.getString(MQTT_CLIENT_ID_KEY)
-//        val username = arguments?.getString(MQTT_USERNAME_KEY)
-//        val pwd = arguments?.getString(MQTT_PWD_KEY)
-
-//        val mqttCredentialsBundle = bundleOf(
-//            MQTT_SERVER_URI_KEY to serverURI,
-//            MQTT_CLIENT_ID_KEY to clientId,
-//            MQTT_USERNAME_KEY to username,
-//            MQTT_PWD_KEY to pwd
-//        )
-        //MQTT end
 
         var adapter = cameraAdapter
         recv.adapter = adapter
         adapter.setOnItemClickListener(object : CameraAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
+                val serverURI   = cameraList[position].MQTT_SERVER_URI
+                val clientID    = cameraList[position].MQTT_CLIENT_ID
+                val username    = cameraList[position].MQTT_USERNAME
+                val pwd         = cameraList[position].MQTT_PWD
+
+                val mqttCredentialsBundle = bundleOf(MQTT_SERVER_URI_KEY    to serverURI,
+                    MQTT_CLIENT_ID_KEY     to clientID,
+                    MQTT_USERNAME_KEY      to username,
+                    MQTT_PWD_KEY           to pwd)
                 findNavController().navigate(
-                    R.id.action_CameraFragment_to_ConnectFragment)
+                    R.id.action_CameraFragment_to_ClientFragment, mqttCredentialsBundle)
             }
         })
         //set dialog
@@ -94,45 +76,39 @@ class CameraFragment : Fragment() {
 
     }
 
-//    private fun viewCamera() {
-//        //set List
-//        val cameraList = databaseHelper.getAllCamera(requireContext())
-//        // set adapter
-//        val cameraAdapter = CameraAdapter(requireContext(), cameraList)
-//        //set find Id
-//        val recv: RecyclerView = mRecycler
-//        //set recycler view adapter
-//        recv.layoutManager = LinearLayoutManager(this.context)
-//        recv.adapter = cameraAdapter
-//
-//        var getDataFromSQLite = GetDataFromSQLite()
-//        getDataFromSQLite.execute()
-//    }
-
     private fun addInfo() {
         val inflater = LayoutInflater.from(this.context)
         val v = inflater.inflate(R.layout.fragment_add_camera, null)
         //set view
         val cameraName = v.findViewById<EditText>(R.id.cameraName)
+        val etServerUri = v.findViewById<EditText>(R.id.etServerUri)
+        val etServerUsername = v.findViewById<EditText>(R.id.etServerUsername)
+        val etServerPassword = v.findViewById<EditText>(R.id.etServerPassword)
+        val etServerTopic = v.findViewById<EditText>(R.id.etServerTopic)
         val addDialog = AlertDialog.Builder(this.requireContext())
 
         addDialog.setView(v)
         addDialog.setPositiveButton("Ok") { dialog, _ ->
-            if (cameraName.text.isEmpty()) {
-                Toast.makeText(this.context,"Enter Camera Name", Toast.LENGTH_SHORT).show()
+            if (cameraName.text.isEmpty() ||
+                etServerUri.text.isEmpty() ||
+                etServerUsername.text.isEmpty() ||
+                etServerPassword.text.isEmpty() ||
+                etServerTopic.text.isEmpty()) {
+                Toast.makeText(this.context,"Complete all fields", Toast.LENGTH_SHORT).show()
                 cameraName.requestFocus()
             }
             else {
                 val camera = CameraData()
                 camera.cameraName = cameraName.text.toString()
+                camera.MQTT_SERVER_URI = etServerUri.text.toString()
+                camera.MQTT_USERNAME = etServerUsername.text.toString()
+                camera.MQTT_PWD = etServerPassword.text.toString()
+                camera.MQTT_TOPIC = etServerTopic.text.toString()
+                camera.MQTT_CLIENT_ID = java.util.UUID.randomUUID().toString()
                 databaseHelper.addCamera(this.requireContext(), camera)
             }
-//            val names = cameraName.text.toString()
-//            cameraList.add(CameraData(id, names))
-//            cameraAdapter.notifyDataSetChanged()
-//            Toast.makeText(this.context, "Adding Camera Information Success", Toast.LENGTH_SHORT)
-//                .show()
-            //set List
+            cameraAdapter.notifyDataSetChanged()
+
             dialog.dismiss()
         }
         addDialog.setNegativeButton("Cancel") { dialog, _ ->

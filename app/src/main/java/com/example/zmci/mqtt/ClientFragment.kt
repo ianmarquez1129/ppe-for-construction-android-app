@@ -80,7 +80,7 @@ class ClientFragment : Fragment() {
             addNextIntentWithParentStack(intentNotify)
             getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
         }
-        val notification = NotificationCompat.Builder(requireContext(),CHANNEL_ID)
+        val notification = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
             .setContentTitle("PPE notification")
             .setContentText("The application has been closed. Tap here to reopen.")
             .setSmallIcon(R.drawable.ic_menu_camera)
@@ -90,6 +90,7 @@ class ClientFragment : Fragment() {
         val notificationManager = NotificationManagerCompat.from(requireContext())
         notificationManager.notify(NOTIFICATION_ID, notification)
     }
+
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -99,7 +100,8 @@ class ClientFragment : Fragment() {
                 lightColor = Color.GREEN
                 enableLights(true)
             }
-            val manager = requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val manager =
+                requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             manager.createNotificationChannel(channel)
         }
     }
@@ -116,96 +118,118 @@ class ClientFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Get arguments passed by ConnectFragment
-        val serverURI = arguments?.getString(MQTT_SERVER_URI_KEY)
-        val clientId = arguments?.getString(MQTT_CLIENT_ID_KEY)
-        val username = arguments?.getString(MQTT_USERNAME_KEY)
-        val pwd = arguments?.getString(MQTT_PWD_KEY)
+        val serverURI = arguments?.getString(MQTT_SERVER_URI_KEY).toString()
+        val clientId = arguments?.getString(MQTT_CLIENT_ID_KEY).toString()
+        val username = arguments?.getString(MQTT_USERNAME_KEY).toString()
+        val pwd = arguments?.getString(MQTT_PWD_KEY).toString()
 
-        // Check if passed arguments are valid
-        if (serverURI != null &&
-            clientId != null &&
-            username != null &&
-            pwd != null
-        ) {
-            // Open MQTT Broker communication
-            mqttClient = MQTTClient(context, serverURI, clientId)
+        // Open MQTT Broker communication
+        mqttClient = MQTTClient(context, serverURI, clientId)
 
-            // Connect and login to MQTT Broker
-            mqttClient.connect(username,
-                pwd,
-                object : IMqttActionListener {
+        try {
+
+            if (mqttClient.isConnected()) {
+                Log.d(this.javaClass.name, "MQTT is already connected")
+                mqttClient.disconnect(object : IMqttActionListener {
                     override fun onSuccess(asyncActionToken: IMqttToken?) {
-                        Log.d(this.javaClass.name, "Connection success")
+                        Log.d(this.javaClass.name, "Disconnected")
 
-                        Toast.makeText(context, "MQTT Connection success", Toast.LENGTH_SHORT)
+                        Toast.makeText(context, "MQTT Disconnection success", Toast.LENGTH_SHORT)
                             .show()
+
+                        // Disconnection success, come back to Connect Fragment
+                        findNavController().navigate(R.id.action_ClientFragment_to_CameraFragment)
                     }
 
                     override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
-                        Log.d(this.javaClass.name, "Connection failure: ${exception.toString()}")
-
-                        Toast.makeText(
-                            context,
-                            "MQTT Connection fails: ${exception.toString()}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                        // Come back to Connect Fragment
-                        findNavController().navigate(R.id.action_ClientFragment_to_ConnectFragment)
+                        Log.d(this.javaClass.name, "Failed to disconnect")
                     }
-                },
-                object : MqttCallback {
-                    override fun messageArrived(topic: String?, message: MqttMessage?) {
-                        val msg = "Receive message: ${message.toString()} from topic: $topic"
-                        Log.d(this.javaClass.name, msg)
+                })
+
+            } else {
+                // Connect and login to MQTT Broker
+                mqttClient.connect(username,
+                    pwd,
+                    object : IMqttActionListener {
+                        override fun onSuccess(asyncActionToken: IMqttToken?) {
+                            Log.d(this.javaClass.name, "Connection success")
+
+//                            Toast.makeText(context, "MQTT Connection success", Toast.LENGTH_SHORT)
+//                                .show()
+                        }
+
+                        override fun onFailure(
+                            asyncActionToken: IMqttToken?,
+                            exception: Throwable?
+                        ) {
+                            Log.d(
+                                this.javaClass.name,
+                                "Connection failure: ${exception.toString()}"
+                            )
+
+                            Toast.makeText(
+                                context,
+                                "MQTT Connection fails: ${exception.toString()}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            // Come back to Connect Fragment
+                            findNavController().navigate(R.id.action_ClientFragment_to_CameraFragment)
+                        }
+                    },
+                    object : MqttCallback {
+                        override fun messageArrived(topic: String?, message: MqttMessage?) {
+                            val msg = "Receive message: ${message.toString()} from topic: $topic"
+                            Log.d(this.javaClass.name, msg)
 
 //                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
 
-                        try {
-                            val jsonData = "[ ${message.toString()} ]"
-                            val obj = JSONArray(jsonData)
-                            val imageObj: JSONObject = obj.getJSONObject(0)
-                            val imageData = imageObj.getString("image") // get image
-                            val violatorsData = imageObj.getString("violators")
+                            try {
+                                val jsonData = "[ ${message.toString()} ]"
+                                val obj = JSONArray(jsonData)
+                                val imageObj: JSONObject = obj.getJSONObject(0)
+                                val imageData = imageObj.getString("image") // get image
+                                val violatorsData = imageObj.getString("violators")
 //                            val violatorsArray = JSONArray(violatorsData)
 
-                            //clear text after every loop
-                            textDetect.text = ""
-                            tvTimestamp.text = ""
+                                //clear text after every loop
+                                textDetect.text = ""
+                                tvTimestamp.text = ""
 
-                            textDetect.append(violatorsData)
-                            textDetect.append("\n")
+                                textDetect.append(violatorsData)
+                                textDetect.append("\n")
 
-                            val cameraData = imageObj.getString("camera")
+                                val cameraData = imageObj.getString("camera")
 //                            val cameraArray = JSONArray(cameraData)
-                            textDetect.append(cameraData)
+                                textDetect.append(cameraData)
 
-                            val timestampData = imageObj.getString("timestamp")
-                            tvTimestamp.text = timestampData
+                                val timestampData = imageObj.getString("timestamp")
+                                tvTimestamp.text = timestampData
 
-                            //decode base64 to image
-                            val decodedByte = Base64.decode(imageData, Base64.DEFAULT)
-                            val bitmap = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
-                            imgDetect.setImageBitmap(bitmap)
+                                //decode base64 to image
+                                val decodedByte = Base64.decode(imageData, Base64.DEFAULT)
+                                val bitmap =
+                                    BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
+                                imgDetect.setImageBitmap(bitmap)
 
-                        } catch (e : JSONException) {
-                            e.printStackTrace()
-                        }
+                            } catch (e: JSONException) {
+                                e.printStackTrace()
+                            }
 
 //                        textDetect.text = msg
-                    }
+                        }
 
-                    override fun connectionLost(cause: Throwable?) {
-                        Log.d(this.javaClass.name, "Connection lost ${cause.toString()}")
-                    }
+                        override fun connectionLost(cause: Throwable?) {
+                            Log.d(this.javaClass.name, "Connection lost ${cause.toString()}")
+                        }
 
-                    override fun deliveryComplete(token: IMqttDeliveryToken?) {
-                        Log.d(this.javaClass.name, "Delivery complete")
-                    }
-                })
-        } else {
-            // Arguments are not valid, come back to Connect Fragment
-            findNavController().navigate(R.id.action_ClientFragment_to_ConnectFragment)
+                        override fun deliveryComplete(token: IMqttDeliveryToken?) {
+                            Log.d(this.javaClass.name, "Delivery complete")
+                        }
+                    })
+            }
+        } catch (e:Exception) {
+            e.printStackTrace()
         }
 
         view.findViewById<Button>(R.id.button_prefill_client).setOnClickListener {
@@ -233,7 +257,7 @@ class ClientFragment : Fragment() {
                             .show()
 
                         // Disconnection success, come back to Connect Fragment
-                        findNavController().navigate(R.id.action_ClientFragment_to_ConnectFragment)
+                        findNavController().navigate(R.id.action_ClientFragment_to_CameraFragment)
                     }
 
                     override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {

@@ -10,7 +10,6 @@
         android:name="com.example.zmci.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" >
-
         <action
             android:id="@+id/action_nav_home_to_nav_gallery"
             app:destination="@id/nav_gallery"/>
@@ -26,27 +25,22 @@
         <action
             android:id="@+id/action_nav_home_to_SettingsFragment"
             app:destination="@id/SettingsFragment"/>
-
     </fragment>
-
     <fragment
         android:id="@+id/nav_gallery"
         android:name="com.example.zmci.gallery.GalleryFragment"
         android:label="@string/browser"
         tools:layout="@layout/fragment_gallery" />
-
     <fragment
         android:id="@+id/nav_slideshow"
         android:name="com.example.zmci.slideshow.SlideshowFragment"
         android:label="@string/camera_stream"
         tools:layout="@layout/fragment_slideshow" />
-
     <fragment
         android:id="@+id/ConnectFragment"
         android:name="com.example.zmci.mqtt.ConnectFragment"
         android:label="@string/connect_fragment_label"
         tools:layout="@layout/fragment_connect">
-
         <action
             android:id="@+id/action_ConnectFragment_to_ClientFragment"
             app:destination="@id/ClientFragment"/>
@@ -54,26 +48,23 @@
             android:id="@+id/action_ConnectFragment_to_CameraFragment"
             app:destination="@id/CameraFragment" />
     </fragment>
-
     <fragment
         android:id="@+id/ClientFragment"
         android:name="com.example.zmci.mqtt.ClientFragment"
         android:label="@string/client_fragment_label"
         tools:layout="@layout/fragment_client">
-
         <action
-            android:id="@+id/action_ClientFragment_to_ConnectFragment"
-            app:destination="@id/ConnectFragment"/>
+            android:id="@+id/action_ClientFragment_to_CameraFragment"
+            app:destination="@id/CameraFragment"/>
     </fragment>
     <fragment
         android:id="@+id/CameraFragment"
         android:name="com.example.zmci.camera.CameraFragment"
         android:label="@string/detection"
         tools:layout="@layout/fragment_camera">
-
         <action
-            android:id="@+id/action_CameraFragment_to_ConnectFragment"
-            app:destination="@id/ConnectFragment"/>
+            android:id="@+id/action_CameraFragment_to_ClientFragment"
+            app:destination="@id/ClientFragment"/>
     </fragment>
     <fragment
         android:id="@+id/SettingsFragment"
@@ -81,7 +72,6 @@
         android:label="@string/preferences"
         tools:layout="@layout/fragment_settings">
     </fragment>
-
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.example.zmci.about.AboutFragment"

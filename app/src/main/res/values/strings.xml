@@ -54,4 +54,8 @@
     <string name="mqtt">MQTT</string>
     <string name="detection">Detection</string>
     <string name="preferences">Preferences</string>
+    <string name="server_uri">Server URI</string>
+    <string name="hint_server_uri">tcp://192.168.1.2:1883</string>
+    <string name="camera_name">Camera Name</string>
+    <string name="hint_topic">rpi/notif</string>
 </resources>

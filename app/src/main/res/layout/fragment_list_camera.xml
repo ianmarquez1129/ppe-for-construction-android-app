@@ -30,6 +30,15 @@
                 android:layout_margin="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/mServerUri"
+                android:text="@string/server_uri_text"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:layout_margin="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 <!--            <TextView-->
 <!--                android:id="@+id/mSubtitle"-->
 <!--                android:text="Subtitle"-->
