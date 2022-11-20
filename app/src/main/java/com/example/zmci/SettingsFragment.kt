@@ -3,7 +3,6 @@ package com.example.zmci
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -33,7 +32,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
-        Toast.makeText(context, "Preferences", Toast.LENGTH_SHORT).show()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -158,11 +156,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val gson = Gson()
         val newPreferences = "{\"ppe_preferences\":" + JSONObject(gson.toJson(ppePreferences)).toString() + "}"
 
-        val serverUri = sp.getString("publish", "tcp://192.168.1.2:1883").toString()
-        val topic = "rpi/set"
+        val serverUri = sp.getString("server_uri", "tcp://192.168.1.2:1883").toString()
+        val topic = sp.getString("topic", "rpi/set").toString()
 
         Thread {
-            val clientID = java.util.UUID.randomUUID().toString()
+            val clientID = MQTT_CLIENT_ID
+//            java.util.UUID.randomUUID().toString()
             val brokerUsername = MQTT_USERNAME
             val brokerPassword = MQTT_PWD
 
@@ -178,9 +177,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     object : IMqttActionListener {
                         override fun onSuccess(asyncActionToken: IMqttToken?) {
                             Log.d(this.javaClass.name, "Connection success")
-
-                            Toast.makeText(context, "MQTT Connection success", Toast.LENGTH_SHORT)
-                                .show()
                         }
 
                         override fun onFailure(
@@ -191,47 +187,68 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                 this.javaClass.name,
                                 "Connection failure: ${exception.toString()}"
                             )
-
-                            Toast.makeText(
-                                context,
-                                "MQTT Connection fails: ${exception.toString()}",
-                                Toast.LENGTH_SHORT
-                            ).show()
                         }
                     })
-            }
-
-            if (mqttClient.isConnected()) {
-                Log.d(this.javaClass.name, "MQTT is Connected")
-            } else {
-                Log.d(this.javaClass.name, "MQTT failed to connect")
             }
         }.start()
         Thread {
             Thread.sleep(10000)
-            if (mqttClient.isConnected()) {
-                mqttClient.publish(topic,
-                    newPreferences,
-                    1,
-                    false,
-                    object : IMqttActionListener {
-                        override fun onSuccess(asyncActionToken: IMqttToken?) {
-                            val msg = "Publish message: $newPreferences to topic: $topic"
-                            Log.d(this.javaClass.name, msg)
+            try {
+                if (mqttClient.isConnected()) {
+                    try {
+                        while (mqttClient.isConnected()) {
+                            mqttClient.publish(topic,
+                                newPreferences,
+                                1,
+                                false,
+                                object : IMqttActionListener {
+                                    override fun onSuccess(asyncActionToken: IMqttToken?) {
+                                        val msg =
+                                            "Publish message: $newPreferences to topic: $topic"
+                                        Log.d(this.javaClass.name, msg)
+                                    }
 
-                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                                    override fun onFailure(
+                                        asyncActionToken: IMqttToken?,
+                                        exception: Throwable?
+                                    ) {
+                                        Log.d(
+                                            this.javaClass.name,
+                                            "Failed to publish message to topic"
+                                        )
+                                    }
+                                })
+                            Thread.sleep(3000)
                         }
-
-                        override fun onFailure(
-                            asyncActionToken: IMqttToken?,
-                            exception: Throwable?
-                        ) {
-                            Log.d(this.javaClass.name, "Failed to publish message to topic")
-                        }
-                    })
-            } else {
-                Log.d(this.javaClass.name, "Impossible to publish, no server connected")
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } else {
+                    Log.d(this.javaClass.name, "Impossible to publish, no server connected")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }.start()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (mqttClient.isConnected()) {
+            // Disconnect from MQTT Broker
+            mqttClient.disconnect(object : IMqttActionListener {
+                override fun onSuccess(asyncActionToken: IMqttToken?) {
+                    Log.d(this.javaClass.name, "Disconnected")
+                }
+                override fun onFailure(
+                    asyncActionToken: IMqttToken?,
+                    exception: Throwable?
+                ) {
+                    Log.d(this.javaClass.name, "Failed to disconnect")
+                }
+            })
+        } else {
+            Log.d(this.javaClass.name, "Impossible to disconnect, no server connected")
+        }
     }
 }
