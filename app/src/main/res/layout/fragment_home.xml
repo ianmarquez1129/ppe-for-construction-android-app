@@ -93,8 +93,8 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/imgView2"
                             android:layout_centerHorizontal="true"
-                            android:text="@string/camera_stream"
                             android:layout_marginTop="5dp"
+                            android:text="@string/camera_stream"
                             android:textSize="16sp" />
 
                     </RelativeLayout>

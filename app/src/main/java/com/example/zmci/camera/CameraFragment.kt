@@ -14,10 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zmci.R
 import com.example.zmci.database.DatabaseHelper
-import com.example.zmci.mqtt.MQTT_CLIENT_ID_KEY
-import com.example.zmci.mqtt.MQTT_PWD_KEY
-import com.example.zmci.mqtt.MQTT_SERVER_URI_KEY
-import com.example.zmci.mqtt.MQTT_USERNAME_KEY
+import com.example.zmci.mqtt.*
 import kotlinx.android.synthetic.main.fragment_camera.*
 
 class CameraFragment : Fragment() {
@@ -61,11 +58,14 @@ class CameraFragment : Fragment() {
                 val clientID    = cameraList[position].MQTT_CLIENT_ID
                 val username    = cameraList[position].MQTT_USERNAME
                 val pwd         = cameraList[position].MQTT_PWD
+                val topic       = cameraList[position].MQTT_TOPIC
 
-                val mqttCredentialsBundle = bundleOf(MQTT_SERVER_URI_KEY    to serverURI,
+                val mqttCredentialsBundle = bundleOf(
+                    MQTT_SERVER_URI_KEY    to serverURI,
                     MQTT_CLIENT_ID_KEY     to clientID,
                     MQTT_USERNAME_KEY      to username,
-                    MQTT_PWD_KEY           to pwd)
+                    MQTT_PWD_KEY           to pwd,
+                    MQTT_TOPIC_KEY         to topic)
                 findNavController().navigate(
                     R.id.action_CameraFragment_to_ClientFragment, mqttCredentialsBundle)
             }

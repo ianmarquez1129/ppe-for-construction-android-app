@@ -23,18 +23,25 @@
         android:id="@+id/etStream"
         android:hint="Enter URL"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"/>
 
     <Button
         android:id="@+id/btnStream"
         android:text="Stream"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"/>
     <Button
         android:id="@+id/btnRefresh"
         android:text="Refresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"/>
 
     <WebView
         android:layout_marginTop="16dp"

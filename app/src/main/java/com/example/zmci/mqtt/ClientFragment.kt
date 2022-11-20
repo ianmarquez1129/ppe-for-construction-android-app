@@ -16,7 +16,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -121,6 +120,7 @@ class ClientFragment : Fragment() {
         val clientId = arguments?.getString(MQTT_CLIENT_ID_KEY).toString()
         val username = arguments?.getString(MQTT_USERNAME_KEY).toString()
         val pwd = arguments?.getString(MQTT_PWD_KEY).toString()
+        val topic = arguments?.getString(MQTT_TEST_TOPIC).toString()
 
         // Open MQTT Broker communication
         mqttClient = MQTTClient(context, serverURI, clientId)
@@ -231,19 +231,19 @@ class ClientFragment : Fragment() {
             e.printStackTrace()
         }
 
-        view.findViewById<Button>(R.id.button_prefill_client).setOnClickListener {
-            // Set default values in edit texts
-            view.findViewById<EditText>(R.id.edittext_pubtopic).setText(MQTT_TEST_TOPIC)
-            view.findViewById<EditText>(R.id.edittext_pubmsg).setText(MQTT_TEST_MSG)
-            view.findViewById<EditText>(R.id.edittext_subtopic).setText(MQTT_TEST_TOPIC)
-        }
-
-        view.findViewById<Button>(R.id.button_clean_client).setOnClickListener {
-            // Clean values in edit texts
-            view.findViewById<EditText>(R.id.edittext_pubtopic).setText("")
-            view.findViewById<EditText>(R.id.edittext_pubmsg).setText("")
-            view.findViewById<EditText>(R.id.edittext_subtopic).setText("")
-        }
+//        view.findViewById<Button>(R.id.button_prefill_client).setOnClickListener {
+//            // Set default values in edit texts
+//            view.findViewById<EditText>(R.id.edittext_pubtopic).setText(MQTT_TEST_TOPIC)
+//            view.findViewById<EditText>(R.id.edittext_pubmsg).setText(MQTT_TEST_MSG)
+//            view.findViewById<EditText>(R.id.edittext_subtopic).setText(MQTT_TEST_TOPIC)
+//        }
+//
+//        view.findViewById<Button>(R.id.button_clean_client).setOnClickListener {
+//            // Clean values in edit texts
+//            view.findViewById<EditText>(R.id.edittext_pubtopic).setText("")
+//            view.findViewById<EditText>(R.id.edittext_pubmsg).setText("")
+//            view.findViewById<EditText>(R.id.edittext_subtopic).setText("")
+//        }
 
         view.findViewById<Button>(R.id.button_disconnect).setOnClickListener {
             if (mqttClient.isConnected()) {
@@ -268,37 +268,36 @@ class ClientFragment : Fragment() {
             }
         }
 
-        view.findViewById<Button>(R.id.button_publish).setOnClickListener {
-            val topic = view.findViewById<EditText>(R.id.edittext_pubtopic).text.toString()
-            val message = view.findViewById<EditText>(R.id.edittext_pubmsg).text.toString()
-
-            if (mqttClient.isConnected()) {
-                mqttClient.publish(topic,
-                    message,
-                    1,
-                    false,
-                    object : IMqttActionListener {
-                        override fun onSuccess(asyncActionToken: IMqttToken?) {
-                            val msg = "Publish message: $message to topic: $topic"
-                            Log.d(this.javaClass.name, msg)
-
-                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-                        }
-
-                        override fun onFailure(
-                            asyncActionToken: IMqttToken?,
-                            exception: Throwable?
-                        ) {
-                            Log.d(this.javaClass.name, "Failed to publish message to topic")
-                        }
-                    })
-            } else {
-                Log.d(this.javaClass.name, "Impossible to publish, no server connected")
-            }
-        }
+//        view.findViewById<Button>(R.id.button_publish).setOnClickListener {
+//            val topic = view.findViewById<EditText>(R.id.edittext_pubtopic).text.toString()
+//            val message = view.findViewById<EditText>(R.id.edittext_pubmsg).text.toString()
+//
+//            if (mqttClient.isConnected()) {
+//                mqttClient.publish(topic,
+//                    message,
+//                    1,
+//                    false,
+//                    object : IMqttActionListener {
+//                        override fun onSuccess(asyncActionToken: IMqttToken?) {
+//                            val msg = "Publish message: $message to topic: $topic"
+//                            Log.d(this.javaClass.name, msg)
+//
+//                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+//                        }
+//
+//                        override fun onFailure(
+//                            asyncActionToken: IMqttToken?,
+//                            exception: Throwable?
+//                        ) {
+//                            Log.d(this.javaClass.name, "Failed to publish message to topic")
+//                        }
+//                    })
+//            } else {
+//                Log.d(this.javaClass.name, "Impossible to publish, no server connected")
+//            }
+//        }
 
         view.findViewById<Button>(R.id.button_subscribe).setOnClickListener {
-            val topic = view.findViewById<EditText>(R.id.edittext_subtopic).text.toString()
 
             if (mqttClient.isConnected()) {
                 mqttClient.subscribe(topic,
@@ -309,8 +308,6 @@ class ClientFragment : Fragment() {
                             Log.d(this.javaClass.name, msg)
 
                             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-//                            val intent = Intent(context,ReceivedData::class.java)
-//                            startActivity(intent)
                         }
 
                         override fun onFailure(
@@ -326,7 +323,6 @@ class ClientFragment : Fragment() {
         }
 
         view.findViewById<Button>(R.id.button_unsubscribe).setOnClickListener {
-            val topic = view.findViewById<EditText>(R.id.edittext_subtopic).text.toString()
 
             if (mqttClient.isConnected()) {
                 mqttClient.unsubscribe(topic,
