@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_slideshow,
                 R.id.CameraFragment,
                 R.id.SettingsFragment,
+                R.id.DetectionFragment,
                 R.id.aboutFragment,
 
             ), drawerLayout

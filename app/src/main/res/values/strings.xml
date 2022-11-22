@@ -58,4 +58,9 @@
     <string name="hint_server_uri">tcp://192.168.1.2:1883</string>
     <string name="camera_name">Camera Name</string>
     <string name="hint_topic">rpi/notif</string>
+    <string name="violations">Violations</string>
+    <string name="violators">Violators</string>
+    <string name="timestamp">Timestamp</string>
+    <string name="detection_report">Detection Report</string>
+    <string name="reports">Reports</string>
 </resources>

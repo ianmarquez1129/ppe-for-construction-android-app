@@ -44,6 +44,9 @@ class HomeFragment : Fragment() {
         preferences.setOnClickListener {
             findNavController().navigate(R.id.action_nav_home_to_SettingsFragment)
         }
+        reports.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_home_to_DetectionFragment)
+        }
         about.setOnClickListener {
             findNavController().navigate(R.id.action_nav_home_to_aboutFragment)
         }

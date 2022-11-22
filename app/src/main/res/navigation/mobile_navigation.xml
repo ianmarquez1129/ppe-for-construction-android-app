@@ -23,6 +23,9 @@
             android:id="@+id/action_nav_home_to_nav_slideshow"
             app:destination="@id/nav_slideshow"/>
         <action
+            android:id="@+id/action_nav_home_to_DetectionFragment"
+            app:destination="@id/DetectionFragment"/>
+        <action
             android:id="@+id/action_nav_home_to_SettingsFragment"
             app:destination="@id/SettingsFragment"/>
     </fragment>
@@ -77,4 +80,18 @@
         android:name="com.example.zmci.about.AboutFragment"
         android:label="@string/about"
         tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/DetectionFragment"
+        android:name="com.example.zmci.mqtt.DetectionFragment"
+        android:label="@string/detection"
+        tools:layout="@layout/fragment_detection" >
+        <action
+            android:id="@+id/action_DetectionFragment_to_DetectionReportFragment"
+            app:destination="@id/DetectionReportFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/DetectionReportFragment"
+        android:name="com.example.zmci.mqtt.DetectionReportFragment"
+        android:label="@string/detection_report"
+        tools:layout="@layout/fragment_detection_report" />
 </navigation>

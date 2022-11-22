@@ -12,4 +12,12 @@ const val MQTT_USERNAME         = "username"
 const val MQTT_PWD              = "pass123"
 
 const val MQTT_TEST_TOPIC       = "rpi/notif"
-const val MQTT_TEST_MSG         = "Hello!"
+
+// DETECTION
+
+const val DETECTION_IMAGE_KEY     = "DETECTION_IMAGE"
+const val DETECTION_CAMERA_KEY    = "DETECTION_CAMERA"
+const val DETECTION_TIMESTAMP_KEY = "DETECTION_TIMESTAMP"
+const val DETECTION_VIOLATORS_KEY = "DETECTION_VIOLATORS"
+const val TOTAL_VIOLATIONS_KEY    = "TOTAL_VIOLATIONS"
+const val TOTAL_VIOLATORS_KEY     = "TOTAL_VIOLATORS"

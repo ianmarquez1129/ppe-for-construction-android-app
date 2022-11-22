@@ -23,18 +23,25 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.zmci.MainActivity
 import com.example.zmci.R
+import com.example.zmci.camera.CameraFragment
+import com.example.zmci.database.DatabaseHelper
+import com.example.zmci.mqtt.model.Detection
 import kotlinx.android.synthetic.main.fragment_client.*
 import org.eclipse.paho.client.mqttv3.*
 import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
 
 
 class ClientFragment : Fragment() {
     private lateinit var mqttClient: MQTTClient
 
+    companion object {
+        lateinit var databaseHelper: DatabaseHelper
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        databaseHelper = DatabaseHelper(this.requireContext())
 //        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
 //            override fun handleOnBackPressed() {
 //                if (mqttClient.isConnected()) {
@@ -120,7 +127,7 @@ class ClientFragment : Fragment() {
         val clientId = arguments?.getString(MQTT_CLIENT_ID_KEY).toString()
         val username = arguments?.getString(MQTT_USERNAME_KEY).toString()
         val pwd = arguments?.getString(MQTT_PWD_KEY).toString()
-        val topic = arguments?.getString(MQTT_TEST_TOPIC).toString()
+        val topic = arguments?.getString(MQTT_TOPIC_KEY).toString()
 
         // Open MQTT Broker communication
         mqttClient = MQTTClient(context, serverURI, clientId)
@@ -187,31 +194,65 @@ class ClientFragment : Fragment() {
                                 val jsonData = "[ ${message.toString()} ]"
                                 val obj = JSONArray(jsonData)
                                 val imageObj: JSONObject = obj.getJSONObject(0)
+
+                                // get image in json
                                 val imageData = imageObj.getString("image") // get image
+                                // get violators in json
                                 val violatorsData = imageObj.getString("violators")
-//                            val violatorsArray = JSONArray(violatorsData)
-
-                                //clear text after every loop
-                                textDetect.text = ""
-                                tvTimestamp.text = ""
-
-                                textDetect.append(violatorsData)
-                                textDetect.append("\n")
-
+                                //get camera in json
                                 val cameraData = imageObj.getString("camera")
-//                            val cameraArray = JSONArray(cameraData)
-                                textDetect.append(cameraData)
-
+                                //get timestamp in json
                                 val timestampData = imageObj.getString("timestamp")
-                                tvTimestamp.text = timestampData
+                                //total violations
+                                val totalViolations = imageObj.getString("total_violations")
+                                //total violators
+                                val totalViolators = imageObj.getString("total_violators")
 
-                                //decode base64 to image
-                                val decodedByte = Base64.decode(imageData, Base64.DEFAULT)
-                                val bitmap =
-                                    BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
-                                imgDetect.setImageBitmap(bitmap)
+                                try {
+                                    //clear text after every loop
+                                    tvTimestamp.text = "Timestamp: "
+                                    textCameraData.text = "Camera Data: "
+                                    textTotalViolators.text = "Total Violators: "
+                                    textTotalViolations.text = "Total Violations: "
+                                    textDetect.text = "Details: "
 
-                            } catch (e: JSONException) {
+                                    //set violators in textview
+                                    textDetect.append(violatorsData)
+                                    //set camera details in textview
+                                    textCameraData.append(cameraData)
+                                    //set timestamp in textview
+                                    tvTimestamp.append(timestampData)
+                                    //set total violators in textview
+                                    textTotalViolators.append(totalViolators)
+                                    //set total violations in textview
+                                    textTotalViolations.append(totalViolations)
+
+                                    //decode base64 to image
+                                    val decodedByte = Base64.decode(imageData, Base64.DEFAULT)
+                                    val bitmap =
+                                        BitmapFactory.decodeByteArray(
+                                            decodedByte,
+                                            0,
+                                            decodedByte.size
+                                        )
+                                    //set image in imageview
+                                    imgDetect.setImageBitmap(bitmap)
+
+                                } catch (e : Exception) {
+                                    e.printStackTrace()
+                                }
+
+                                //Save data to database
+                                val detectionDB = Detection()
+                                detectionDB.image = imageData
+                                detectionDB.camera = cameraData
+                                detectionDB.timestamp = timestampData
+                                detectionDB.violators = violatorsData
+                                detectionDB.total_violations = totalViolations
+                                detectionDB.total_violators = totalViolators
+                                databaseHelper.addDetection(context, detectionDB)
+
+                            } catch (e : Exception) {
                                 e.printStackTrace()
                             }
 
