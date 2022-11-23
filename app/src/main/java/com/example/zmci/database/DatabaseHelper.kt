@@ -309,7 +309,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         values.put(COLUMN_SERVER_URI, serverUri)
         values.put(COLUMN_SERVER_USERNAME, serverUsername)
         values.put(COLUMN_SERVER_PASSWORD, serverPassword)
-        values.put(COLUMN_SERVER_PASSWORD, serverTopic)
+        values.put(COLUMN_SERVER_TOPIC, serverTopic)
         try {
             db.update(TABLE_CAMERA, values, "$COLUMN_CAMERA_ID = ?", arrayOf(id))
             result = true
@@ -436,7 +436,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     companion object {
 
         // Database Version
-        private val DATABASE_VERSION = 6
+        private val DATABASE_VERSION = 7
 
         // Database Name
         private val DATABASE_NAME = "UserManager.db"
