@@ -75,8 +75,11 @@ class ClientFragment : Fragment() {
     }
 
     val CHANNEL_ID = "channelID"
+    val CHANNEL_ID2= "channelID2"
     val CHANNEL_NAME = "channelName"
+    val CHANNEL_NAME2= "channelName2"
     val NOTIFICATION_ID = 1
+    val NOTIFICATION_ID2= 2
     override fun onDestroy() {
         super.onDestroy()
         createNotificationChannel()
@@ -101,6 +104,20 @@ class ClientFragment : Fragment() {
             val channel = NotificationChannel(
                 CHANNEL_ID, CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                lightColor = Color.GREEN
+                enableLights(true)
+            }
+            val manager =
+                requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(channel)
+        }
+    }
+    private fun createNotificationChannel2() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                CHANNEL_ID2, CHANNEL_NAME2,
+                NotificationManager.IMPORTANCE_HIGH
             ).apply {
                 lightColor = Color.GREEN
                 enableLights(true)
@@ -208,6 +225,19 @@ class ClientFragment : Fragment() {
                                 //total violators
                                 val totalViolators = imageObj.getString("total_violators")
 
+                                //violatorsData parse
+                                val violatorsObject = JSONArray(violatorsData)
+
+                                for (i in 0 until violatorsObject.length()) {
+                                    val item = violatorsObject.getJSONObject(i)
+
+                                    val itemId = item.getString("id")
+                                    val itemPersonInfo = item.getString("person_info")
+                                    val itemViolations = item.getString("violations")
+
+                                    // Your code here
+                                }
+
                                 try {
                                     //clear text after every loop
                                     tvTimestamp.text = "Timestamp: "
@@ -255,6 +285,32 @@ class ClientFragment : Fragment() {
                             } catch (e : Exception) {
                                 e.printStackTrace()
                             }
+
+                            //notification
+                            Thread {
+                                try {
+                                    createNotificationChannel2()
+                                    val intentNotify = Intent(context, MainActivity::class.java)
+                                    val pendingIntent = TaskStackBuilder.create(context).run {
+                                        addNextIntentWithParentStack(intentNotify)
+                                        getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+                                    }
+                                    val notification =
+                                        NotificationCompat.Builder(requireContext(), CHANNEL_ID2)
+                                            .setContentTitle("Detection alert")
+                                            .setContentText("Review logs for violation details")
+                                            .setSmallIcon(R.drawable.ic_detect)
+                                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                            .setContentIntent(pendingIntent)
+                                            .build()
+                                    val notificationManager =
+                                        NotificationManagerCompat.from(requireContext())
+                                    notificationManager.notify(NOTIFICATION_ID2, notification)
+                                } catch (e: Exception){
+                                    e.printStackTrace()
+                                }
+                            }.start()
+
 
 //                        textDetect.text = msg
                         }

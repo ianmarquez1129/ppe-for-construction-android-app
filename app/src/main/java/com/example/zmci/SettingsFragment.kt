@@ -156,7 +156,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val gson = Gson()
         val newPreferences = "{\"ppe_preferences\":" + JSONObject(gson.toJson(ppePreferences)).toString() + "}"
 
-        val serverUri = sp.getString("server_uri", "tcp://192.168.1.2:1883").toString()
+        val serverUri = sp.getString("server_uri", "tcp://raspberrypi:1883").toString()
         val topic = sp.getString("topic", "rpi/set").toString()
 
         Thread {
@@ -165,34 +165,44 @@ class SettingsFragment : PreferenceFragmentCompat() {
             val brokerUsername = MQTT_USERNAME
             val brokerPassword = MQTT_PWD
 
-            // Open MQTT Broker communication
-            mqttClient = MQTTClient(context, serverUri, clientID)
 
-            if (mqttClient.isConnected()) {
-                Log.d(this.javaClass.name, "MQTT is already connected")
-            } else {
-                // Connect and login to MQTT Broker
-                mqttClient.connect(brokerUsername,
-                    brokerPassword,
-                    object : IMqttActionListener {
-                        override fun onSuccess(asyncActionToken: IMqttToken?) {
-                            Log.d(this.javaClass.name, "Connection success")
-                        }
+            try {
+                // Open MQTT Broker communication
+                mqttClient = MQTTClient(context, serverUri, clientID)
 
-                        override fun onFailure(
-                            asyncActionToken: IMqttToken?,
-                            exception: Throwable?
-                        ) {
-                            Log.d(
-                                this.javaClass.name,
-                                "Connection failure: ${exception.toString()}"
-                            )
-                        }
-                    })
+                if (mqttClient.isConnected()) {
+                    Log.d(this.javaClass.name, "MQTT is already connected")
+                } else {
+                    // Connect and login to MQTT Broker
+                    try {
+                        Thread.sleep(8000)
+                        mqttClient.connect(brokerUsername,
+                            brokerPassword,
+                            object : IMqttActionListener {
+                                override fun onSuccess(asyncActionToken: IMqttToken?) {
+                                    Log.d(this.javaClass.name, "Connection success")
+                                }
+
+                                override fun onFailure(
+                                    asyncActionToken: IMqttToken?,
+                                    exception: Throwable?
+                                ) {
+                                    Log.d(
+                                        this.javaClass.name,
+                                        "Connection failure: ${exception.toString()}"
+                                    )
+                                }
+                            })
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            } catch (e:Exception){
+                e.printStackTrace()
             }
         }.start()
         Thread {
-            Thread.sleep(10000)
+            Thread.sleep(15000)
             try {
                 if (mqttClient.isConnected()) {
                     try {
