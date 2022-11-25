@@ -23,7 +23,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.zmci.MainActivity
 import com.example.zmci.R
-import com.example.zmci.camera.CameraFragment
 import com.example.zmci.database.DatabaseHelper
 import com.example.zmci.mqtt.model.Detection
 import kotlinx.android.synthetic.main.fragment_client.*
@@ -228,17 +227,10 @@ class ClientFragment : Fragment() {
                                 //violatorsData parse
                                 val violatorsObject = JSONArray(violatorsData)
 
-                                for (i in 0 until violatorsObject.length()) {
-                                    val item = violatorsObject.getJSONObject(i)
-
-                                    val itemId = item.getString("id")
-                                    val itemPersonInfo = item.getString("person_info")
-                                    val itemViolations = item.getString("violations")
-
-                                    // Your code here
-                                }
-
+                                val tsLong = System.currentTimeMillis() / 1000
+                                val ts = tsLong.toString()
                                 try {
+
                                     //clear text after every loop
                                     tvTimestamp.text = "Timestamp: "
                                     textCameraData.text = "Camera Data: "
@@ -246,12 +238,25 @@ class ClientFragment : Fragment() {
                                     textTotalViolations.text = "Total Violations: "
                                     textDetect.text = "Details: "
 
+                                    for (i in 0 until violatorsObject.length()) {
+                                        val item = violatorsObject.getJSONObject(i)
+
+                                        val itemId = item.getString("id")
+                                        textDetect.append("ID: $itemId\n")
+                                        val itemPersonInfo = item.getString("person_info")
+                                        textDetect.append("Person info: $itemPersonInfo\n")
+                                        val itemViolations = item.getString("violations")
+                                        textDetect.append("Violation: $itemViolations\n")
+
+                                        // Your code here
+                                    }
+
                                     //set violators in textview
                                     textDetect.append(violatorsData)
                                     //set camera details in textview
                                     textCameraData.append(cameraData)
                                     //set timestamp in textview
-                                    tvTimestamp.append(timestampData)
+                                    tvTimestamp.append(ts)
                                     //set total violators in textview
                                     textTotalViolators.append(totalViolators)
                                     //set total violations in textview
@@ -276,7 +281,7 @@ class ClientFragment : Fragment() {
                                 val detectionDB = Detection()
                                 detectionDB.image = imageData
                                 detectionDB.camera = cameraData
-                                detectionDB.timestamp = timestampData
+                                detectionDB.timestamp = ts
                                 detectionDB.violators = violatorsData
                                 detectionDB.total_violations = totalViolations
                                 detectionDB.total_violators = totalViolators
