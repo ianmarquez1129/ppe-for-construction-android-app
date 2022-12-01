@@ -86,8 +86,8 @@ class DetectionAdapter(val c: Context, val detectionList:MutableList<Detection>)
     override fun onBindViewHolder(holder: DetectionViewHolder, position: Int) {
         val newList = detectionList[position]
         holder.rTimestamp.text = "Timestamp: ${newList.timestamp}"
-        holder.rViolators.text = "No. of Violators: ${newList.total_violators}"
-        holder.rViolations.text = "No. of Violations: ${newList.total_violations}"
+        holder.rViolators.text = "Person: ${newList.total_violators}"
+        holder.rViolations.text = "Detected PPE: ${newList.total_violations}"
     }
 
     override fun getItemCount(): Int {

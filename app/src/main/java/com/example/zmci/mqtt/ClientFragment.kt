@@ -243,8 +243,8 @@ class ClientFragment : Fragment() {
                                     //clear text after every loop
                                     tvTimestamp.text = "Timestamp: "
                                     textCameraData.text = "Camera Data: \n"
-                                    textTotalViolators.text = "Total Violators: "
-                                    textTotalViolations.text = "Total Violations: "
+                                    textTotalViolators.text = "Person: "
+                                    textTotalViolations.text = "Detected PPE: "
                                     textDetect.text = "Details: \n"
 
                                     //violators extract
@@ -256,7 +256,6 @@ class ClientFragment : Fragment() {
                                         val itemPersonInfo = item.getString("person_info")
                                         // extract itemPersonInfo
                                         val itemPersonInfoObject = JSONArray(itemPersonInfo)
-                                        textDetect.append("Person in frame: \n")
 
                                         for (j in 0 until itemPersonInfoObject.length()) {
                                             val itemPI = itemPersonInfoObject.getJSONObject(j)
@@ -278,7 +277,7 @@ class ClientFragment : Fragment() {
                                         /**********/
                                         val itemViolations = item.getString("violations")
                                         val itemViolationsObject = JSONArray(itemViolations)
-                                        textDetect.append("\nViolations: \n")
+                                        textDetect.append("\nDetections: \n")
 
                                         for (k in 0 until itemViolationsObject.length()) {
                                             val itemV = itemViolationsObject.getJSONObject(k)

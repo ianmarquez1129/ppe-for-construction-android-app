@@ -40,8 +40,8 @@ class DetectionReportFragment : Fragment() {
         cameraReport.text = "Camera details: \n"
         timestampReport.text = "Timestamp: $timestamp"
         violatorsReport.text = "Details: \n"
-        totalViolationsReport.text = "Total violations: $total_violations"
-        totalViolatorsReport.text = "Total violators: $total_violators"
+        totalViolationsReport.text = "Person: $total_violations"
+        totalViolatorsReport.text = "Detected PPE: $total_violators"
 
         try {
             val cameraObject = JSONArray("[ $camera ]")
@@ -64,7 +64,6 @@ class DetectionReportFragment : Fragment() {
 //                    violatorsReport.append("ID: $personId\n")
                     val personInfo = itemViolators.getString("person_info")
                     val personInfoObject = JSONArray(personInfo)
-                    violatorsReport.append("Person in frame: \n")
 
                     for (k in 0 until personInfoObject.length()) {
                         val itemPI = personInfoObject.getJSONObject(k)
@@ -85,7 +84,7 @@ class DetectionReportFragment : Fragment() {
 
                     val violations = itemViolators.getString("violations")
                     val violationsObject = JSONArray(violations)
-                    violatorsReport.append("\nViolations: \n")
+                    violatorsReport.append("\nDetections: \n")
                     try {
                         for (l in 0 until violationsObject.length()) {
                             val itemV = violationsObject.getJSONObject(l)
