@@ -39,7 +39,7 @@ class GalleryFragment : Fragment() {
 
         val textView: TextView = binding.textGallery
         galleryViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = "Browser"
+            textView.text = "Configure"
         }
         return root
     }

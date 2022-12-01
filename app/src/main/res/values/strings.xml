@@ -63,4 +63,6 @@
     <string name="timestamp">Timestamp</string>
     <string name="detection_report">Detection Report</string>
     <string name="reports">Reports</string>
+    <string name="configure">Configure</string>
+    <string name="logs">Logs</string>
 </resources>

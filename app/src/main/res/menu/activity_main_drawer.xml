@@ -11,7 +11,7 @@
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_web"
-            android:title="@string/browser" />
+            android:title="@string/configure" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_stream"
@@ -27,7 +27,7 @@
         <item
             android:id="@+id/DetectionFragment"
             android:icon="@drawable/ic_history"
-            android:title="@string/reports"/>
+            android:title="@string/logs"/>
         <item
             android:id="@+id/aboutFragment"
             android:icon="@drawable/ic_info"

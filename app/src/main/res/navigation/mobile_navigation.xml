@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/nav_gallery"
         android:name="com.example.zmci.gallery.GalleryFragment"
-        android:label="@string/browser"
+        android:label="@string/configure"
         tools:layout="@layout/fragment_gallery" />
     <fragment
         android:id="@+id/nav_slideshow"
@@ -83,7 +83,7 @@
     <fragment
         android:id="@+id/DetectionFragment"
         android:name="com.example.zmci.mqtt.DetectionFragment"
-        android:label="@string/detection"
+        android:label="@string/logs"
         tools:layout="@layout/fragment_detection" >
         <action
             android:id="@+id/action_DetectionFragment_to_DetectionReportFragment"
