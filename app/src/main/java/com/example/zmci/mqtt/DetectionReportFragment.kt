@@ -40,8 +40,8 @@ class DetectionReportFragment : Fragment() {
         cameraReport.text = "Camera details: \n"
         timestampReport.text = "Timestamp: $timestamp"
         violatorsReport.text = "Details: \n"
-        totalViolationsReport.text = "Person: $total_violations"
-        totalViolatorsReport.text = "Detected PPE: $total_violators"
+        totalViolationsReport.text = "Detected PPE: $total_violations"
+        totalViolatorsReport.text = "Person: $total_violators"
 
         try {
             val cameraObject = JSONArray("[ $camera ]")
