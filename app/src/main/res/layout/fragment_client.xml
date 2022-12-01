@@ -23,66 +23,6 @@
             android:text="@string/detection"
             android:textSize="20sp"/>
 
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:id="@+id/textview_pubtopic"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="32dp"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:layout_marginEnd="32dp"-->
-<!--            android:autofillHints="@string/topic_text"-->
-<!--            android:hint="@string/topic_text">-->
-
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:id="@+id/edittext_pubtopic"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
-
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:id="@+id/textview_pubmsg"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="32dp"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:layout_marginEnd="32dp"-->
-<!--            android:autofillHints="@string/message_text"-->
-<!--            android:hint="@string/message_text">-->
-
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:id="@+id/edittext_pubmsg"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
-
-<!--        <Button-->
-<!--            android:id="@+id/button_publish"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="32dp"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:layout_marginEnd="32dp"-->
-<!--            android:text="@string/button_publish_text" />-->
-
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:id="@+id/textview_subtopic"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="32dp"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:layout_marginEnd="32dp"-->
-<!--            android:autofillHints="@string/topic_text"-->
-<!--            android:hint="@string/topic_text">-->
-
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:id="@+id/edittext_subtopic"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,23 +34,11 @@
                 android:id="@+id/button_subscribe"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/button_subscribe_text"
-                app:layout_constraintBottom_toTopOf="@+id/button_disconnect"
-                app:layout_constraintEnd_toStartOf="@+id/button_unsubscribe"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.5" />
-
-            <Button
-                android:id="@+id/button_unsubscribe"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/button_unsubscribe_text"
+                android:text="Connect"
                 app:layout_constraintBottom_toTopOf="@+id/button_disconnect"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/button_subscribe"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.5" />
 
@@ -172,6 +100,7 @@
                 android:orientation="vertical">
                 <ImageView
                     android:id="@+id/imgDetect"
+                    android:src="@drawable/ic_detect"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:layout_marginStart="32dp"

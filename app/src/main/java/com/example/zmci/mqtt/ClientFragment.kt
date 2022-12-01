@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
@@ -29,6 +30,9 @@ import kotlinx.android.synthetic.main.fragment_client.*
 import org.eclipse.paho.client.mqttv3.*
 import org.json.JSONArray
 import org.json.JSONObject
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 
 class ClientFragment : Fragment() {
@@ -200,6 +204,7 @@ class ClientFragment : Fragment() {
                         }
                     },
                     object : MqttCallback {
+                        @RequiresApi(Build.VERSION_CODES.O)
                         override fun messageArrived(topic: String?, message: MqttMessage?) {
                             val msg = "Receive message: ${message.toString()} from topic: $topic"
                             Log.d(this.javaClass.name, msg)
@@ -226,35 +231,79 @@ class ClientFragment : Fragment() {
 
                                 //violatorsData parse
                                 val violatorsObject = JSONArray(violatorsData)
+                                //cameraData parse
+                                val cameraDataObject = JSONArray("[ $cameraData ]")
 
-                                val tsLong = System.currentTimeMillis() / 1000
-                                val ts = tsLong.toString()
+                                val curTime = LocalDateTime.now()
+
+                                val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+                                val ts = curTime.format(formatter)
                                 try {
 
                                     //clear text after every loop
                                     tvTimestamp.text = "Timestamp: "
-                                    textCameraData.text = "Camera Data: "
+                                    textCameraData.text = "Camera Data: \n"
                                     textTotalViolators.text = "Total Violators: "
                                     textTotalViolations.text = "Total Violations: "
-                                    textDetect.text = "Details: "
+                                    textDetect.text = "Details: \n"
 
+                                    //violators extract
                                     for (i in 0 until violatorsObject.length()) {
                                         val item = violatorsObject.getJSONObject(i)
-
-                                        val itemId = item.getString("id")
-                                        textDetect.append("ID: $itemId\n")
+//                                        val itemId = item.getString("id")
+//                                        textDetect.append("ID: $itemId\n")
+                                        /**********/
                                         val itemPersonInfo = item.getString("person_info")
-                                        textDetect.append("Person info: $itemPersonInfo\n")
-                                        val itemViolations = item.getString("violations")
-                                        textDetect.append("Violation: $itemViolations\n")
+                                        // extract itemPersonInfo
+                                        val itemPersonInfoObject = JSONArray(itemPersonInfo)
+                                        textDetect.append("Person in frame: \n")
 
-                                        // Your code here
+                                        for (j in 0 until itemPersonInfoObject.length()) {
+                                            val itemPI = itemPersonInfoObject.getJSONObject(j)
+                                            val personId = itemPI.getString("person_id")
+                                            val firstName = itemPI.getString("first_name")
+                                            val middleName = itemPI.getString("middle_name")
+                                            val lastName = itemPI.getString("last_name")
+                                            val jobTitle = itemPI.getString("job_title")
+                                            val overlaps = itemPI.getString("overlaps")
+                                            textDetect.append(
+                                                "ID: $personId\n" +
+                                                        "Name: $firstName $middleName $lastName\n" +
+                                                        "Job Title: $jobTitle\n" +
+                                                        "Overlaps: $overlaps\n" +
+                                                        "-----\n"
+                                            )
+                                        }
+
+                                        /**********/
+                                        val itemViolations = item.getString("violations")
+                                        val itemViolationsObject = JSONArray(itemViolations)
+                                        textDetect.append("\nViolations: \n")
+
+                                        for (k in 0 until itemViolationsObject.length()) {
+                                            val itemV = itemViolationsObject.getJSONObject(k)
+                                            val className = itemV.getString("class_name")
+                                            textDetect.append("$className\n")
+                                        }
+                                        textDetect.append("-----\n")
+                                        /**********/
+
+                                    }
+                                    //cameraData extract
+                                    for (cd in 0 until cameraDataObject.length()) {
+                                        val itemCD = cameraDataObject.getJSONObject(cd)
+                                        val camName = itemCD.getString("name")
+                                        val camDesc = itemCD.getString("description")
+                                        val camIP = itemCD.getString("ip_address")
+                                        textCameraData.append("Camera Name: $camName\n" +
+                                                    "$camDesc\n" +
+                                                    "IP: $camIP")
                                     }
 
                                     //set violators in textview
-                                    textDetect.append(violatorsData)
+//                                    textDetect.append(violatorsData)
                                     //set camera details in textview
-                                    textCameraData.append(cameraData)
+//                                    textCameraData.append(cameraData)
                                     //set timestamp in textview
                                     tvTimestamp.append(ts)
                                     //set total violators in textview
@@ -424,28 +473,5 @@ class ClientFragment : Fragment() {
             }
         }
 
-        view.findViewById<Button>(R.id.button_unsubscribe).setOnClickListener {
-
-            if (mqttClient.isConnected()) {
-                mqttClient.unsubscribe(topic,
-                    object : IMqttActionListener {
-                        override fun onSuccess(asyncActionToken: IMqttToken?) {
-                            val msg = "Unsubscribed to: $topic"
-                            Log.d(this.javaClass.name, msg)
-
-                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-                        }
-
-                        override fun onFailure(
-                            asyncActionToken: IMqttToken?,
-                            exception: Throwable?
-                        ) {
-                            Log.d(this.javaClass.name, "Failed to unsubscribe: $topic")
-                        }
-                    })
-            } else {
-                Log.d(this.javaClass.name, "Impossible to unsubscribe, no server connected")
-            }
-        }
     }
 }

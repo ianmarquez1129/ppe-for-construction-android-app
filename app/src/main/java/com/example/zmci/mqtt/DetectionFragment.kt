@@ -17,6 +17,7 @@ import com.example.zmci.database.DatabaseHelper
 import com.example.zmci.mqtt.adapter.DetectionAdapter
 import kotlinx.android.synthetic.main.fragment_camera.*
 import kotlinx.android.synthetic.main.fragment_detection.*
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class DetectionFragment : Fragment() {
 
@@ -43,6 +44,7 @@ class DetectionFragment : Fragment() {
         //set List
         val detectionList = databaseHelper.getAllDetection(requireContext())
         // set adapter
+        detectionList.sortByDescending { it.id }
         detectionAdapter = DetectionAdapter(requireContext(), detectionList)
         //set find Id
         val rvReports: RecyclerView = rvDetection
