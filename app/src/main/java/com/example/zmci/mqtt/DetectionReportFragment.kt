@@ -26,6 +26,7 @@ class DetectionReportFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val image = arguments?.getString(DETECTION_IMAGE_KEY).toString()
+        val cameraName = arguments?.getString(DETECTION_CAMERA_NAME_KEY).toString()
         val camera = arguments?.getString(DETECTION_CAMERA_KEY).toString()
         val timestamp = arguments?.getString(DETECTION_TIMESTAMP_KEY).toString()
         val violators = arguments?.getString(DETECTION_VIOLATORS_KEY).toString()
@@ -47,12 +48,11 @@ class DetectionReportFragment : Fragment() {
             val cameraObject = JSONArray("[ $camera ]")
             for (i in 0 until cameraObject.length()) {
                 val itemCamera = cameraObject.getJSONObject(i)
-                val camName = itemCamera.getString("name")
-                val camDesc = itemCamera.getString("description")
+//                val camName = itemCamera.getString("name")
+//                val camDesc = itemCamera.getString("description")
                 val camIP = itemCamera.getString("ip_address")
                 cameraReport.append(
-                    "Camera name: $camName\n" +
-                            "$camDesc\n" +
+                    "Camera name: $cameraName\n" +
                             "IP: $camIP"
                 )
             }

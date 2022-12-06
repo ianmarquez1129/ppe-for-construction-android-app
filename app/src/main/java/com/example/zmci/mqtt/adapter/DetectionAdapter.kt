@@ -18,6 +18,7 @@ import com.example.zmci.mqtt.model.Detection
 class DetectionAdapter(val c: Context, val detectionList:MutableList<Detection>): RecyclerView.Adapter<DetectionAdapter.DetectionViewHolder>() {
 
     inner class DetectionViewHolder(val v: View, listener: onItemClickListener): RecyclerView.ViewHolder(v){
+        val rCameraName: TextView = v.findViewById(R.id.rCameraName)
         var rTimestamp: TextView = v.findViewById(R.id.rTimestamp)
         var rViolators: TextView = v.findViewById(R.id.rViolators)
         var rViolations: TextView = v.findViewById(R.id.rViolations)
@@ -39,6 +40,7 @@ class DetectionAdapter(val c: Context, val detectionList:MutableList<Detection>)
                     R.id.deleteReport->{
                         val newList = detectionList[adapterPosition]
                         position.image = newList.image
+                        position.cameraName = newList.cameraName
                         position.camera = newList.camera
                         position.timestamp = newList.timestamp
                         position.violators = newList.violators
@@ -85,6 +87,7 @@ class DetectionAdapter(val c: Context, val detectionList:MutableList<Detection>)
 
     override fun onBindViewHolder(holder: DetectionViewHolder, position: Int) {
         val newList = detectionList[position]
+        holder.rCameraName.text = newList.cameraName
         holder.rTimestamp.text = "Timestamp: ${newList.timestamp}"
         holder.rViolators.text = "Person: ${newList.total_violators}"
         holder.rViolations.text = "Detected PPE: ${newList.total_violations}"

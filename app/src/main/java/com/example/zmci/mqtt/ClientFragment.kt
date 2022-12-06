@@ -143,6 +143,7 @@ class ClientFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Get arguments passed by ConnectFragment
+        val cameraName = arguments?.getString(CAMERA_NAME_KEY).toString()
         val serverURI = arguments?.getString(MQTT_SERVER_URI_KEY).toString()
         val clientId = arguments?.getString(MQTT_CLIENT_ID_KEY).toString()
         val username = arguments?.getString(MQTT_USERNAME_KEY).toString()
@@ -291,11 +292,10 @@ class ClientFragment : Fragment() {
                                     //cameraData extract
                                     for (cd in 0 until cameraDataObject.length()) {
                                         val itemCD = cameraDataObject.getJSONObject(cd)
-                                        val camName = itemCD.getString("name")
-                                        val camDesc = itemCD.getString("description")
+//                                        val camName = itemCD.getString("name")
+//                                        val camDesc = itemCD.getString("description")
                                         val camIP = itemCD.getString("ip_address")
-                                        textCameraData.append("Camera Name: $camName\n" +
-                                                    "$camDesc\n" +
+                                        textCameraData.append("Camera Name: $cameraName\n" +
                                                     "IP: $camIP")
                                     }
 
@@ -328,6 +328,7 @@ class ClientFragment : Fragment() {
                                 //Save data to database
                                 val detectionDB = Detection()
                                 detectionDB.image = imageData
+                                detectionDB.cameraName = cameraName
                                 detectionDB.camera = cameraData
                                 detectionDB.timestamp = ts
                                 detectionDB.violators = violatorsData
@@ -351,7 +352,7 @@ class ClientFragment : Fragment() {
                                     val notification =
                                         NotificationCompat.Builder(requireContext(), CHANNEL_ID2)
                                             .setContentTitle("Detection alert")
-                                            .setContentText("Review logs for violation details")
+                                            .setContentText("Review logs for details")
                                             .setSmallIcon(R.drawable.ic_detect)
                                             .setPriority(NotificationCompat.PRIORITY_HIGH)
                                             .setContentIntent(pendingIntent)

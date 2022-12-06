@@ -54,6 +54,7 @@ class CameraFragment : Fragment() {
         recv.adapter = adapter
         adapter.setOnItemClickListener(object : CameraAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
+                val cameraName  = cameraList[position].cameraName
                 val serverURI   = cameraList[position].MQTT_SERVER_URI
                 val clientID    = cameraList[position].MQTT_CLIENT_ID
                 val username    = cameraList[position].MQTT_USERNAME
@@ -61,6 +62,7 @@ class CameraFragment : Fragment() {
                 val topic       = cameraList[position].MQTT_TOPIC
 
                 val mqttCredentialsBundle = bundleOf(
+                    CAMERA_NAME_KEY        to cameraName,
                     MQTT_SERVER_URI_KEY    to serverURI,
                     MQTT_CLIENT_ID_KEY     to clientID,
                     MQTT_USERNAME_KEY      to username,

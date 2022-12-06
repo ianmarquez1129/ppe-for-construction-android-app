@@ -57,6 +57,7 @@ class DetectionFragment : Fragment() {
         adapter.setOnItemClickListener(object : DetectionAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
                 val image             = detectionList[position].image
+                val cameraName        = detectionList[position].cameraName
                 val camera            = detectionList[position].camera
                 val timestamp         = detectionList[position].timestamp
                 val violators         = detectionList[position].violators
@@ -65,6 +66,7 @@ class DetectionFragment : Fragment() {
 
                 val detectionBundle = bundleOf(
                     DETECTION_IMAGE_KEY      to image,
+                    DETECTION_CAMERA_NAME_KEY to cameraName,
                     DETECTION_CAMERA_KEY     to camera,
                     DETECTION_TIMESTAMP_KEY  to timestamp,
                     DETECTION_VIOLATORS_KEY  to violators,

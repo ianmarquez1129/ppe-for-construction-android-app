@@ -29,6 +29,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     private val CREATE_DETECTION_TABLE = ("CREATE TABLE " + TABLE_DETECTION + "("
             + COLUMN_DETECTION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_DETECTION_IMAGE + " TEXT,"
+            + COLUMN_DETECTION_CAMERA_NAME + " TEXT,"
             + COLUMN_DETECTION_CAMERA + " TEXT,"
             + COLUMN_DETECTION_TIMESTAMP + " TEXT,"
             + COLUMN_DETECTION_VIOLATORS + " TEXT,"
@@ -355,6 +356,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 val detection = Detection()
                 detection.id = cursor.getInt(cursor.getColumnIndex(COLUMN_DETECTION_ID))
                 detection.image = cursor.getString(cursor.getColumnIndex(COLUMN_DETECTION_IMAGE))
+                detection.cameraName = cursor.getString(cursor.getColumnIndex(COLUMN_DETECTION_CAMERA_NAME))
                 detection.camera = cursor.getString(cursor.getColumnIndex(COLUMN_DETECTION_CAMERA))
                 detection.timestamp = cursor.getString(cursor.getColumnIndex(COLUMN_DETECTION_TIMESTAMP))
                 detection.violators = cursor.getString(cursor.getColumnIndex(COLUMN_DETECTION_VIOLATORS))
@@ -379,6 +381,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
         val values = ContentValues()
         values.put(/* key = */ COLUMN_DETECTION_IMAGE, /* value = */ detection.image)
+        values.put(/* key = */ COLUMN_DETECTION_CAMERA_NAME, /* value = */ detection.cameraName)
         values.put(/* key = */ COLUMN_DETECTION_CAMERA, /* value = */ detection.camera)
         values.put(/* key = */ COLUMN_DETECTION_TIMESTAMP, /* value = */ detection.timestamp)
         values.put(/* key = */ COLUMN_DETECTION_VIOLATORS, /* value = */ detection.violators)
@@ -436,7 +439,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     companion object {
 
         // Database Version
-        private val DATABASE_VERSION = 7
+        private val DATABASE_VERSION = 8
 
         // Database Name
         private val DATABASE_NAME = "UserManager.db"
@@ -468,6 +471,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         // Detection Table Columns names
         private val COLUMN_DETECTION_ID = "detection_id"
         private val COLUMN_DETECTION_IMAGE = "detection_image"
+        private val COLUMN_DETECTION_CAMERA_NAME = "detection_camera_name"
         private val COLUMN_DETECTION_CAMERA = "detection_camera"
         private val COLUMN_DETECTION_TIMESTAMP = "detection_timestamp"
         private val COLUMN_DETECTION_VIOLATORS = "detection_violators"

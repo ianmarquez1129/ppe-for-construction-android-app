@@ -3,6 +3,7 @@ package com.example.zmci.mqtt.model
 data class Detection(
     var id: Int = 0,
     var image: String = "",
+    var cameraName: String = "",
     var camera: String = "",
     var timestamp:String = "",
     var violators:String = "",
