@@ -276,9 +276,11 @@ class ClientFragment : Fragment() {
                                         }
 
                                         /**********/
+                                        val personUniqueID = item.getString("id")
                                         val itemViolations = item.getString("violations")
                                         val itemViolationsObject = JSONArray(itemViolations)
-                                        textDetect.append("\nDetections: \n")
+                                        textDetect.append("\nPerson ID: $personUniqueID \n")
+                                        textDetect.append("Detections: \n")
 
                                         for (k in 0 until itemViolationsObject.length()) {
                                             val itemV = itemViolationsObject.getJSONObject(k)

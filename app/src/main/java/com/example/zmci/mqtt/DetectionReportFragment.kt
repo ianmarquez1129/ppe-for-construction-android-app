@@ -82,9 +82,11 @@ class DetectionReportFragment : Fragment() {
                         )
                     }
 
+                    val personUniqueID = itemViolators.getString("id")
                     val violations = itemViolators.getString("violations")
                     val violationsObject = JSONArray(violations)
-                    violatorsReport.append("\nDetections: \n")
+                    violatorsReport.append("\nPerson ID: $personUniqueID \n")
+                    violatorsReport.append("Detections: \n")
                     try {
                         for (l in 0 until violationsObject.length()) {
                             val itemV = violationsObject.getJSONObject(l)
