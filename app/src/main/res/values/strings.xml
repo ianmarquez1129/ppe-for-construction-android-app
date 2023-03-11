@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ZMCI</string>
+    <string name="app_name">Safety Monitoring App</string>
     <string name="text_accounts">All Accounts</string>
     <string name="hint_name">Name</string>
     <string name="hint_email">Email</string>
