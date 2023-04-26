@@ -26,5 +26,14 @@
         android:layout_margin="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnPDF"
+        android:src="@drawable/ic_pdf"
+        app:tint="@color/black"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>
