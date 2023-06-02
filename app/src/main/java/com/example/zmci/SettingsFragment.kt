@@ -13,6 +13,11 @@ import org.json.JSONObject
 
 class SettingsActivity : AppCompatActivity() {
 
+    /*
+        SettingsActivity Methods:
+            - onCreate      (savedInstanceState: Bundle?)
+     */
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_settings)
@@ -153,6 +158,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
+        /*
+
         val gson = Gson()
         val newPreferences = "{\"ppe_preferences\":" + JSONObject(gson.toJson(ppePreferences)).toString() + "}"
 
@@ -240,10 +247,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 e.printStackTrace()
             }
         }.start()
+
+         */
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+
+        /*
+
         if (mqttClient.isConnected()) {
             // Disconnect from MQTT Broker
             mqttClient.disconnect(object : IMqttActionListener {
@@ -260,5 +272,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         } else {
             Log.d(this.javaClass.name, "Impossible to disconnect, no server connected")
         }
+
+        */
     }
 }

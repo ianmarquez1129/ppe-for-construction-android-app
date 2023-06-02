@@ -6,6 +6,11 @@ import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 
 class SplashFragment : AppCompatActivity() {
+
+    /*
+        SplashFragment Methods:
+            - onCreate      (savedInstanceState: Bundle?)
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_splash)

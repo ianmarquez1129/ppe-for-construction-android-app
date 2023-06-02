@@ -18,6 +18,17 @@ import com.google.android.material.textfield.TextInputLayout
 
 class RegisterFragment : AppCompatActivity(), View.OnClickListener {
 
+    /*
+        RegisterFragment Methods:
+            - onCreate              (savedInstanceState: Bundle?)
+            - initViews             ()
+            - initListeners         ()
+            - initObjects           ()
+            - onClick               (v: View)
+            - postDataToSQLite      ()
+            - emptyInputEditText    ()
+     */
+
     private val activity = this@RegisterFragment
 
     private lateinit var nestedScrollView: NestedScrollView

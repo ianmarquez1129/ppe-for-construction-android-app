@@ -21,6 +21,18 @@ import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : AppCompatActivity(), View.OnClickListener {
 
+    /*
+        LoginFragment Methods:
+            - onCreate              ()
+            - initViews             ()
+            - initPreferences       ()
+            - initListeners         ()
+            - initObjects           ()
+            - onClick               ()
+            - verifyFromSQLite      ()
+            - emptyInputEditText    ()
+     */
+
     private val activity = this@LoginFragment
 
     private lateinit var nestedScrollView: NestedScrollView
