@@ -42,6 +42,17 @@ import kotlinx.android.synthetic.main.fragment_client.*
 
 class MainActivity : AppCompatActivity() {
 
+    /*
+        MainActivity Methods:
+            - onCreate                      (savedInstanceState: Bundle?)
+            - onUserLeaveHint               ()
+            - isConnected                   ()
+            - createNotificationChannel     ()
+            - onCreateOptionsMenu           (menu: Menu)
+            - onOptionsItemSelected         (item: MenuItem)
+            - onSupportNavigateUp           ()
+    */
+
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var databaseHelper: DatabaseHelper
@@ -93,16 +104,6 @@ class MainActivity : AppCompatActivity() {
 
         navUsername.text = str.toString()
 
-//        DatabaseHelper.TABLE_USER, //Table to query
-//        columns, //columns to return
-//        selection, //columns for the WHERE clause
-//        selectionArgs,
-//        val dbManager = DatabaseHelper(this)
-//        val email = str.toString()
-//        val password = userPass.toString()
-//
-//        val name = dbManager.checkUser(email, password)
-
         //MQTT starts here
         if (!isConnected()) {
             Log.d(this.javaClass.name, "Internet connection NOT available")
@@ -114,28 +115,6 @@ class MainActivity : AppCompatActivity() {
             ).show()
         }
         //MQTT ends
-
-        //notification starts
-//        createNotificationChannel()
-//
-//        val intentNotify = Intent(this,ClientFragment::class.java)
-//        val pendingIntent = TaskStackBuilder.create(this).run {
-//            addNextIntentWithParentStack(intentNotify)
-//            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
-//        }
-//        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-//            .setContentTitle("PPE notification")
-//            .setContentText("Violation alert")
-//            .setSmallIcon(R.drawable.ic_warning)
-//            .setPriority(NotificationCompat.PRIORITY_HIGH)
-//            .setContentIntent(pendingIntent)
-//            .build()
-//
-//        val notificationManager = NotificationManagerCompat.from(this)
-
-//        button_subscribe.setOnClickListener {
-//        notificationManager.notify(NOTIFICATION_ID, notification)
-//        }
 
         //notification ends
 

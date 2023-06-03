@@ -15,6 +15,16 @@ import com.example.zmci.model.User
 
 class UsersListFragment : AppCompatActivity() {
 
+    /*
+        UsersListFragment Methods:
+            - onCreate          (savedInstanceState: Bundle?)
+            - initViews         ()
+            - initObjects       ()
+
+        UsersListFragment Classes:
+            - GetDataFromSQLite
+     */
+
     private val activity = this@UsersListFragment
     private lateinit var textViewName: AppCompatTextView
     private lateinit var recyclerViewUsers: RecyclerView
