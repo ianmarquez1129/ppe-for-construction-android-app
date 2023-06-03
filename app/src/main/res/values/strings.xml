@@ -65,4 +65,12 @@
     <string name="reports">Reports</string>
     <string name="configure">Configure</string>
     <string name="logs">Logs</string>
+
+    <string name="description_zoom_touch_close">Expanded Image</string>
+    <string name="person">Person</string>
+    <string name="detected_ppe">Detected PPE</string>
+    <string name="details">Details</string>
+    <string name="camera_details">Camera Details</string>
+    <string name="connect">Connect</string>
+    <string name="detailed_information">Detailed Information</string>
 </resources>
