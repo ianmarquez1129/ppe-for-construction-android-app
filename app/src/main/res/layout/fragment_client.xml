@@ -34,7 +34,7 @@
                 android:id="@+id/button_subscribe"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Connect"
+                android:text="@string/connect"
                 app:layout_constraintBottom_toTopOf="@+id/button_disconnect"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -88,7 +88,7 @@
             android:textColor="@color/white"
             android:textSize="19sp"
             android:textStyle="bold"
-            android:text="Detailed Information"/>
+            android:text="@string/detailed_information"/>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -123,7 +123,7 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="32dp"
-                    android:text="Camera Details"
+                    android:text="@string/camera_details"
                     android:textSize="16sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -133,7 +133,7 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="32dp"
-                    android:text="Total Violators"
+                    android:text="@string/person"
                     android:textSize="16sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -143,7 +143,7 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="32dp"
-                    android:text="Total Violations"
+                    android:text="@string/detected_ppe"
                     android:textSize="16sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -153,7 +153,7 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="32dp"
-                    android:text="Details"
+                    android:text="@string/details"
                     android:textSize="16sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>

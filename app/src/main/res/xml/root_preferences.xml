@@ -49,7 +49,7 @@
             android:key="server_uri"
             android:title="Server URI"
             app:useSimpleSummaryProvider="true"
-            android:defaultValue="tcp://192.168.1.2:1883"/>
+            android:defaultValue="tcp://10.42.0.1:1883"/>
         <EditTextPreference
             android:key="topic"
             android:title="Topic"

@@ -89,7 +89,7 @@ class ClientFragment : Fragment() {
         val intentNotify = Intent(context, MainActivity::class.java)
         val pendingIntent = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(intentNotify)
-            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+            getPendingIntent(0, PendingIntent.FLAG_MUTABLE)
         }
         val notification = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
             .setContentTitle("PPE notification")
@@ -349,7 +349,7 @@ class ClientFragment : Fragment() {
                                     val intentNotify = Intent(context, MainActivity::class.java)
                                     val pendingIntent = TaskStackBuilder.create(context).run {
                                         addNextIntentWithParentStack(intentNotify)
-                                        getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+                                        getPendingIntent(0, PendingIntent.FLAG_MUTABLE)
                                     }
                                     val notification =
                                         NotificationCompat.Builder(requireContext(), CHANNEL_ID2)
