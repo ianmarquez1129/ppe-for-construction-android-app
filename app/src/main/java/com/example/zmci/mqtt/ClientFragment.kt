@@ -258,21 +258,39 @@ class ClientFragment : Fragment() {
                                         // extract itemPersonInfo
                                         val itemPersonInfoObject = JSONArray(itemPersonInfo)
 
-                                        for (j in 0 until itemPersonInfoObject.length()) {
-                                            val itemPI = itemPersonInfoObject.getJSONObject(j)
-                                            val personId = itemPI.getString("person_id")
-                                            val firstName = itemPI.getString("first_name")
-                                            val middleName = itemPI.getString("middle_name")
-                                            val lastName = itemPI.getString("last_name")
-                                            val jobTitle = itemPI.getString("job_title")
-                                            val overlaps = itemPI.getString("overlaps")
+                                        if (itemPersonInfoObject.length() == 0) {
                                             textDetect.append(
-                                                "ID: $personId\n" +
-                                                        "Name: $firstName $middleName $lastName\n" +
-                                                        "Job Title: $jobTitle\n" +
-                                                        "Overlaps: $overlaps\n" +
-                                                        "-----\n"
+                                                "Unknown person\n"
                                             )
+                                        }
+
+                                        for (j in 0 until itemPersonInfoObject.length()) {
+                                            val itemLength = itemPersonInfoObject.getJSONObject(j).length()
+                                            if (itemLength > 1) {
+                                                val itemPI = itemPersonInfoObject.getJSONObject(j)
+                                                val personId = itemPI.getString("person_id")
+                                                val firstName = itemPI.getString("first_name")
+                                                val middleName = itemPI.getString("middle_name")
+                                                val lastName = itemPI.getString("last_name")
+                                                val jobTitle = itemPI.getString("job_title")
+                                                val overlaps = itemPI.getString("overlaps")
+                                                textDetect.append(
+                                                    "ID: $personId\n" +
+                                                            "Name: $firstName $middleName $lastName\n" +
+                                                            "Job Title: $jobTitle\n" +
+                                                            "Overlaps: $overlaps\n" +
+                                                            "-----\n"
+                                                )
+                                            } else {
+                                                val itemPI = itemPersonInfoObject.getJSONObject(j)
+                                                val overlaps = itemPI.getString("overlaps")
+                                                textDetect.append(
+                                                    "Unknown person\n" +
+                                                            "Overlaps: $overlaps\n" +
+                                                            "-----\n"
+                                                )
+                                            }
+
                                         }
 
                                         /**********/
