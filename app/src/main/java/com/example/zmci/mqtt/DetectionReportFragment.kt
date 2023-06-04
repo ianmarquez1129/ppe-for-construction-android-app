@@ -84,21 +84,39 @@ class DetectionReportFragment : Fragment() {
                     val personInfo = itemViolators.getString("person_info")
                     val personInfoObject = JSONArray(personInfo)
 
-                    for (k in 0 until personInfoObject.length()) {
-                        val itemPI = personInfoObject.getJSONObject(k)
-                        val personID = itemPI.getString("person_id")
-                        val firstName = itemPI.getString("first_name")
-                        val middleName = itemPI.getString("middle_name")
-                        val lastName = itemPI.getString("last_name")
-                        val jobTitle = itemPI.getString("job_title")
-                        val overlaps = itemPI.getString("overlaps")
+                    if (personInfoObject.length() == 0) {
                         violatorsReport.append(
-                            "ID: $personID\n" +
-                                    "Name: $firstName $middleName $lastName\n" +
-                                    "Job Title: $jobTitle\n" +
-                                    "Overlaps: $overlaps\n" +
-                                    "-----\n"
+                            "Unknown person\n"
                         )
+                    }
+
+                    for (k in 0 until personInfoObject.length()) {
+                        val itemPILength = personInfoObject.getJSONObject(k).length()
+                        if (itemPILength > 1) {
+                            val itemPI = personInfoObject.getJSONObject(k)
+                            val personID = itemPI.getString("person_id")
+                            val firstName = itemPI.getString("first_name")
+                            val middleName = itemPI.getString("middle_name")
+                            val lastName = itemPI.getString("last_name")
+                            val jobTitle = itemPI.getString("job_title")
+                            val overlaps = itemPI.getString("overlaps")
+                            violatorsReport.append(
+                                "ID: $personID\n" +
+                                        "Name: $firstName $middleName $lastName\n" +
+                                        "Job Title: $jobTitle\n" +
+                                        "Overlaps: $overlaps\n" +
+                                        "-----\n"
+                            )
+                        } else {
+                            val itemPI = personInfoObject.getJSONObject(j)
+                            val overlaps = itemPI.getString("overlaps")
+                            violatorsReport.append(
+                                "Unknown person\n" +
+                                        "Overlaps: $overlaps\n" +
+                                        "-----\n"
+                            )
+                        }
+
                     }
 
                     val personUniqueID = itemViolators.getString("id")
