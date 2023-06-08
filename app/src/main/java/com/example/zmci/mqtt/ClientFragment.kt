@@ -1,5 +1,6 @@
 package com.example.zmci.mqtt
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -8,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.util.Base64
@@ -16,10 +18,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.zmci.MainActivity
@@ -44,37 +48,8 @@ class ClientFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Initialize the databaseHelper
         databaseHelper = DatabaseHelper(this.requireContext())
-//        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//                if (mqttClient.isConnected()) {
-//                    // Disconnect from MQTT Broker
-//                    mqttClient.disconnect(object : IMqttActionListener {
-//                        override fun onSuccess(asyncActionToken: IMqttToken?) {
-//                            Log.d(this.javaClass.name, "Disconnected")
-//
-//                            Toast.makeText(
-//                                context,
-//                                "MQTT Disconnection success",
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//
-//                            // Disconnection success, come back to Connect Fragment
-//                            findNavController().navigate(R.id.action_ClientFragment_to_ConnectFragment)
-//                        }
-//
-//                        override fun onFailure(
-//                            asyncActionToken: IMqttToken?,
-//                            exception: Throwable?
-//                        ) {
-//                            Log.d(this.javaClass.name, "Failed to disconnect")
-//                        }
-//                    })
-//                } else {
-//                    Log.d(this.javaClass.name, "Impossible to disconnect, no server connected")
-//                }
-//            }
-//        })
     }
 
     val CHANNEL_ID = "channelID"
@@ -83,6 +58,7 @@ class ClientFragment : Fragment() {
     val CHANNEL_NAME2= "channelName2"
     val NOTIFICATION_ID = 1
     val NOTIFICATION_ID2= 2
+    @SuppressLint("MissingPermission")
     override fun onDestroy() {
         super.onDestroy()
         createNotificationChannel()
@@ -181,8 +157,6 @@ class ClientFragment : Fragment() {
                         override fun onSuccess(asyncActionToken: IMqttToken?) {
                             Log.d(this.javaClass.name, "Connection success")
 
-//                            Toast.makeText(context, "MQTT Connection success", Toast.LENGTH_SHORT)
-//                                .show()
                         }
 
                         override fun onFailure(
@@ -200,17 +174,16 @@ class ClientFragment : Fragment() {
                                 Toast.LENGTH_SHORT
                             ).show()
 
-                            // Come back to Connect Fragment
+                            // Go back to Connect Fragment
                             findNavController().navigate(R.id.action_ClientFragment_to_CameraFragment)
                         }
                     },
                     object : MqttCallback {
+                        @SuppressLint("SetTextI18n", "MissingPermission")
                         @RequiresApi(Build.VERSION_CODES.O)
                         override fun messageArrived(topic: String?, message: MqttMessage?) {
                             val msg = "Receive message: ${message.toString()} from topic: $topic"
                             Log.d(this.javaClass.name, msg)
-
-//                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
 
                             try {
                                 val jsonData = "[ ${message.toString()} ]"
@@ -224,7 +197,7 @@ class ClientFragment : Fragment() {
                                 //get camera in json
                                 val cameraData = imageObj.getString("camera")
                                 //get timestamp in json
-                                val timestampData = imageObj.getString("timestamp")
+                                //val timestampData = imageObj.getString("timestamp")
                                 //total violations
                                 val totalViolations = imageObj.getString("total_violations")
                                 //total violators
@@ -235,100 +208,43 @@ class ClientFragment : Fragment() {
                                 //cameraData parse
                                 val cameraDataObject = JSONArray("[ $cameraData ]")
 
+                                // Process the received data time
                                 val curTime = LocalDateTime.now()
-
                                 val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
                                 val ts = curTime.format(formatter)
                                 try {
 
-                                    //clear text after every loop
-                                    tvTimestamp.text = "Timestamp: "
-                                    textCameraData.text = "Camera Data: \n"
-                                    textTotalViolators.text = "Person: "
-                                    textTotalViolations.text = "Detected PPE: "
-                                    textDetect.text = "Details: \n"
+                                    // Clear LinearLayout views for the new incoming data
+                                    llCameraDetails.removeAllViews()
+                                    llDetails.removeAllViews()
+                                    llDetails2.removeAllViews()
 
-                                    //violators extract
-                                    for (i in 0 until violatorsObject.length()) {
-                                        val item = violatorsObject.getJSONObject(i)
-//                                        val itemId = item.getString("id")
-//                                        textDetect.append("ID: $itemId\n")
-                                        /**********/
-                                        val itemPersonInfo = item.getString("person_info")
-                                        // extract itemPersonInfo
-                                        val itemPersonInfoObject = JSONArray(itemPersonInfo)
+                                    // Clear TextView after every loop and
+                                    // setup a new one for new incoming data
+                                    tvTimestamp.text = "Timestamp: $ts"
+                                    textCameraData.text = "Camera details:"
+                                    textTotalViolators.text = "Person: $totalViolators"
+                                    textTotalViolations.text = "Detected PPE: $totalViolations"
+                                    textDetect.text = "Details:"
 
-                                        if (itemPersonInfoObject.length() == 0) {
-                                            textDetect.append(
-                                                "Unknown person\n"
-                                            )
-                                        }
-
-                                        for (j in 0 until itemPersonInfoObject.length()) {
-                                            val itemLength = itemPersonInfoObject.getJSONObject(j).length()
-                                            if (itemLength > 1) {
-                                                val itemPI = itemPersonInfoObject.getJSONObject(j)
-                                                val personId = itemPI.getString("person_id")
-                                                val firstName = itemPI.getString("first_name")
-                                                val middleName = itemPI.getString("middle_name")
-                                                val lastName = itemPI.getString("last_name")
-                                                val jobTitle = itemPI.getString("job_title")
-                                                val overlaps = itemPI.getString("overlaps")
-                                                textDetect.append(
-                                                    "ID: $personId\n" +
-                                                            "Name: $firstName $middleName $lastName\n" +
-                                                            "Job Title: $jobTitle\n" +
-                                                            "Overlaps: $overlaps\n" +
-                                                            "-----\n"
-                                                )
-                                            } else {
-                                                val itemPI = itemPersonInfoObject.getJSONObject(j)
-                                                val overlaps = itemPI.getString("overlaps")
-                                                textDetect.append(
-                                                    "Unknown person\n" +
-                                                            "Overlaps: $overlaps\n" +
-                                                            "-----\n"
-                                                )
-                                            }
-
-                                        }
-
-                                        /**********/
-                                        val personUniqueID = item.getString("id")
-                                        val itemViolations = item.getString("violations")
-                                        val itemViolationsObject = JSONArray(itemViolations)
-                                        textDetect.append("\nPerson ID: $personUniqueID \n")
-                                        textDetect.append("Detections: \n")
-
-                                        for (k in 0 until itemViolationsObject.length()) {
-                                            val itemV = itemViolationsObject.getJSONObject(k)
-                                            val className = itemV.getString("class_name")
-                                            textDetect.append("$className\n")
-                                        }
-                                        textDetect.append("-----\n")
-                                        /**********/
-
-                                    }
                                     //cameraData extract
                                     for (cd in 0 until cameraDataObject.length()) {
                                         val itemCD = cameraDataObject.getJSONObject(cd)
-//                                        val camName = itemCD.getString("name")
-//                                        val camDesc = itemCD.getString("description")
                                         val camIP = itemCD.getString("ip_address")
-                                        textCameraData.append("Camera Name: $cameraName\n" +
-                                                    "IP: $camIP")
+                                        // Create a TextView for CameraName and IP address
+                                        val tvCameraDetails = TextView(context)
+                                        tvCameraDetails.layoutParams = ViewGroup.LayoutParams(
+                                            ViewGroup.LayoutParams.MATCH_PARENT,
+                                            ViewGroup.LayoutParams.WRAP_CONTENT
+                                        )
+                                        tvCameraDetails.textSize = 20f
+                                        tvCameraDetails.typeface = Typeface.DEFAULT_BOLD
+                                        tvCameraDetails.text =
+                                            "Camera Name: $cameraName\n" +
+                                                    "IP: $camIP"
+                                        // Display the TextView in LinearLayout view
+                                        llCameraDetails.addView(tvCameraDetails)
                                     }
-
-                                    //set violators in textview
-//                                    textDetect.append(violatorsData)
-                                    //set camera details in textview
-//                                    textCameraData.append(cameraData)
-                                    //set timestamp in textview
-                                    tvTimestamp.append(ts)
-                                    //set total violators in textview
-                                    textTotalViolators.append(totalViolators)
-                                    //set total violations in textview
-                                    textTotalViolations.append(totalViolations)
 
                                     //decode base64 to image
                                     val decodedByte = Base64.decode(imageData, Base64.DEFAULT)
@@ -341,10 +257,254 @@ class ClientFragment : Fragment() {
                                     //set image in imageview
                                     imgDetect.setImageBitmap(bitmap)
 
+                                    //violators extract
+                                    for (i in 0 until violatorsObject.length()) {
+                                        val item = violatorsObject.getJSONObject(i)
+                                        val itemPersonInfo = item.getString("person_info")
+                                        // extract itemPersonInfo
+                                        val itemPersonInfoObject = JSONArray(itemPersonInfo)
+
+                                        // If the current person has no 'face' and is not recognized,
+                                        // it is considered "Unknown person".
+                                        if (itemPersonInfoObject.length() == 0) {
+                                            // Create TextView for "Unknown person"
+                                            val tvPerson = TextView(context)
+                                            tvPerson.layoutParams = ViewGroup.LayoutParams(
+                                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                                ViewGroup.LayoutParams.WRAP_CONTENT
+                                            )
+                                            tvPerson.textSize = 20f
+                                            tvPerson.typeface = Typeface.DEFAULT_BOLD
+                                            tvPerson.text = "Unknown person"
+                                            // Display the TextView in LinearLayout view
+                                            if (i % 2 == 0) {
+                                                llDetails.addView(tvPerson)
+                                            } else {
+                                                llDetails2.addView(tvPerson)
+                                            }
+                                        }
+
+                                        // If the current person has a detected 'face'...
+                                        for (j in 0 until itemPersonInfoObject.length()) {
+                                            val itemLength = itemPersonInfoObject.getJSONObject(j).length()
+                                            // If the person has been recognized via face recognition
+                                            if (itemLength > 1) {
+                                                val itemPI = itemPersonInfoObject.getJSONObject(j)
+                                                val personId = itemPI.getString("person_id")
+                                                val firstName = itemPI.getString("first_name")
+                                                val middleName = itemPI.getString("middle_name")
+                                                val lastName = itemPI.getString("last_name")
+                                                val jobTitle = itemPI.getString("job_title")
+                                                val overlaps = itemPI.getString("overlaps")
+                                                val tvPersonInfo = TextView(context)
+                                                tvPersonInfo.layoutParams = ViewGroup.LayoutParams(
+                                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                                    ViewGroup.LayoutParams.WRAP_CONTENT
+                                                )
+                                                tvPersonInfo.textSize = 20f
+                                                tvPersonInfo.typeface = Typeface.DEFAULT_BOLD
+                                                tvPersonInfo.text =
+                                                    "ID: $personId\n" +
+                                                            "Name: $firstName $middleName $lastName\n" +
+                                                            "Job Title: $jobTitle\n" +
+                                                            "Overlaps: $overlaps"
+                                                if (i % 2 == 0) {
+                                                    llDetails.addView(tvPersonInfo)
+                                                } else {
+                                                    llDetails2.addView(tvPersonInfo)
+                                                }
+
+                                            }
+                                            // If the person is not recognized via 'face recognition'
+                                            // the person is considered "Unknown"
+                                            else {
+                                                val itemPI = itemPersonInfoObject.getJSONObject(j)
+                                                val overlaps = itemPI.getString("overlaps")
+                                                // Create TextView for "Unknown person"
+                                                val tvPersonUnknown = TextView(context)
+                                                tvPersonUnknown.layoutParams =
+                                                    ViewGroup.LayoutParams(
+                                                        ViewGroup.LayoutParams.MATCH_PARENT,
+                                                        ViewGroup.LayoutParams.WRAP_CONTENT
+                                                    )
+                                                tvPersonUnknown.textSize = 20f
+                                                tvPersonUnknown.typeface = Typeface.DEFAULT_BOLD
+                                                tvPersonUnknown.text =
+                                                    "Unknown person\n" +
+                                                            "Overlaps: $overlaps"
+                                                // Display the TextView in LinearLayout view
+                                                if (i % 2 == 0) {
+                                                    llDetails.addView(tvPersonUnknown)
+                                                } else {
+                                                    llDetails2.addView(tvPersonUnknown)
+                                                }
+
+                                            }
+
+                                        }
+
+                                        // Set the person's ID, and detections
+                                        val personUniqueID = item.getString("id")
+                                        val itemViolations = item.getString("violations")
+                                        val itemViolationsObject = JSONArray(itemViolations)
+                                        val tvPersonID = TextView(context)
+                                        // Create a TextView for person's ID and detections
+                                        tvPersonID.layoutParams = ViewGroup.LayoutParams(
+                                            ViewGroup.LayoutParams.MATCH_PARENT,
+                                            ViewGroup.LayoutParams.WRAP_CONTENT
+                                        )
+                                        tvPersonID.textSize = 20f
+                                        tvPersonID.typeface = Typeface.DEFAULT_BOLD
+                                        tvPersonID.text = "\nPerson ID: $personUniqueID \n\nDetections:"
+                                        // Display the TextView in LinearLayout view
+                                        if (i % 2 == 0) {
+                                            llDetails.addView(tvPersonID)
+                                        } else {
+                                            llDetails2.addView(tvPersonID)
+                                        }
+
+                                        try {
+                                            // Processing of detected PPE with their corresponding color coding
+                                            for (k in 0 until itemViolationsObject.length()) {
+                                                // Obtain the detections from JSON
+                                                val itemV = itemViolationsObject.getJSONObject(k)
+                                                val className = itemV.getString("class_name")
+                                                // Create TextView for each detections
+                                                val tvPPE = TextView(context)
+                                                tvPPE.layoutParams = ViewGroup.LayoutParams(
+                                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                                    ViewGroup.LayoutParams.WRAP_CONTENT
+                                                )
+                                                tvPPE.textSize = 20f
+                                                tvPPE.typeface = Typeface.DEFAULT_BOLD
+                                                tvPPE.text = className
+                                                // Setting the color coding of each PPE detections
+                                                try {
+                                                    when (className) {
+                                                        "helmet" -> {
+                                                            tvPPE.setTextColor(
+                                                                ContextCompat.getColor(
+                                                                    requireContext(),
+                                                                    R.color.helmet
+                                                                )
+                                                            )
+                                                        }
+
+                                                        "no helmet" -> {
+                                                            tvPPE.setTextColor(
+                                                                ContextCompat.getColor(
+                                                                    requireContext(),
+                                                                    R.color.no_helmet
+                                                                )
+                                                            )
+                                                        }
+
+                                                        "glasses" -> {
+                                                            tvPPE.setTextColor(
+                                                                ContextCompat.getColor(
+                                                                    requireContext(),
+                                                                    R.color.glasses
+                                                                )
+                                                            )
+                                                        }
+
+                                                        "no glasses" -> {
+                                                            tvPPE.setTextColor(
+                                                                ContextCompat.getColor(
+                                                                    requireContext(),
+                                                                    R.color.no_glasses
+                                                                )
+                                                            )
+                                                        }
+
+                                                        "vest" -> {
+                                                            tvPPE.setTextColor(
+                                                                ContextCompat.getColor(
+                                                                    requireContext(),
+                                                                    R.color.vest
+                                                                )
+                                                            )
+                                                        }
+
+                                                        "no vest" -> {
+                                                            tvPPE.setTextColor(
+                                                                ContextCompat.getColor(
+                                                                    requireContext(),
+                                                                    R.color.no_vest
+                                                                )
+                                                            )
+                                                        }
+
+                                                        "gloves" -> {
+                                                            tvPPE.setTextColor(
+                                                                ContextCompat.getColor(
+                                                                    requireContext(),
+                                                                    R.color.gloves
+                                                                )
+                                                            )
+                                                        }
+
+                                                        "no gloves" -> {
+                                                            tvPPE.setTextColor(
+                                                                ContextCompat.getColor(
+                                                                    requireContext(),
+                                                                    R.color.no_gloves
+                                                                )
+                                                            )
+                                                        }
+
+                                                        "boots" -> {
+                                                            tvPPE.setTextColor(
+                                                                ContextCompat.getColor(
+                                                                    requireContext(),
+                                                                    R.color.boots
+                                                                )
+                                                            )
+                                                        }
+
+                                                        "no boots" -> {
+                                                            tvPPE.setTextColor(
+                                                                ContextCompat.getColor(
+                                                                    requireContext(),
+                                                                    R.color.no_boots
+                                                                )
+                                                            )
+                                                        }
+                                                    }
+                                                    // Display the TextView in LinearLayout view
+                                                    if (i % 2 == 0) {
+                                                        llDetails.addView(tvPPE)
+                                                    } else {
+                                                        llDetails2.addView(tvPPE)
+                                                    }
+                                                } catch (e: Exception) {
+                                                    e.printStackTrace()
+                                                }
+                                            }
+                                        } catch (e: Exception) {
+                                            e.printStackTrace()
+                                        }
+                                        // Horizontal line separator
+                                        val tvLine = TextView(context)
+                                        tvLine.layoutParams = ViewGroup.LayoutParams(
+                                            ViewGroup.LayoutParams.MATCH_PARENT,
+                                            10
+                                        )
+                                        tvLine.setBackgroundColor(
+                                            ContextCompat.getColor(
+                                                requireContext(),
+                                                R.color.black
+                                            ))
+                                        // Display of Horizontal Line in LinearLayout view
+                                        if (i % 2 == 0) {
+                                            llDetails.addView(tvLine)
+                                        } else {
+                                            llDetails2.addView(tvLine)
+                                        }
+                                    }
                                 } catch (e : Exception) {
                                     e.printStackTrace()
                                 }
-
                                 //Save data to database
                                 val detectionDB = Detection()
                                 detectionDB.image = imageData
@@ -355,7 +515,6 @@ class ClientFragment : Fragment() {
                                 detectionDB.total_violations = totalViolations
                                 detectionDB.total_violators = totalViolators
                                 databaseHelper.addDetection(context, detectionDB)
-
                             } catch (e : Exception) {
                                 e.printStackTrace()
                             }
@@ -385,8 +544,6 @@ class ClientFragment : Fragment() {
                                 }
                             }.start()
 
-
-//                        textDetect.text = msg
                         }
 
                         override fun connectionLost(cause: Throwable?) {
@@ -401,20 +558,6 @@ class ClientFragment : Fragment() {
         } catch (e:Exception) {
             e.printStackTrace()
         }
-
-//        view.findViewById<Button>(R.id.button_prefill_client).setOnClickListener {
-//            // Set default values in edit texts
-//            view.findViewById<EditText>(R.id.edittext_pubtopic).setText(MQTT_TEST_TOPIC)
-//            view.findViewById<EditText>(R.id.edittext_pubmsg).setText(MQTT_TEST_MSG)
-//            view.findViewById<EditText>(R.id.edittext_subtopic).setText(MQTT_TEST_TOPIC)
-//        }
-//
-//        view.findViewById<Button>(R.id.button_clean_client).setOnClickListener {
-//            // Clean values in edit texts
-//            view.findViewById<EditText>(R.id.edittext_pubtopic).setText("")
-//            view.findViewById<EditText>(R.id.edittext_pubmsg).setText("")
-//            view.findViewById<EditText>(R.id.edittext_subtopic).setText("")
-//        }
 
         view.findViewById<Button>(R.id.button_disconnect).setOnClickListener {
             if (mqttClient.isConnected()) {
@@ -438,35 +581,6 @@ class ClientFragment : Fragment() {
                 Log.d(this.javaClass.name, "Impossible to disconnect, no server connected")
             }
         }
-
-//        view.findViewById<Button>(R.id.button_publish).setOnClickListener {
-//            val topic = view.findViewById<EditText>(R.id.edittext_pubtopic).text.toString()
-//            val message = view.findViewById<EditText>(R.id.edittext_pubmsg).text.toString()
-//
-//            if (mqttClient.isConnected()) {
-//                mqttClient.publish(topic,
-//                    message,
-//                    1,
-//                    false,
-//                    object : IMqttActionListener {
-//                        override fun onSuccess(asyncActionToken: IMqttToken?) {
-//                            val msg = "Publish message: $message to topic: $topic"
-//                            Log.d(this.javaClass.name, msg)
-//
-//                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-//                        }
-//
-//                        override fun onFailure(
-//                            asyncActionToken: IMqttToken?,
-//                            exception: Throwable?
-//                        ) {
-//                            Log.d(this.javaClass.name, "Failed to publish message to topic")
-//                        }
-//                    })
-//            } else {
-//                Log.d(this.javaClass.name, "Impossible to publish, no server connected")
-//            }
-//        }
 
         view.findViewById<Button>(R.id.button_subscribe).setOnClickListener {
 

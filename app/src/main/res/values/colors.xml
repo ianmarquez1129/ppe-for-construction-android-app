@@ -33,4 +33,16 @@
     <color name="darkviolet_dark">#683dd4</color>
     <color name="violet">#D65AEE</color>
     <color name="violet_dark">#b33ec9</color>
+
+    <color name="helmet">#FF0000</color>
+    <color name="no_helmet">#FFA500</color>
+    <color name="glasses">#FFFF00</color>
+    <color name="no_glasses">#00FF00</color>
+    <color name="vest">#26D07C</color>
+    <color name="no_vest">#00FFFF</color>
+    <color name="gloves">#007FFF</color>
+    <color name="no_gloves">#0000FF</color>
+    <color name="boots">#800080</color>
+    <color name="no_boots">#FF00FF</color>
+
 </resources>

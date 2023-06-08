@@ -10,12 +10,16 @@ import android.graphics.BitmapFactory
 import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.RectF
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams
 import android.view.animation.DecelerateInterpolator
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.zmci.R
 import kotlinx.android.synthetic.main.fragment_detection_report.*
@@ -38,6 +42,7 @@ class DetectionReportFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //get data from adapter position
         val image = arguments?.getString(DETECTION_IMAGE_KEY).toString()
         val cameraName = arguments?.getString(DETECTION_CAMERA_NAME_KEY).toString()
         val camera = arguments?.getString(DETECTION_CAMERA_KEY).toString()
@@ -51,47 +56,67 @@ class DetectionReportFragment : Fragment() {
         val bitmap = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
         imageReport.setImageBitmap(bitmap)
 
-
+        //expandable image on click
         imageReport.setOnClickListener {
             zoomImageFromThumb(thumbView = imageReport,bitmap)
         }
         shortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
 
-        cameraReport.text = "Camera details: \n"
+        //initialize text views
+        cameraReport.text = "Camera details:"
         timestampReport.text = "Timestamp: $timestamp"
-        violatorsReport.text = "Details: \n"
+        violatorsReport.text = "Details:"
         totalViolationsReport.text = "Detected PPE: $total_violations"
         totalViolatorsReport.text = "Person: $total_violators"
 
+        //Parse the JSON data
         try {
+            // Convert the string to JSON
             val cameraObject = JSONArray("[ $camera ]")
             for (i in 0 until cameraObject.length()) {
                 val itemCamera = cameraObject.getJSONObject(i)
-//                val camName = itemCamera.getString("name")
-//                val camDesc = itemCamera.getString("description")
                 val camIP = itemCamera.getString("ip_address")
-                cameraReport.append(
+                // Create TextView for camera details
+                val tvCameraDetails = TextView(context)
+                // Setup attributes
+                tvCameraDetails.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+                tvCameraDetails.textSize = 20f
+                tvCameraDetails.typeface = Typeface.DEFAULT_BOLD
+                tvCameraDetails.text =
                     "Camera name: $cameraName\n" +
                             "IP: $camIP"
-                )
+                // Display in LinearLayout
+                cameraDetails.addView(tvCameraDetails)
             }
+            // Convert the string to JSON
             val violatorsObject = JSONArray(violators)
             try {
                 for (j in 0 until violatorsObject.length()) {
                     val itemViolators = violatorsObject.getJSONObject(j)
-//                    val personId = itemViolators.getString("id")
-//                    violatorsReport.append("ID: $personId\n")
                     val personInfo = itemViolators.getString("person_info")
                     val personInfoObject = JSONArray(personInfo)
 
+                    // If the current person has no 'face' and is not recognized,
+                    // it is considered "Unknown person".
                     if (personInfoObject.length() == 0) {
-                        violatorsReport.append(
-                            "Unknown person\n"
-                        )
+                        // Create TextView for "Unknown person"
+                        val tvPerson = TextView(context)
+                        tvPerson.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+                        tvPerson.textSize = 20f
+                        tvPerson.typeface = Typeface.DEFAULT_BOLD
+                        tvPerson.text = "Unknown person"
+                        // Display the TextView in LinearLayout view
+                        if (j % 2 == 0) {
+                            detailsLinearLayout.addView(tvPerson)
+                        } else {
+                            detailsLinearLayout2.addView(tvPerson)
+                        }
                     }
 
+                    // If the current person has a detected 'face'...
                     for (k in 0 until personInfoObject.length()) {
                         val itemPILength = personInfoObject.getJSONObject(k).length()
+                        // If the person has been recognized via face recognition
                         if (itemPILength > 1) {
                             val itemPI = personInfoObject.getJSONObject(k)
                             val personID = itemPI.getString("person_id")
@@ -100,40 +125,193 @@ class DetectionReportFragment : Fragment() {
                             val lastName = itemPI.getString("last_name")
                             val jobTitle = itemPI.getString("job_title")
                             val overlaps = itemPI.getString("overlaps")
-                            violatorsReport.append(
+                            val tvPersonInfo = TextView(context)
+                            tvPersonInfo.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+                            tvPersonInfo.textSize = 20f
+                            tvPersonInfo.typeface = Typeface.DEFAULT_BOLD
+                            tvPersonInfo.text =
                                 "ID: $personID\n" +
                                         "Name: $firstName $middleName $lastName\n" +
                                         "Job Title: $jobTitle\n" +
-                                        "Overlaps: $overlaps\n" +
-                                        "-----\n"
-                            )
-                        } else {
+                                        "Overlaps: $overlaps"
+                            if (j % 2 == 0) {
+                                detailsLinearLayout.addView(tvPersonInfo)
+                            } else {
+                                detailsLinearLayout2.addView(tvPersonInfo)
+                            }
+
+                        }
+                        // If the person is not recognized via 'face recognition'
+                        // the person is considered "Unknown"
+                        else {
                             val itemPI = personInfoObject.getJSONObject(j)
                             val overlaps = itemPI.getString("overlaps")
-                            violatorsReport.append(
+                            // Create TextView for "Unknown person"
+                            val tvPersonUnknown = TextView(context)
+                            tvPersonUnknown.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+                            tvPersonUnknown.textSize = 20f
+                            tvPersonUnknown.typeface = Typeface.DEFAULT_BOLD
+                            tvPersonUnknown.text =
                                 "Unknown person\n" +
-                                        "Overlaps: $overlaps\n" +
-                                        "-----\n"
-                            )
+                                        "Overlaps: $overlaps"
+                            // Display the TextView in LinearLayout view
+                            if (j % 2 == 0) {
+                                detailsLinearLayout.addView(tvPersonUnknown)
+                            } else {
+                                detailsLinearLayout2.addView(tvPersonUnknown)
+                            }
                         }
 
                     }
 
+                    // Set the person's ID, and detections
                     val personUniqueID = itemViolators.getString("id")
                     val violations = itemViolators.getString("violations")
                     val violationsObject = JSONArray(violations)
-                    violatorsReport.append("\nPerson ID: $personUniqueID \n")
-                    violatorsReport.append("Detections: \n")
+                    // Create a TextView for person's ID and detections
+                    val tvPersonID = TextView(context)
+                    tvPersonID.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+                    tvPersonID.textSize = 20f
+                    tvPersonID.typeface = Typeface.DEFAULT_BOLD
+                    tvPersonID.text = "Person ID: $personUniqueID \n\nDetections:"
+                    // Display the TextView in LinearLayout view
+                    if (j % 2 == 0) {
+                        detailsLinearLayout.addView(tvPersonID)
+                    } else {
+                        detailsLinearLayout2.addView(tvPersonID)
+                    }
                     try {
+                        // Processing of detected PPE with their corresponding color coding
                         for (l in 0 until violationsObject.length()) {
+                            // Obtain the detections from JSON
                             val itemV = violationsObject.getJSONObject(l)
                             val className = itemV.getString("class_name")
-                            violatorsReport.append("$className\n")
+                            // Create TextView for each detections
+                            val tvPPE = TextView(context)
+                            tvPPE.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+                            tvPPE.textSize = 20f
+                            tvPPE.typeface = Typeface.DEFAULT_BOLD
+                            tvPPE.text = className
+                            // Setting the color coding of each PPE detections
+                            try {
+                                when (className) {
+                                    "helmet" -> {
+                                        tvPPE.setTextColor(
+                                            ContextCompat.getColor(
+                                                requireContext(),
+                                                R.color.helmet
+                                            )
+                                        )
+                                    }
+
+                                    "no helmet" -> {
+                                        tvPPE.setTextColor(
+                                            ContextCompat.getColor(
+                                                requireContext(),
+                                                R.color.no_helmet
+                                            )
+                                        )
+                                    }
+
+                                    "glasses" -> {
+                                        tvPPE.setTextColor(
+                                            ContextCompat.getColor(
+                                                requireContext(),
+                                                R.color.glasses
+                                            )
+                                        )
+                                    }
+
+                                    "no glasses" -> {
+                                        tvPPE.setTextColor(
+                                            ContextCompat.getColor(
+                                                requireContext(),
+                                                R.color.no_glasses
+                                            )
+                                        )
+                                    }
+
+                                    "vest" -> {
+                                        tvPPE.setTextColor(
+                                            ContextCompat.getColor(
+                                                requireContext(),
+                                                R.color.vest
+                                            )
+                                        )
+                                    }
+
+                                    "no vest" -> {
+                                        tvPPE.setTextColor(
+                                            ContextCompat.getColor(
+                                                requireContext(),
+                                                R.color.no_vest
+                                            )
+                                        )
+                                    }
+
+                                    "gloves" -> {
+                                        tvPPE.setTextColor(
+                                            ContextCompat.getColor(
+                                                requireContext(),
+                                                R.color.gloves
+                                            )
+                                        )
+                                    }
+
+                                    "no gloves" -> {
+                                        tvPPE.setTextColor(
+                                            ContextCompat.getColor(
+                                                requireContext(),
+                                                R.color.no_gloves
+                                            )
+                                        )
+                                    }
+
+                                    "boots" -> {
+                                        tvPPE.setTextColor(
+                                            ContextCompat.getColor(
+                                                requireContext(),
+                                                R.color.boots
+                                            )
+                                        )
+                                    }
+
+                                    "no boots" -> {
+                                        tvPPE.setTextColor(
+                                            ContextCompat.getColor(
+                                                requireContext(),
+                                                R.color.no_boots
+                                            )
+                                        )
+                                    }
+                                }
+                                // Display the TextView in LinearLayout view
+                                if (j % 2 == 0) {
+                                    detailsLinearLayout.addView(tvPPE)
+                                } else {
+                                    detailsLinearLayout2.addView(tvPPE)
+                                }
+                            } catch (e: Exception){
+                                e.printStackTrace()
+                            }
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                    violatorsReport.append("-----\n")
+                    // Horizontal line separator
+                    val tvLine = TextView(context)
+                    tvLine.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 10)
+                    tvLine.setBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.black
+                    ))
+                    // Display of Horizontal Line in LinearLayout view
+                    if (j % 2 == 0) {
+                        detailsLinearLayout.addView(tvLine)
+                    } else {
+                        detailsLinearLayout2.addView(tvLine)
+                    }
                 }
             } catch (e:Exception) {
                 e.printStackTrace()
