@@ -1,9 +1,9 @@
 [![](https://img.shields.io/badge/TIP-Quezon%20City-yellow)](https://tip.edu.ph/)
-
+<p align=center><img src="https://github.com/cpe-pd/ppe-for-construction-android-app/assets/51940497/4d2f2508-e523-4603-8680-b1114254c7f2"></img></p>
 <h1 align="center">Android Application Client of<br>PPE for Construction Detection</h1>
 
 ## 📓 About
-This is the official repository of our PPE detection android mobile application for construction which is part of the whole system in our capstone project. It retrieves the information from the device through a messaging protocol called [MQTT](https://en.wikipedia.org/wiki/MQTT) and is done through this repository [PPE Detection Application for Construction Safety in Raspberry Pi](https://github.com/cpe-pd/ppe-for-construction-detection) and is processed in the mobile application. The mobile application uses a messaging protocol called [MQTT](https://en.wikipedia.org/wiki/MQTT) to communicate on the device. This mobile application has several capabilities necessary for user interaction in this project mainly to obtain real-time monitoring access of PPE of workers in a construction site and the data of event logs which can be generated to a PDF file.
+This is the official repository of our PPE detection android mobile application for construction which is part of the whole system in our capstone project. It communicates and retrieves the information from the device through a messaging protocol called [MQTT](https://en.wikipedia.org/wiki/MQTT) and is done through this repository [PPE Detection Application for Construction Safety in Raspberry Pi](https://github.com/cpe-pd/ppe-for-construction-detection) and is processed in the mobile application. This mobile application has several capabilities necessary for user interaction in this project mainly to obtain real-time monitoring access of PPE of workers in a construction site and the data of event logs which can be generated to a PDF file.
 
 ## 🤝 Team Members
 <div align="center">
@@ -72,7 +72,7 @@ Clone this repository and import into **Android Studio**
 ```bash
 git clone https://github.com/cpe-pd/ppe-for-construction-android-app.git
 ```
-Download the latest APK release [here](https://github.com/cpe-pd/ppe-for-construction-android-app/releases).
+Download the latest APK release [here](https://github.com/cpe-pd/ppe-for-construction-android-app/releases/latest).
 
 ## 🎦 Demonstration
-TBA
+- [Demo Video and Actual Deployment](https://youtu.be/SRCG76MqPr4)
