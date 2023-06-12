@@ -33,6 +33,7 @@
     <color name="darkviolet_dark">#683dd4</color>
     <color name="violet">#D65AEE</color>
     <color name="violet_dark">#b33ec9</color>
+    <color name="gray">#D3D3D3</color>
 
     <color name="helmet">#FF0000</color>
     <color name="no_helmet">#FFA500</color>

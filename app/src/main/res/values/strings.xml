@@ -73,4 +73,8 @@
     <string name="camera_details">Camera Details</string>
     <string name="connect">Connect</string>
     <string name="detailed_information">Detailed Information</string>
+    <string name="actions">Actions</string>
+    <string name="export_pdf">Export PDF</string>
+    <string name="export_csv">Export CSV</string>
+    <string name="import_csv">Import CSV</string>
 </resources>
