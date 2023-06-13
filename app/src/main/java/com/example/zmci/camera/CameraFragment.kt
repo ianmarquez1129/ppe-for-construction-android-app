@@ -121,25 +121,4 @@ class CameraFragment : Fragment() {
         addDialog.show()
     }
 
-//    override fun onResume() {
-//        viewCamera()
-//        super.onResume()
-//    }
-
-
-
-//    inner class GetDataFromSQLite : AsyncTask<Void, Void, List<CameraData>>() {
-//
-//        override fun doInBackground(vararg p0: Void?): List<CameraData> {
-//            return databaseHelper.getAllCamera()
-//        }
-//
-//        override fun onPostExecute(result: List<CameraData>?) {
-//            super.onPostExecute(result)
-//            cameraList.clear()
-//            cameraList.addAll(result!!)
-//        }
-//
-//    }
-
 }
