@@ -9,12 +9,15 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.zmci.databinding.FragmentGalleryBinding
-import kotlinx.android.synthetic.main.fragment_gallery.*
+import kotlinx.android.synthetic.main.fragment_gallery.btnRefresh
+import kotlinx.android.synthetic.main.fragment_gallery.btnStream
+import kotlinx.android.synthetic.main.fragment_gallery.etStream
+import kotlinx.android.synthetic.main.fragment_gallery.text_gallery
+import kotlinx.android.synthetic.main.fragment_gallery.webStreamVideo
 
 
 class GalleryFragment : Fragment() {

@@ -3,7 +3,6 @@ package com.example.zmci
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Email
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
@@ -16,7 +15,6 @@ import com.example.zmci.helpers.InputValidation
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.fragment_login.*
 
 
 class LoginFragment : AppCompatActivity(), View.OnClickListener {
