@@ -70,8 +70,8 @@ dependencies {
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.0.2'
     //GSON
     implementation 'com.google.code.gson:gson:2.10'
-    //VLC
-    implementation 'org.videolan.android:libvlc-all:3.4.4'
+    //VLC (removed: for future reference)
+//    implementation 'org.videolan.android:libvlc-all:3.4.4'
     //CSV
     implementation 'com.opencsv:opencsv:4.6'
 

@@ -32,12 +32,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        browser.setOnClickListener {
-            findNavController().navigate(R.id.action_nav_home_to_nav_gallery)
-        }
-        cameraStream.setOnClickListener {
-            findNavController().navigate(R.id.action_nav_home_to_nav_slideshow)
-        }
         detection.setOnClickListener {
             findNavController().navigate(R.id.action_nav_home_to_CameraFragment)
         }

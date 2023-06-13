@@ -11,17 +11,11 @@
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_nav_home_to_nav_gallery"
-            app:destination="@id/nav_gallery"/>
-        <action
             android:id="@+id/action_nav_home_to_CameraFragment"
             app:destination="@id/CameraFragment"/>
         <action
             android:id="@+id/action_nav_home_to_aboutFragment"
             app:destination="@id/aboutFragment"/>
-        <action
-            android:id="@+id/action_nav_home_to_nav_slideshow"
-            app:destination="@id/nav_slideshow"/>
         <action
             android:id="@+id/action_nav_home_to_DetectionFragment"
             app:destination="@id/DetectionFragment"/>
@@ -29,16 +23,6 @@
             android:id="@+id/action_nav_home_to_SettingsFragment"
             app:destination="@id/SettingsFragment"/>
     </fragment>
-    <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.zmci.gallery.GalleryFragment"
-        android:label="@string/configure"
-        tools:layout="@layout/fragment_gallery" />
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.zmci.slideshow.SlideshowFragment"
-        android:label="@string/camera_stream"
-        tools:layout="@layout/fragment_slideshow" />
     <fragment
         android:id="@+id/ConnectFragment"
         android:name="com.example.zmci.mqtt.ConnectFragment"

@@ -7,45 +7,52 @@
     tools:context=".slideshow.SlideshowFragment"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/layoutStream"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+<!--    Note: Highlight all comments before uncommenting-->
+<!--            for future reference.-->
 
-        <TextView
-            android:id="@+id/tvStream"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:textAlignment="center"
-            android:text="@string/camera_stream"
-            android:textSize="20sp"/>
+<!--    Comment starts here-->
 
-        <EditText
-            android:id="@+id/streamIP"
-            android:hint="Enter IP address:"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"/>
-        <Button
-            android:id="@+id/btnStreamIP"
-            android:text="Stream"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"/>
+<!--    <LinearLayout-->
+<!--        android:id="@+id/layoutStream"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical">-->
 
-    </LinearLayout>
+<!--        <TextView-->
+<!--            android:id="@+id/tvStream"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="8dp"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:textAlignment="center"-->
+<!--            android:text="@string/camera_stream"-->
+<!--            android:textSize="20sp"/>-->
 
-    <org.videolan.libvlc.util.VLCVideoLayout
-        android:id="@+id/videoLayout"
-        android:layout_below="@id/layoutStream"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+<!--        <EditText-->
+<!--            android:id="@+id/streamIP"-->
+<!--            android:hint="Enter IP address:"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:layout_marginStart="32dp"-->
+<!--            android:layout_marginEnd="32dp"/>-->
+<!--        <Button-->
+<!--            android:id="@+id/btnStreamIP"-->
+<!--            android:text="Stream"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="32dp"-->
+<!--            android:layout_marginEnd="32dp"/>-->
+
+<!--    </LinearLayout>-->
+
+<!--    <org.videolan.libvlc.util.VLCVideoLayout-->
+<!--        android:id="@+id/videoLayout"-->
+<!--        android:layout_below="@id/layoutStream"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content" />-->
+
+    <!--    Comment ends here-->
 
 </RelativeLayout>
