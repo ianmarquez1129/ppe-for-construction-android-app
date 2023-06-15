@@ -75,4 +75,4 @@ git clone https://github.com/cpe-pd/ppe-for-construction-android-app.git
 Download the latest APK release [here](https://github.com/cpe-pd/ppe-for-construction-android-app/releases/latest).
 
 ## 🎦 Demonstration
-- [Demo Video and Actual Deployment](https://youtu.be/SRCG76MqPr4)
+- [Demo Video and Actual Deployment](https://youtu.be/mOH8-uSSyjc)
