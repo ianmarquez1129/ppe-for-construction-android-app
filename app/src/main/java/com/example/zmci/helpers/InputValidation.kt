@@ -40,25 +40,25 @@ class InputValidation
     }
 
 
-    /**
-     * method to check InputEditText has valid email .
-     *
-     * @param textInputEditText
-     * @param textInputLayout
-     * @param message
-     * @return
-     */
-    fun isInputEditTextEmail(textInputEditText: AppCompatEditText, textInputLayout: TextInputLayout, message: String): Boolean {
-        val value = textInputEditText.text.toString().trim()
-        if (value.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(value).matches()) {
-            textInputLayout.error = message
-            hideKeyboardFrom(textInputEditText)
-            return false
-        } else {
-            textInputLayout.isErrorEnabled = false
-        }
-        return true
-    }
+//    /**
+//     * method to check InputEditText has valid email .
+//     *
+//     * @param textInputEditText
+//     * @param textInputLayout
+//     * @param message
+//     * @return
+//     */
+//    fun isInputEditTextEmail(textInputEditText: AppCompatEditText, textInputLayout: TextInputLayout, message: String): Boolean {
+//        val value = textInputEditText.text.toString().trim()
+//        if (value.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(value).matches()) {
+//            textInputLayout.error = message
+//            hideKeyboardFrom(textInputEditText)
+//            return false
+//        } else {
+//            textInputLayout.isErrorEnabled = false
+//        }
+//        return true
+//    }
 
     /**
      * method to check both InputEditText value matches.

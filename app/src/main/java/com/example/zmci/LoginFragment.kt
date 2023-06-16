@@ -176,9 +176,9 @@ class LoginFragment : AppCompatActivity(), View.OnClickListener {
         if (!inputValidation.isInputEditTextFilled(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
             return
         }
-        if (!inputValidation.isInputEditTextEmail(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
-            return
-        }
+//        if (!inputValidation.isInputEditTextEmail(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
+//            return
+//        }
         if (!inputValidation.isInputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_password))) {
             return
         }
@@ -189,7 +189,7 @@ class LoginFragment : AppCompatActivity(), View.OnClickListener {
             val userName = textInputEditTextEmail.text.toString().trim { it <= ' ' }
             val userPassword = textInputEditTextPassword.text.toString().trim { it <= ' ' }
             val intent = Intent(applicationContext, MainActivity::class.java)
-            intent.putExtra("EMAIL", userName)
+            intent.putExtra("USERNAME", userName)
             intent.putExtra("PW", userPassword)
 
             startActivity(intent)

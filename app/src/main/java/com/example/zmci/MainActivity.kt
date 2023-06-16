@@ -86,13 +86,13 @@ class MainActivity : AppCompatActivity() {
 
         // Set the navigation header title to the user's name/email
         val intent = intent
-        val str = intent.getStringExtra("EMAIL")
+        val str = intent.getStringExtra("USERNAME")
 
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         val headerView: View = navigationView.getHeaderView(0)
         val navUsername: TextView = headerView.findViewById(R.id.etUserName)
 
-        navUsername.text = str.toString()
+        navUsername.text = "Welcome @"+str.toString()
 
         //MQTT starts here
         if (!isConnected()) {
