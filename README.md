@@ -1,6 +1,6 @@
 [![](https://img.shields.io/badge/TIP-Quezon%20City-yellow)](https://tip.edu.ph/)
 
-![github-header-image](https://github.com/cpe-pd/ppe-for-construction-android-app/assets/51940497/9c463d2e-8b3e-4b61-91d5-69ae43b45dc1)
+![github-header-image](https://github.com/cpe-pd/ppe-for-construction-android-app/assets/51940497/6bb94bef-1c44-465e-afc4-1eea8ad08f85)
 
 ## 📓 About
 This is the official repository of our PPE detection android mobile application for construction which is part of the whole system in our capstone project. It communicates and retrieves the information from the device through a messaging protocol called [MQTT](https://en.wikipedia.org/wiki/MQTT) and is done through this repository [PPE Detection Application for Construction Safety in Raspberry Pi](https://github.com/cpe-pd/ppe-for-construction-detection) and is processed in the mobile application. This mobile application has several capabilities necessary for user interaction in this project mainly to obtain real-time monitoring access of PPE of workers in a construction site and the data of event logs which can be generated to a PDF file.
