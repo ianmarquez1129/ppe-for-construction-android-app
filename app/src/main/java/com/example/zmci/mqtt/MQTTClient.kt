@@ -2,13 +2,15 @@ package com.example.zmci.mqtt
 
 import android.content.Context
 import android.util.Log
-import org.eclipse.paho.android.service.MqttAndroidClient
+import info.mqtt.android.service.Ack
+//import org.eclipse.paho.android.service.MqttAndroidClient
+import info.mqtt.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.*
 
-class MQTTClient(context: Context?,
+class MQTTClient(context: Context,
                  serverURI: String,
                  clientID: String = "") {
-    private var mqttClient = MqttAndroidClient(context, serverURI, clientID)
+    private var mqttClient = MqttAndroidClient(context, serverURI, clientID, Ack.AUTO_ACK)
     private val defaultCbConnect = object : IMqttActionListener {
         override fun onSuccess(asyncActionToken: IMqttToken?) {
             Log.d(this.javaClass.name, "(Default) Connection success")

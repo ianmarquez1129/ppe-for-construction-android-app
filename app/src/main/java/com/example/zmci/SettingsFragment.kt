@@ -11,6 +11,7 @@ import com.example.zmci.mqtt.MQTT_CLIENT_ID
 import com.example.zmci.mqtt.MQTT_PWD
 import com.example.zmci.mqtt.MQTT_USERNAME
 import com.google.gson.Gson
+import info.mqtt.android.service.Ack
 import org.eclipse.paho.client.mqttv3.IMqttActionListener
 import org.eclipse.paho.client.mqttv3.IMqttToken
 import org.json.JSONObject
@@ -72,7 +73,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 // Get server URI from user input
                 val serverUri = sp.getString("server_uri", "tcp://10.42.0.1:1883").toString()
                 // Open MQTT Broker communication
-                mqttClient = MQTTClient(context, serverUri, clientID)
+                mqttClient = MQTTClient(requireContext(), serverUri, clientID)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

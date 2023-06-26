@@ -66,8 +66,11 @@ dependencies {
     //CardView
     implementation "androidx.cardview:cardview:1.0.0"
     //MQTT
-    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.0.2'
-    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.0.2'
+    // upgrade from 1.0.2 to 1.2.5 mqtt client and use hannesa2 paho.mqtt.android service to allow android version of 12+
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5'
+//    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.0.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.github.hannesa2:paho.mqtt.android:3.5.2'
     //GSON
     implementation 'com.google.code.gson:gson:2.10'
     //VLC (removed: for future reference)

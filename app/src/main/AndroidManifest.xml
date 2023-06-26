@@ -55,7 +55,7 @@
             android:theme="@style/Theme.ZMCI.NoActionBar" />
 
         <service
-            android:name="org.eclipse.paho.android.service.MqttService"
+            android:name="info.mqtt.android.service.MqttService"
             android:enabled="true" />
     </application>
 

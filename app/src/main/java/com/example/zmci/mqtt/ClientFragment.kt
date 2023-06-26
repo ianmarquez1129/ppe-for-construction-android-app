@@ -30,6 +30,7 @@ import com.example.zmci.MainActivity
 import com.example.zmci.R
 import com.example.zmci.database.DatabaseHelper
 import com.example.zmci.mqtt.model.Detection
+import info.mqtt.android.service.Ack
 import kotlinx.android.synthetic.main.fragment_client.*
 import org.eclipse.paho.client.mqttv3.*
 import org.json.JSONArray
@@ -127,7 +128,7 @@ class ClientFragment : Fragment() {
         val topic = arguments?.getString(MQTT_TOPIC_KEY).toString()
 
         // Open MQTT Broker communication
-        mqttClient = MQTTClient(context, serverURI, clientId)
+        mqttClient = MQTTClient(requireContext(), serverURI, clientId)
 
         try {
 
