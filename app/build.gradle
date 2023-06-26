@@ -71,6 +71,8 @@ dependencies {
 //    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.0.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.github.hannesa2:paho.mqtt.android:3.5.2'
+    //BouncyCastle
+    implementation 'org.bouncycastle:bcpkix-jdk15on:1.67'
     //GSON
     implementation 'com.google.code.gson:gson:2.10'
     //VLC (removed: for future reference)

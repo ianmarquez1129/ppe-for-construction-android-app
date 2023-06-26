@@ -11,10 +11,11 @@ import com.example.zmci.mqtt.MQTT_CLIENT_ID
 import com.example.zmci.mqtt.MQTT_PWD
 import com.example.zmci.mqtt.MQTT_USERNAME
 import com.google.gson.Gson
-import info.mqtt.android.service.Ack
 import org.eclipse.paho.client.mqttv3.IMqttActionListener
 import org.eclipse.paho.client.mqttv3.IMqttToken
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions
 import org.json.JSONObject
+import javax.net.ssl.SSLSocketFactory
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -85,8 +86,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 } else {
                     // Connect and login to MQTT Broker
                     try {
-                        mqttClient.connect(brokerUsername,
-                            brokerPassword,
+                        val options = MqttConnectOptions()
+                        val sslSocketFactory: SSLSocketFactory? = mqttClient.getSocketFactory(resources.openRawResource(R.raw.amazonrootca1),resources.openRawResource(R.raw.certificate_pem),resources.openRawResource(R.raw.private_pem),"")
+                        options.socketFactory = sslSocketFactory
+                        mqttClient.connect(options,
                             object : IMqttActionListener {
                                 override fun onSuccess(asyncActionToken: IMqttToken?) {
                                     Log.d(this.javaClass.name, "Connection success")

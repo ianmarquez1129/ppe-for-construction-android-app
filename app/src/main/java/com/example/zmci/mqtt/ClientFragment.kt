@@ -30,7 +30,6 @@ import com.example.zmci.MainActivity
 import com.example.zmci.R
 import com.example.zmci.database.DatabaseHelper
 import com.example.zmci.mqtt.model.Detection
-import info.mqtt.android.service.Ack
 import kotlinx.android.synthetic.main.fragment_client.*
 import org.eclipse.paho.client.mqttv3.*
 import org.json.JSONArray
@@ -38,6 +37,7 @@ import org.json.JSONObject
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import javax.net.ssl.SSLSocketFactory
 
 
 class ClientFragment : Fragment() {
@@ -152,8 +152,10 @@ class ClientFragment : Fragment() {
 
             } else {
                 // Connect and login to MQTT Broker
-                mqttClient.connect(username,
-                    pwd,
+                val options = MqttConnectOptions()
+                val sslSocketFactory: SSLSocketFactory? = mqttClient.getSocketFactory(resources.openRawResource(R.raw.amazonrootca1),resources.openRawResource(R.raw.certificate_pem),resources.openRawResource(R.raw.private_pem),"")
+                options.socketFactory = sslSocketFactory
+                mqttClient.connect(options,
                     object : IMqttActionListener {
                         override fun onSuccess(asyncActionToken: IMqttToken?) {
                             Log.d(this.javaClass.name, "Connection success")
