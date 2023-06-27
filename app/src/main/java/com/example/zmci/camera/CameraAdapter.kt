@@ -58,7 +58,7 @@ class CameraAdapter(val c:Context, val cameraList:MutableList<CameraData>):Recyc
                                     cameraList[adapterPosition].MQTT_SERVER_URI = v.etEditServerUri.text.toString()
                                     cameraList[adapterPosition].MQTT_USERNAME = v.etEditServerUsername.text.toString()
                                     cameraList[adapterPosition].MQTT_PWD = v.etEditServerPassword.text.toString()
-                                    cameraList[adapterPosition].MQTT_TOPIC = v.etEditServerPassword.text.toString()
+                                    cameraList[adapterPosition].MQTT_TOPIC = v.etEditServerTopic.text.toString()
                                     notifyDataSetChanged()
                                     Toast.makeText(c,"Updated Successfully", Toast.LENGTH_SHORT).show()
                                 } else {
