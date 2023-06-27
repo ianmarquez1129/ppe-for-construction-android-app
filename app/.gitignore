@@ -1,1 +1,4 @@
 /build
+/src/main/res/raw/amazonrootca1.pem
+/src/main/res/raw/certificate_pem.crt
+/src/main/res/raw/private_pem.key
