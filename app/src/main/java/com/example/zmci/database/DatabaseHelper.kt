@@ -371,6 +371,36 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return detectionList
     }
 
+    fun getDetectionOfCamera(context: Context, cameraName: String): ArrayList<Detection> {
+
+        val qry = "SELECT * FROM $TABLE_DETECTION WHERE $COLUMN_DETECTION_CAMERA_NAME = \"$cameraName\""
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(qry, null)
+        val detectionList = ArrayList<Detection>()
+
+        if (cursor.count == 0)
+            Toast.makeText(context, "No Records Found", Toast.LENGTH_SHORT).show() else {
+            cursor.moveToFirst()
+            while (!cursor.isAfterLast) {
+                val detection = Detection()
+                detection.id = cursor.getInt(cursor.getColumnIndex(COLUMN_DETECTION_ID))
+                detection.image = cursor.getString(cursor.getColumnIndex(COLUMN_DETECTION_IMAGE))
+                detection.cameraName = cursor.getString(cursor.getColumnIndex(COLUMN_DETECTION_CAMERA_NAME))
+                detection.camera = cursor.getString(cursor.getColumnIndex(COLUMN_DETECTION_CAMERA))
+                detection.timestamp = cursor.getString(cursor.getColumnIndex(COLUMN_DETECTION_TIMESTAMP))
+                detection.violators = cursor.getString(cursor.getColumnIndex(COLUMN_DETECTION_VIOLATORS))
+                detection.total_violations = cursor.getString(cursor.getColumnIndex(COLUMN_TOTAL_VIOLATIONS))
+                detection.total_violators = cursor.getString(cursor.getColumnIndex(COLUMN_TOTAL_VIOLATORS))
+                detectionList.add(detection)
+                cursor.moveToNext()
+            }
+        }
+        cursor.close()
+        db.close()
+        return detectionList
+    }
+
+
     /**
      * This method is to create camera record
      *
